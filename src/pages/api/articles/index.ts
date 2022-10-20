@@ -1,6 +1,6 @@
-// next JS get request
-
+import mongoose from 'mongoose';
 import type { NextApiRequest, NextApiResponse } from 'next';
+
 const articles = [
   {
     id: 1,
@@ -12,3 +12,5 @@ const articles = [
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   res.status(200).json(articles);
 }
+
+// GITHUBSTUDENT50-810V2N
