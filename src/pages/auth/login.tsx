@@ -9,8 +9,10 @@ import Form from '../../components/form/Form';
 
 const Login = () => {
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email().required(),
-    password: Yup.string().required(),
+    email: Yup.string().email('Invalid Email Address').required('Required'),
+    password: Yup.string()
+      .min(6, 'Too short, at least 6 chars')
+      .required('Required'),
   });
 
   return (

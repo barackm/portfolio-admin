@@ -37,24 +37,26 @@ const TextInput = (props: TextInputProps) => {
   } = props;
   const { values, handleChange, handleBlur, errors } = useFormikContext() || {};
 
+  const inpurError = usesFormik
+    ? errors && errors[name as keyof typeof errors]
+    : error;
+
   const getTextInputClasses = () => {
-    const defaultStyles = `${
-      startIcon ? 'pl-9' : 'pl-3'
-    } text-sm focus:shadow-soft-primary-outline ease-soft w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-primaryColor-300 focus:outline-none focus:transition-shadow    ${
+    const defaultStyles = `${startIcon ? 'pl-9' : 'pl-3'} text-sm ${
+      error || inpurError
+        ? 'focus:shadow-soft-primary-error-outline'
+        : 'focus:shadow-soft-primary-outline'
+    } ease-soft w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-primaryColor-300 focus:outline-none focus:transition-shadow    ${
       endIcon ? 'pr-9' : 'pr-3'
     } ${widthAuto ? 'w-auto' : ''}`;
 
     const errorStyles = `border-red-500 text-red-500 placeholder-red-500 focus:border-red-500 focus:shadow-soft-error-outline`;
     const disabledStyles = `opacity-50 cursor-default bg-gray-100 active:opacity-50 text-gray-500 hover:transform-none`;
 
-    return `${defaultStyles} ${error ? errorStyles : ''} ${
+    return `${defaultStyles} ${error || inpurError ? errorStyles : ''} ${
       disabled ? disabledStyles : ''
     }`;
   };
-
-  const inpurError = usesFormik
-    ? errors && errors[name as keyof typeof errors]
-    : error;
 
   return (
     <div className='relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease-soft'>
@@ -68,7 +70,11 @@ const TextInput = (props: TextInputProps) => {
       )}
       <div className='relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease-soft'>
         {startIcon && (
-          <span className='text-sm ease-soft leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all'>
+          <span
+            className={`text-sm ease-soft leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal ${
+              error || inpurError ? 'text-red-600' : 'text-slate-500'
+            } transition-all`}
+          >
             {startIcon}
           </span>
         )}
@@ -98,7 +104,7 @@ const TextInput = (props: TextInputProps) => {
         )}
       </div>
       {(inpurError || error) && (
-        <p className='text-sm text-red-600' id='email-error'>
+        <p className='text-sm text-red-600 mb-0' id='email-error'>
           {inpurError || error}
         </p>
       )}
