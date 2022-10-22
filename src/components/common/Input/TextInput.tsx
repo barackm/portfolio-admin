@@ -35,11 +35,13 @@ const TextInput = (props: TextInputProps) => {
     startIcon,
     endIcon,
   } = props;
-  const { values, handleChange, handleBlur, errors } = useFormikContext() || {};
+  const { values, handleChange, setFieldTouched, errors, touched } =
+    useFormikContext() || {};
 
-  const inpurError = usesFormik
-    ? errors && errors[name as keyof typeof errors]
-    : error;
+  const inpurError =
+    touched[name as keyof typeof errors] &&
+    errors &&
+    errors[name as keyof typeof errors];
 
   const getTextInputClasses = () => {
     const defaultStyles = `${startIcon ? 'pl-9' : 'pl-3'} text-sm ${
@@ -94,7 +96,11 @@ const TextInput = (props: TextInputProps) => {
           }}
           disabled={disabled}
           placeholder={placeholder}
-          onBlur={usesFormik ? handleBlur : () => {}}
+          onBlur={() => {
+            if (usesFormik) {
+              setFieldTouched(name as keyof typeof values);
+            }
+          }}
           className={getTextInputClasses()}
         />
         {endIcon && (

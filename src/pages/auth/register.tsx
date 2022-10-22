@@ -6,13 +6,18 @@ import Button from '../../components/common/Button';
 import Switch from '../../components/common/Input/Switch';
 import TextInput from '../../components/common/Input/TextInput';
 import Form from '../../components/form/Form';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 
-const Login = () => {
+const Register = () => {
   const router = useRouter();
   const validationSchema = Yup.object().shape({
+    firstName: Yup.string()
+      .min(3, 'Too short, at least 3 chars')
+      .required('Required'),
+    lastName: Yup.string()
+      .min(3, 'Too short, at least 3 chars')
+      .required('Required'),
     email: Yup.string().email('Invalid Email Address').required('Required'),
     password: Yup.string()
       .min(6, 'Too short, at least 6 chars')
@@ -34,7 +39,7 @@ const Login = () => {
                     height={70}
                   />
                 </div>
-                <p className='font-light text-xl'>Sign in to your account</p>
+                <p className='font-light text-xl'>Create an account</p>
               </div>
             </div>
             <div className='flex flex-col justify-center align-middle w-full'>
@@ -45,11 +50,29 @@ const Login = () => {
                 initialValues={{
                   email: '',
                   password: '',
+                  firstName: '',
+                  lastName: '',
                   rememberMe: false,
                 }}
                 validationSchema={validationSchema}
               >
                 <div className='flex flex-col justify-center align-middle w-full'>
+                  <div className='flex flex-col justify-center align-middle w-full mb-5'>
+                    <TextInput
+                      placeholder='First Name'
+                      name='firstName'
+                      id='firstName'
+                      usesFormik
+                    />
+                  </div>
+                  <div className='flex flex-col justify-center align-middle w-full mb-5'>
+                    <TextInput
+                      placeholder='Last Name'
+                      name='lastName'
+                      id='lastName'
+                      usesFormik
+                    />
+                  </div>
                   <div className='flex flex-col justify-center align-middle w-full mb-5'>
                     <TextInput
                       placeholder='Email'
@@ -70,29 +93,27 @@ const Login = () => {
                       startIcon={<LockIcon />}
                     />
                   </div>
-                  <div className='flex flex-col justify-center align-middle w-full mb-5'>
-                    <Switch usesFormik label='Remember me' name='rememberMe' />
-                  </div>
+
                   <div className='flex flex-col justify-center align-middle w-full mb-2'>
                     <Button
                       className='bg-primaryColor'
                       type='submit'
                       usesFormik
                     >
-                      Login
+                      Register
                     </Button>
                   </div>
                   <div className='flex flex-col justify-center align-middle w-full mb-2'>
                     <p className='text-center text-sm mb-0'>
-                      Don&apos;t have an account?{' '}
+                      Already have an account?{' '}
                     </p>
                   </div>
                   <div className='flex flex-col justify-center align-middle w-full mb-2'>
                     <Button
                       className='bg-secondaryColor'
-                      onClick={() => router.push('/auth/register')}
+                      onClick={() => router.push('/auth/login')}
                     >
-                      Register
+                      Login
                     </Button>
                   </div>
                 </div>
@@ -105,4 +126,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
