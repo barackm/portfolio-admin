@@ -10,8 +10,7 @@ const Layout = (props: LayoutProps) => {
   return (
     <div>
       <Sidebar />
-      {/* xl:ml-68 */}
-      <main className='relative h-full max-h-screen transition-all duration-200 ease-soft-in-out rounded-xl '>
+      <main className='relative h-full max-h-screen transition-all duration-200 ease-soft-in-out rounded-xl xl:ml-68'>
         <div></div>
         <div>{children}</div>
       </main>
