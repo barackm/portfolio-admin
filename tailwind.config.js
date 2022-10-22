@@ -330,6 +330,34 @@ module.exports = {
         800: '#9f1239',
         900: '#881337',
       },
+
+      primaryColor: {
+        DEFAULT: '#0e1630',
+        50: '#ced6d3',
+        100: '#aebbb9',
+        200: '#8e9fa0',
+        300: '#6d7f84',
+        400: '#4d5e68',
+        500: '#2E3B4C',
+        600: '#0C0C2B',
+        700: '#0F0A25',
+        800: '#11081F',
+        900: '#120619',
+      },
+
+      secondaryColor: {
+        DEFAULT: '#ed4a4a',
+        50: '#FAD8FF',
+        100: '#FEBEF9',
+        200: '#FCA6E6',
+        300: '#F98ECA',
+        400: '#F676A6',
+        500: '#F2607B',
+        600: '#D25E3E',
+        700: '#B66B33',
+        800: '#9A7129',
+        900: '#7C6E1F',
+      },
     }),
     columns: {
       auto: 'auto',
@@ -613,7 +641,7 @@ module.exports = {
       'soft-2xl': '0 .3125rem .625rem 0 rgba(0,0,0,.12)',
       'soft-3xl':
         '0 8px 26px -4px hsla(0,0%,8%,.15),0 8px 9px -5px hsla(0,0%,8%,.06)',
-      'soft-primary-outline': '0 0 0 2px #e9aede',
+      'soft-primary-outline': '0 0 0 2px #0e1630',
       blur: 'inset 0 0 1px 1px hsla(0,0%,100%,.9),0 20px 27px 0 rgba(0,0,0,.05)',
       DEFAULT: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
       inner: 'inset 0 2px 4px 0 rgb(0 0 0 / 0.05)',

@@ -40,7 +40,7 @@ const TextInput = (props: TextInputProps) => {
   const getTextInputClasses = () => {
     const defaultStyles = `${
       startIcon ? 'pl-9' : 'pl-3'
-    } text-sm focus:shadow-soft-primary-outline ease-soft w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none focus:transition-shadow    ${
+    } text-sm focus:shadow-soft-primary-outline ease-soft w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-primaryColor-300 focus:outline-none focus:transition-shadow    ${
       endIcon ? 'pr-9' : 'pr-3'
     } ${widthAuto ? 'w-auto' : ''}`;
 
@@ -79,9 +79,13 @@ const TextInput = (props: TextInputProps) => {
           value={
             usesFormik && values ? values[name as keyof typeof values] : value
           }
-          onChange={(e) =>
-            usesFormik && handleChange ? handleChange(e) : onChange(e)
-          }
+          onChange={(e) => {
+            if (usesFormik) {
+              handleChange(e);
+            } else {
+              onChange(e);
+            }
+          }}
           disabled={disabled}
           placeholder={placeholder}
           onBlur={usesFormik ? handleBlur : () => {}}

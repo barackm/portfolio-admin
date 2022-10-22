@@ -4,6 +4,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Button from '../components/common/Button';
 import TextInput from '../components/common/Input/TextInput';
 import styles from '../styles/Home.module.css';
+import Switch from '../components/common/Input/Switch';
 
 const Home: NextPage = () => {
   return (
@@ -22,6 +23,10 @@ const Home: NextPage = () => {
           label='Email'
           placeholder='Enter emil address'
         />
+      </div>
+      <br />
+      <div>
+        <Switch />
       </div>
     </div>
   );
