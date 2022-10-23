@@ -60,7 +60,9 @@ const TableHeader = (props: TableHeaderProps) => {
         {columns.map((column: any) => (
           <th
             key={column.path}
-            className='text-xs border-b text-slate-400 font-semibold text-left py-2 px-5 uppercase'
+            className={`text-xs border-b text-slate-400 font-semibold text-left py-2 px-5 uppercase min-w-[150px] ${
+              column.colClasses || ''
+            }`}
           >
             <a
               href='#'

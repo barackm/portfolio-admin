@@ -48,6 +48,11 @@ const Home: NextPage = () => {
             },
             {
               _id: 6,
+              path: 'status',
+              label: 'Status',
+            },
+            {
+              _id: 7,
               path: 'actions',
               label: 'Actions',
               content: (user: any) => (
@@ -62,7 +67,8 @@ const Home: NextPage = () => {
           data={[
             {
               _id: 1,
-              firstName: 'John',
+              firstName:
+                'John Get 3% Daily Cash back with Apple Card. And pay for your new Mac over 12 months, interest‑free when you choose to check out with Apple Card Monthly Installments.',
               lastName: 'Doe',
               email: 'johndoe@gmail.com',
               role: 'Admin',
