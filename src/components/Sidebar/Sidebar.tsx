@@ -1,148 +1,69 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect } from 'react';
 
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import EqualizerOutlinedIcon from '@mui/icons-material/EqualizerOutlined';
-import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined';
-import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
-import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import SeparatorLine from '../common/SeparatorLine';
-import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
-import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
-import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
-import SaveAsOutlinedIcon from '@mui/icons-material/SaveAsOutlined';
-import PendingActionsOutlinedIcon from '@mui/icons-material/PendingActionsOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-
-const links = [
-  {
-    id: 1,
-    name: 'Dashboard',
-    link: '/',
-    icon: <HomeOutlinedIcon />,
-    children: [
-      {
-        id: 1,
-        name: 'Dashboard',
-        link: '/',
-        icon: <HomeOutlinedIcon />,
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: 'Admin',
-    link: '/admin',
-    children: [
-      {
-        id: 1,
-        name: 'Dashboard',
-        link: '/admin',
-        icon: <AdminPanelSettingsOutlinedIcon />,
-      },
-    ],
-    icon: <AdminPanelSettingsOutlinedIcon />,
-  },
-  {
-    id: 3,
-    name: 'Projects',
-    link: '/projects',
-    children: [
-      {
-        id: 1,
-        name: 'Projects',
-        link: '/projects',
-        icon: <ListAltOutlinedIcon />,
-      },
-      {
-        id: 2,
-        name: 'New',
-        link: '/projects/new',
-        icon: <AddBoxOutlinedIcon />,
-      },
-    ],
-    icon: <ListAltOutlinedIcon />,
-  },
-  {
-    id: 4,
-    name: 'Blog',
-    link: '/blog',
-    children: [
-      {
-        id: 1,
-        name: 'Blog',
-        link: '/blog',
-        icon: <BookOutlinedIcon />,
-      },
-      {
-        id: 2,
-        name: 'New',
-        link: '/blog/new',
-        icon: <AddBoxOutlinedIcon />,
-      },
-      {
-        id: 3,
-        name: 'Drafts',
-        link: '/blog/drafts',
-        icon: <SaveAsOutlinedIcon />,
-      },
-      {
-        id: 4,
-        name: 'Scheduled',
-        link: '/blog/scheduled',
-        icon: <PendingActionsOutlinedIcon />,
-      },
-    ],
-    icon: <BookOutlinedIcon />,
-  },
-  {
-    id: 5,
-    name: 'Users',
-    link: '/users',
-    children: [
-      {
-        id: 1,
-        name: 'Users',
-        link: '/users',
-        icon: <PeopleAltOutlinedIcon />,
-      },
-      {
-        id: 2,
-        name: 'New',
-        link: '/users/new',
-        icon: <PersonAddAltOutlinedIcon />,
-      },
-    ],
-    icon: <PeopleAltOutlinedIcon />,
-  },
-];
+import { links, secondaryLinks } from './data';
+import { useSelector } from 'react-redux';
 
 const Sidebar = () => {
   const [activeLink, setActiveLink] = React.useState(links[0]);
   const [activeChildLink, setActiveChildLink] = React.useState(
     links[0].children[0],
   );
-  const secondaryLinks = [
-    {
-      id: 1,
-      name: 'Settings',
-      link: '/settings',
-      icon: <SettingsOutlinedIcon />,
-      children: [
-        {
-          id: 1,
-          name: 'Settings',
-          link: '/settings',
-          icon: <SettingsOutlinedIcon />,
-        },
-      ],
-    },
-  ];
+  const [sidebarOnHover, setSidebarOnHover] = React.useState(false);
+  const [hoveringSidebar, setHoveringSidebar] = React.useState(false);
+
+  const sidebarRef: {
+    current: HTMLDivElement | null;
+  } = React.useRef(null);
+
+  useEffect(() => {
+    // listen for hover event
+    if (sidebarRef.current) {
+      sidebarRef.current.addEventListener('mouseenter', () => {
+        setTimeout(() => {
+          if (isStillHovering()) {
+            setSidebarOnHover(true);
+          }
+        }, 500);
+      });
+    }
+    if (sidebarRef.current) {
+      sidebarRef.current.addEventListener('mouseleave', () => {
+        setTimeout(() => {
+          setSidebarOnHover(false);
+        }, 100);
+      });
+    }
+  }, []);
+
+  const isStillHovering = () => {
+    // check the ref to see if the user is still hovering
+    if (sidebarRef.current) {
+      const isHovering = sidebarRef.current.matches(':hover');
+      if (isHovering) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  };
+
+  const { isSidebarOpen } = useSelector((state: any) => state.entites.ui);
 
   return (
-    <aside className='fixed inset-y-0 left-0 flex-wrap items-center justify-between w-full p-0  transition-all duration-200  border-0 dark:bg-gray-950 ease-soft-in-out z-990  xl:translate-x-0 xl:bg-transparent -translate-x-full max-w-72 flex flex-row'>
+    <aside
+      className={`fixed inset-y-0 left-0 flex-wrap items-center justify-between w-full p-0  transition-all duration-200  border-0 dark:bg-gray-950 ease-soft-in-out z-990  xl:translate-x-0 xl:bg-transparent -translate-x-full flex flex-row ${
+        isSidebarOpen
+          ? 'max-w-72'
+          : `${sidebarOnHover ? 'max-w-72' : 'max-w-16'}`
+      }`}
+      ref={sidebarRef}
+      onMouseEnter={() => setHoveringSidebar(true)}
+      onMouseLeave={() => setHoveringSidebar(false)}
+    >
       <div className='rounded-r-0 w-16 h-full bg-primaryColor p-2  flex flex-col overflow-y-auto'>
         <div className='flex-1 px-1'>
           <div className='flex justify-center align-middle w-full py-2 mb-3'>
@@ -221,7 +142,9 @@ const Sidebar = () => {
           </div>
         </div>
       </div>
-      <div className='flex flex-1 bg-primaryColor-600  h-full  w-full'>
+      <div
+        className={`flex flex-1 bg-primaryColor-600  h-full  w-full transition-all duration-200 ease-soft-in-out `}
+      >
         <div className='p-3 flex flex-col  w-full'>
           <div className='flex-1  w-full'>
             <div className='flex flex-row items-center justify-between mb-4 h-10 text-slate-200 w-full'>
