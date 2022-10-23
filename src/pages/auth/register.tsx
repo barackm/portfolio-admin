@@ -3,7 +3,6 @@ import PersonIcon from '@mui/icons-material/Person';
 import * as Yup from 'yup';
 import LockIcon from '@mui/icons-material/Lock';
 import Button from '../../components/common/Button';
-import Switch from '../../components/common/Input/Switch';
 import TextInput from '../../components/common/Input/TextInput';
 import Form from '../../components/form/Form';
 import { useRouter } from 'next/router';

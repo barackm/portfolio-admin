@@ -6,7 +6,7 @@ import SeparatorLine from '../common/SeparatorLine';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { links, secondaryLinks } from './data';
 import { useSelector } from 'react-redux';
-import { useAppDispatch } from '../../hooks/store';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { logoutUser } from '../../services/authService';
 import { useRouter } from 'next/router';
 
@@ -18,6 +18,7 @@ const Sidebar = () => {
   const [sidebarOnHover, setSidebarOnHover] = React.useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const { currentUser }: any = useAppSelector((state) => state.auth);
 
   const sidebarRef: {
     current: HTMLDivElement | null;
@@ -43,7 +44,6 @@ const Sidebar = () => {
   }, []);
 
   const isStillHovering = () => {
-    // check the ref to see if the user is still hovering
     if (sidebarRef.current) {
       const isHovering = sidebarRef.current.matches(':hover');
       if (isHovering) {
@@ -59,7 +59,7 @@ const Sidebar = () => {
   };
 
   const { isSidebarOpen } = useSelector((state: any) => state.entites.ui);
-
+  const { firstName, lastName, email } = currentUser;
   return (
     <aside
       className={`fixed inset-y-0 left-0 flex-wrap items-center justify-between w-full p-0  transition-all duration-300  border-0 dark:bg-gray-950 ease-soft-in-out z-990  xl:translate-x-0 xl:bg-transparent -translate-x-full flex flex-row ${
@@ -148,14 +148,14 @@ const Sidebar = () => {
         </div>
       </div>
       <div
-        className={`flex flex-1 bg-primaryColor-600  h-full  w-full transition-all duration-300 ease-soft-in-out  `}
+        className={`flex  w-56 flex-1 bg-primaryColor-600  h-full transition-all duration-300 ease-soft-in-out  overflow-y-auto`}
       >
         <div
           className={`p-3 flex flex-col  w-full transition-all duration-300 delay-300 ${
             !isSidebarOpen && !sidebarOnHover ? 'opacity-0' : 'opacity-100'
           }`}
         >
-          <div className='flex-1  w-full'>
+          <div className='flex-1 w-full'>
             <div className='flex flex-row items-center justify-between mb-4 h-10 text-slate-200 w-full'>
               <span className='text-md'>{activeLink.name}</span>
             </div>
@@ -188,15 +188,17 @@ const Sidebar = () => {
             </ul>
           </div>
           <SeparatorLine />
-          <div className='flex align-middle justify-center pb-1'>
-            <div className='flex flex-1 text-slate-200 flex-col text-sm'>
-              <p className='mb-0'>Barack Mukelenga</p>
-              <span className=' text-slate-400 mt-0'>admin</span>
+          <div className='flex align-middle justify-center pb-1 w-full'>
+            <div className='flex w-[80%] text-slate-200 flex-col text-sm'>
+              <p className='mb-0 capitalize w-full overflow-hidden whitespace-nowrap text-ellipsis'>{`${firstName} ${lastName}`}</p>
+              <span className=' text-slate-400 mt-0 w-full overflow-hidden whitespace-nowrap text-ellipsis text-sm'>
+                {email}
+              </span>
             </div>
-            <div className='flex justify-center align-middle text-slate-200 '>
+            <div className='flex w-[20%] justify-center items-center text-slate-200 '>
               <button
                 onClick={handleLogoutUser}
-                className='flex justify-center align-middle text-slate-200 tex-center p-2 pt-3'
+                className='flex justify-center items-center text-slate-200 tex-center p-2'
               >
                 <LogoutOutlinedIcon />
               </button>
