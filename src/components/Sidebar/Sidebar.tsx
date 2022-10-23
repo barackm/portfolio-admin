@@ -14,6 +14,7 @@ import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import SaveAsOutlinedIcon from '@mui/icons-material/SaveAsOutlined';
 import PendingActionsOutlinedIcon from '@mui/icons-material/PendingActionsOutlined';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 
 const links = [
   {
@@ -141,8 +142,8 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className='fixed shadow-soft-3xl inset-y-0 left-0 top-2 bottom-2 ml-2 flex-wrap items-center justify-between w-full p-0  transition-all duration-200  border-0 dark:bg-gray-950 ease-soft-in-out z-990  xl:translate-x-0 xl:bg-transparent -translate-x-full max-w-72 flex flex-row'>
-      <div className='rounded-xl rounded-r-0 w-16 h-full bg-primaryColor p-2  flex flex-col overflow-y-auto'>
+    <aside className='fixed inset-y-0 left-0 flex-wrap items-center justify-between w-full p-0  transition-all duration-200  border-0 dark:bg-gray-950 ease-soft-in-out z-990  xl:translate-x-0 xl:bg-transparent -translate-x-full max-w-72 flex flex-row'>
+      <div className='rounded-r-0 w-16 h-full bg-primaryColor p-2  flex flex-col overflow-y-auto'>
         <div className='flex-1 px-1'>
           <div className='flex justify-center align-middle w-full py-2 mb-3'>
             <Link href='/'>
@@ -254,7 +255,18 @@ const Sidebar = () => {
               ))}
             </ul>
           </div>
-          <div>user details</div>
+          <SeparatorLine />
+          <div className='flex align-middle justify-center pb-1'>
+            <div className='flex flex-1 text-slate-200 flex-col text-sm'>
+              <p className='mb-0'>Barack Mukelenga</p>
+              <span className=' text-slate-400 mt-0'>admin</span>
+            </div>
+            <div className='flex justify-center align-middle text-slate-200 '>
+              <button className='flex justify-center align-middle text-slate-200 tex-center p-2 pt-3'>
+                <LogoutOutlinedIcon />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </aside>
