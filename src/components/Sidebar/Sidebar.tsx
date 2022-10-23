@@ -151,7 +151,7 @@ const Sidebar = () => {
         className={`flex  w-56 flex-1 bg-primaryColor-600  h-full transition-all duration-300 ease-soft-in-out  overflow-y-auto`}
       >
         <div
-          className={`p-3 flex flex-col  w-full transition-all duration-300 delay-300 ${
+          className={`p-3 flex flex-col  w-full transition-all ease-soft-in-out duration-300 delay-300 ${
             !isSidebarOpen && !sidebarOnHover ? 'opacity-0' : 'opacity-100'
           }`}
         >

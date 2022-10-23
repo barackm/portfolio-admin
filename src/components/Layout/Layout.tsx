@@ -18,10 +18,10 @@ const Layout = (props: LayoutProps) => {
       <main
         className={`relative h-full max-h-screen transition-all duration-300 ease-soft-in-out rounded-xl ${
           isSidebarOpen ? 'xl:ml-72' : 'xl:ml-16'
-        } bg-[rgb(248 249 250)] px-7 py-6 ${!currentUser && 'w-full xl:ml-0'}`}
+        } bg-[rgb(248 249 250)] px-6 py-6 ${!currentUser && 'w-full xl:ml-0'}`}
       >
         {currentUser && <Header />}
-        <div>{children}</div>
+        {children}
       </main>
     </div>
   );

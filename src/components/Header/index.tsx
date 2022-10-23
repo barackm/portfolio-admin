@@ -1,17 +1,42 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleSidebar } from '../../store/slices/ui';
+import { useAppDispatch } from '../../hooks/store';
 
 const Header = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+  const headerRef: any = useRef(null);
   const { isSidebarOpen } = useSelector((state: any) => state.entites.ui);
+  const [scrolling, setScrolling] = React.useState(false);
+  //   return (check if the user started to scroll down, if so, then add the class 'top-2' to the header, otherwise remove it)
+  useEffect(() => {
+    const handleScroll = () => {
+      if (headerRef.current) {
+        if (window.scrollY > 0) {
+          setScrolling(true);
+        } else {
+          setScrolling(false);
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   return (
-    <div
-      className={`fixed  right-0 z-50 flex items-center justify-between h-16 px-2 transition-all duration-300 ease-soft-in-out ${
+    <nav
+      className={`fixed   z-50 flex items-center justify-between h-16 px-2 transition-all duration-300 ease-soft-in-out ${
         isSidebarOpen ? 'xl:ml-72' : 'xl:ml-16'
-      } left-0 top-0`}
+      } left-6 right-6  rounded-xl z-110 ${
+        scrolling
+          ? 'top-2 backdrop-saturate-200 backdrop-blur-2xl bg-white/80 dark:bg-gray-950/80 shadow-blur dark:shadow-dark-blur'
+          : 'top-2'
+      }`}
+      ref={headerRef}
     >
       <div className='flex justify-center px-5'>
         <div>
@@ -20,7 +45,7 @@ const Header = () => {
           </button>
         </div>
       </div>
-    </div>
+    </nav>
   );
 };
 
