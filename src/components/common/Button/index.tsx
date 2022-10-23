@@ -1,5 +1,6 @@
 import { useFormikContext } from 'formik';
 import React from 'react';
+import LoadingIndicator from '../LoadingIndicator';
 
 interface ButtonProps {
   children: React.ReactNode;
@@ -19,6 +20,7 @@ interface ButtonProps {
   className?: string;
   type?: 'button' | 'submit' | 'reset';
   usesFormik?: boolean;
+  loading?: boolean;
 }
 
 const Button = (props: ButtonProps) => {
@@ -31,6 +33,7 @@ const Button = (props: ButtonProps) => {
     widthAuto,
     type,
     usesFormik,
+    loading,
   } = props;
   const { handleSubmit } = useFormikContext() || {};
   const getBtnClasses = () => {
@@ -48,8 +51,10 @@ const Button = (props: ButtonProps) => {
     <button
       className={`${getBtnClasses()} ${widthAuto ? 'w-auto' : ''} ${
         className ? className : ''
-      }`}
+      } relative`}
       onClick={() => {
+        if (disabled || loading) return;
+
         if (usesFormik) {
           if (disabled) return;
           handleSubmit();
@@ -60,7 +65,14 @@ const Button = (props: ButtonProps) => {
       type={type}
       title='button'
     >
-      {children}
+      {loading && (
+        <div className='absolute text-center flex w-full left-0 right-0 top-0 bottom-0  justify-center items-center z-20'>
+          <LoadingIndicator width={25} strokeWidth={5} />
+        </div>
+      )}
+      <span className={`${loading ? 'opacity-0' : 'opacity-100'}`}>
+        {children}
+      </span>
     </button>
   );
 };

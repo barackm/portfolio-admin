@@ -9,8 +9,12 @@ import Form from '../../components/form/Form';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import { useSelector } from 'react-redux';
+import { loginUser } from '../../services/authService';
+import { useAppDispatch } from '../../hooks/store';
 
 const Login = () => {
+  const { loading } = useSelector((state: any) => state.auth);
   const router = useRouter();
   const validationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid Email Address').required('Required'),
@@ -19,11 +23,17 @@ const Login = () => {
       .required('Required'),
   });
 
+  const dispatch = useAppDispatch();
+
+  const handleSubmit = (values: any) => {
+    dispatch(loginUser(values, router));
+  };
+
   return (
     <div className='flex justify-center align-middle w-screen h-screen  '>
       <div className='flex justify-center align-middle w-[100%] sm:w-[90%] md:w-[60%] h-full lg:w-[500px] xl:w-w-[400px] 2xl:w-[500px] overflow-y-auto'>
         <div className='flex flex-col justify-center align-middle w-[90%] max-h-[90%] max-w-[90%] '>
-          <div className='flex justify-center align-middle w-full bg-white rounded-xl shadow-soft-3xl flex-col  py-16 px-6'>
+          <div className='flex justify-center align-middle w-full bg-white rounded-xl shadow-soft-3xl flex-col  py-16 px-6 my-20'>
             <div className='flex justify-center align-middle w-full h-20 bg-primary rounded-t-xl mb-5'>
               <div className='flex justify-center flex-col align-middle w-full text-center'>
                 <div className='flex justify-center align-middle w-full'>
@@ -39,9 +49,7 @@ const Login = () => {
             </div>
             <div className='flex flex-col justify-center align-middle w-full'>
               <Form
-                onSubmit={(values) => {
-                  console.log(values);
-                }}
+                onSubmit={handleSubmit}
                 initialValues={{
                   email: '',
                   password: '',
@@ -78,6 +86,7 @@ const Login = () => {
                       className='bg-primaryColor'
                       type='submit'
                       usesFormik
+                      loading={loading}
                     >
                       Login
                     </Button>

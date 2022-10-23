@@ -6,6 +6,9 @@ import SeparatorLine from '../common/SeparatorLine';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { links, secondaryLinks } from './data';
 import { useSelector } from 'react-redux';
+import { useAppDispatch } from '../../hooks/store';
+import { logoutUser } from '../../services/authService';
+import { useRouter } from 'next/router';
 
 const Sidebar = () => {
   const [activeLink, setActiveLink] = React.useState(links[0]);
@@ -13,6 +16,8 @@ const Sidebar = () => {
     links[0].children[0],
   );
   const [sidebarOnHover, setSidebarOnHover] = React.useState(false);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const sidebarRef: {
     current: HTMLDivElement | null;
@@ -47,6 +52,10 @@ const Sidebar = () => {
         return false;
       }
     }
+  };
+
+  const handleLogoutUser = () => {
+    dispatch(logoutUser(router));
   };
 
   const { isSidebarOpen } = useSelector((state: any) => state.entites.ui);
@@ -139,11 +148,13 @@ const Sidebar = () => {
         </div>
       </div>
       <div
-        className={`flex flex-1 bg-primaryColor-600  h-full  w-full transition-all duration-300 delay-200 ease-soft-in-out ${
-          !isSidebarOpen && !sidebarOnHover ? 'opacity-0' : 'opacity-100'
-        } `}
+        className={`flex flex-1 bg-primaryColor-600  h-full  w-full transition-all duration-300 ease-soft-in-out  `}
       >
-        <div className='p-3 flex flex-col  w-full'>
+        <div
+          className={`p-3 flex flex-col  w-full transition-all duration-300 delay-300 ${
+            !isSidebarOpen && !sidebarOnHover ? 'opacity-0' : 'opacity-100'
+          }`}
+        >
           <div className='flex-1  w-full'>
             <div className='flex flex-row items-center justify-between mb-4 h-10 text-slate-200 w-full'>
               <span className='text-md'>{activeLink.name}</span>
@@ -183,7 +194,10 @@ const Sidebar = () => {
               <span className=' text-slate-400 mt-0'>admin</span>
             </div>
             <div className='flex justify-center align-middle text-slate-200 '>
-              <button className='flex justify-center align-middle text-slate-200 tex-center p-2 pt-3'>
+              <button
+                onClick={handleLogoutUser}
+                className='flex justify-center align-middle text-slate-200 tex-center p-2 pt-3'
+              >
                 <LogoutOutlinedIcon />
               </button>
             </div>

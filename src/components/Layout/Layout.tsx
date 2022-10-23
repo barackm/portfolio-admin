@@ -10,16 +10,17 @@ interface LayoutProps {
 const Layout = (props: LayoutProps) => {
   const { children } = props;
   const { isSidebarOpen } = useSelector((state: any) => state.entites.ui);
+  const { currentUser } = useSelector((state: any) => state.auth);
 
   return (
     <div>
-      <Sidebar />
+      {currentUser && <Sidebar />}
       <main
         className={`relative h-full max-h-screen transition-all duration-300 ease-soft-in-out rounded-xl ${
           isSidebarOpen ? 'xl:ml-72' : 'xl:ml-16'
-        } bg-[rgb(248 249 250)] px-7 py-6`}
+        } bg-[rgb(248 249 250)] px-7 py-6 ${!currentUser && 'w-full xl:ml-0'}`}
       >
-        <Header />
+        {currentUser && <Header />}
         <div>{children}</div>
       </main>
     </div>

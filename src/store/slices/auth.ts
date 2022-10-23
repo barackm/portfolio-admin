@@ -8,9 +8,18 @@ const slice = createSlice({
     error: null,
   },
   reducers: {
-    authRequestStarted: (state: any) => {},
-    authRequestSuccess: (state: any, action: any) => {},
-    authRequestFailed: (state: any, action: any) => {},
+    authRequestStarted: (state: any) => {
+      state.loading = true;
+      state.error = null;
+    },
+    authRequestSuccess: (state: any, action: any) => {
+      state.loading = false;
+      state.currentUser = action.payload;
+    },
+    authRequestFailed: (state: any, action: any) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
 
