@@ -9,7 +9,7 @@ const Header = () => {
 
   return (
     <div
-      className={`fixed  right-0 z-50 flex items-center justify-between h-16 px-2 transition-all duration-200 ease-soft-in-out ${
+      className={`fixed  right-0 z-50 flex items-center justify-between h-16 px-2 transition-all duration-300 ease-soft-in-out ${
         isSidebarOpen ? 'xl:ml-72' : 'xl:ml-16'
       } left-0 top-0`}
     >

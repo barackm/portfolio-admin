@@ -13,14 +13,12 @@ const Sidebar = () => {
     links[0].children[0],
   );
   const [sidebarOnHover, setSidebarOnHover] = React.useState(false);
-  const [hoveringSidebar, setHoveringSidebar] = React.useState(false);
 
   const sidebarRef: {
     current: HTMLDivElement | null;
   } = React.useRef(null);
 
   useEffect(() => {
-    // listen for hover event
     if (sidebarRef.current) {
       sidebarRef.current.addEventListener('mouseenter', () => {
         setTimeout(() => {
@@ -34,7 +32,7 @@ const Sidebar = () => {
       sidebarRef.current.addEventListener('mouseleave', () => {
         setTimeout(() => {
           setSidebarOnHover(false);
-        }, 100);
+        }, 500);
       });
     }
   }, []);
@@ -55,14 +53,12 @@ const Sidebar = () => {
 
   return (
     <aside
-      className={`fixed inset-y-0 left-0 flex-wrap items-center justify-between w-full p-0  transition-all duration-200  border-0 dark:bg-gray-950 ease-soft-in-out z-990  xl:translate-x-0 xl:bg-transparent -translate-x-full flex flex-row ${
+      className={`fixed inset-y-0 left-0 flex-wrap items-center justify-between w-full p-0  transition-all duration-300  border-0 dark:bg-gray-950 ease-soft-in-out z-990  xl:translate-x-0 xl:bg-transparent -translate-x-full flex flex-row ${
         isSidebarOpen
           ? 'max-w-72'
           : `${sidebarOnHover ? 'max-w-72' : 'max-w-16'}`
       }`}
       ref={sidebarRef}
-      onMouseEnter={() => setHoveringSidebar(true)}
-      onMouseLeave={() => setHoveringSidebar(false)}
     >
       <div className='rounded-r-0 w-16 h-full bg-primaryColor p-2  flex flex-col overflow-y-auto'>
         <div className='flex-1 px-1'>
@@ -143,7 +139,9 @@ const Sidebar = () => {
         </div>
       </div>
       <div
-        className={`flex flex-1 bg-primaryColor-600  h-full  w-full transition-all duration-200 ease-soft-in-out `}
+        className={`flex flex-1 bg-primaryColor-600  h-full  w-full transition-all duration-300 delay-200 ease-soft-in-out ${
+          !isSidebarOpen && !sidebarOnHover ? 'opacity-0' : 'opacity-100'
+        } `}
       >
         <div className='p-3 flex flex-col  w-full'>
           <div className='flex-1  w-full'>
