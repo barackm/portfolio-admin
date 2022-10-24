@@ -5,6 +5,7 @@ import styles from '../styles/Home.module.css';
 import Page from '../components/common/Page';
 import Table from '../components/Table/Table';
 import { useState } from 'react';
+import DefaultTableHeaderInfo from '../components/common/DefaultTableHeaderInfo';
 
 const Home: NextPage = () => {
   const [sortColumn, setSortColumn] = useState({
@@ -20,6 +21,7 @@ const Home: NextPage = () => {
     <Page>
       <div className={``}>
         <Table
+          topHeaderContent={<DefaultTableHeaderInfo />}
           columns={[
             {
               _id: 1,
@@ -67,8 +69,7 @@ const Home: NextPage = () => {
           data={[
             {
               _id: 1,
-              firstName:
-                'John Get 3% Daily Cash back with Apple Card. And pay for your new Mac over 12 months, interest‑free when you choose to check out with Apple Card Monthly Installments.',
+              firstName: 'John',
               lastName: 'Doe',
               email: 'johndoe@gmail.com',
               role: 'Admin',

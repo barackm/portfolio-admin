@@ -39,6 +39,7 @@ const TextInput = (props: TextInputProps) => {
     useFormikContext() || {};
 
   const inpurError =
+    touched &&
     touched[name as keyof typeof errors] &&
     errors &&
     errors[name as keyof typeof errors];
@@ -48,7 +49,7 @@ const TextInput = (props: TextInputProps) => {
       error || inpurError
         ? 'focus:shadow-soft-primary-error-outline'
         : 'focus:shadow-soft-primary-outline'
-    } ease-soft w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-primaryColor-300 focus:outline-none focus:transition-shadow    ${
+    } ease-soft w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-1.5 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-primaryColor-300 focus:outline-none focus:transition-shadow    ${
       endIcon ? 'pr-9' : 'pr-3'
     } ${widthAuto ? 'w-auto' : ''}`;
 
@@ -97,7 +98,7 @@ const TextInput = (props: TextInputProps) => {
           disabled={disabled}
           placeholder={placeholder}
           onBlur={() => {
-            if (usesFormik) {
+            if (usesFormik && setFieldTouched) {
               setFieldTouched(name as keyof typeof values);
             }
           }}

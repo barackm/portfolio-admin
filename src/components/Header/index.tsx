@@ -33,7 +33,7 @@ const Header = () => {
         isSidebarOpen ? 'xl:ml-72' : 'xl:ml-16'
       } left-6 right-6  rounded-xl z-110 ${
         scrolling
-          ? 'top-2 backdrop-saturate-200 backdrop-blur-2xl bg-white/80 dark:bg-gray-950/80 shadow-blur dark:shadow-dark-blur'
+          ? 'top-2 backdrop-saturate-200 backdrop-blur-[5px] bg-white/90 dark:bg-gray-950/80 shadow-blur dark:shadow-dark-blur'
           : 'top-2'
       }`}
       ref={headerRef}

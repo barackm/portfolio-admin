@@ -37,9 +37,9 @@ const Button = (props: ButtonProps) => {
   } = props;
   const { handleSubmit } = useFormikContext() || {};
   const getBtnClasses = () => {
-    const defaultBtnClasses = `inline-block px-6 py-3  font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-primaryColor leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs`;
+    const defaultBtnClasses = `inline-block px-6 py-2  font-bold text-center text-white uppercase border border-primaryColor align-middle transition-all rounded-lg cursor-pointer bg-primaryColor leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs`;
     const outlinedBtnClasses = `uppercase align-middle transition-all bg-transparent border rounded-lg cursor-pointer border-primaryColor leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs text-primaryColor`;
-    const textBtnClasses = `inline-block px-6 py-3  font-bold text-center uppercase align-middle transition-all rounded-lg cursor-pointer bg-primaryColor leading-pro text-xs ease-soft-in tracking-tight-soft bg-150 bg-x-25 hover:bg-primaryColor/25 hover:scale-102 active:bg-primaryColor/45 text-primaryColor`;
+    const textBtnClasses = `inline-block px-6 py-2.5  font-bold text-center uppercase align-middle transition-all rounded-lg cursor-pointer bg-primaryColor leading-pro text-xs ease-soft-in tracking-tight-soft bg-150 bg-x-25 hover:bg-primaryColor/25 hover:scale-102 active:bg-primaryColor/45 text-primaryColor`;
     const btnClasses = `${defaultBtnClasses} ${
       variant === 'outlined' ? outlinedBtnClasses : ''
     } ${variant === 'text' ? textBtnClasses : ''}`;
