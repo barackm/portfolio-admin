@@ -62,7 +62,7 @@ const Sidebar = () => {
   const { firstName, lastName, email } = currentUser;
   return (
     <aside
-      className={`fixed inset-y-0 left-0 flex-wrap items-center justify-between w-full p-0  transition-all duration-300  border-0 dark:bg-gray-950 ease-soft-in-out z-990  xl:translate-x-0 xl:bg-transparent -translate-x-full flex flex-row ${
+      className={`fixed inset-y-0 left-0 flex-wrap items-center justify-between w-full p-0  transition-all duration-300  bg-gray-950 ease-soft-in-out z-990  xl:translate-x-0 xl:bg-transparent -translate-x-full flex flex-row ${
         isSidebarOpen
           ? 'max-w-72'
           : `${sidebarOnHover ? 'max-w-72' : 'max-w-16'}`

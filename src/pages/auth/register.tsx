@@ -109,7 +109,7 @@ const Register = () => {
                   </div>
                   <div className='flex flex-col justify-center align-middle w-full mb-2'>
                     <Button
-                      className='bg-secondaryColor'
+                      color='secondary'
                       onClick={() => router.push('/auth/login')}
                     >
                       Login
