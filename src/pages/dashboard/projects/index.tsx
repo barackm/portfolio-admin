@@ -4,7 +4,7 @@ import Page from '../../../components/common/Page';
 const Projects = () => {
   return (
     <Page>
-      <h1>Projects</h1>
+      <h3>Projects</h3>
     </Page>
   );
 };

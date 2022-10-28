@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { logoutUser } from '../../services/authService';
 import { useRouter } from 'next/router';
+import { setSidebar } from '../../store/slices/ui';
 
 const Sidebar = () => {
   const [activeLink, setActiveLink] = React.useState(links[0]);
@@ -91,6 +92,9 @@ const Sidebar = () => {
                     onClick={() => {
                       setActiveLink(link);
                       setActiveChildLink(link.children[0] || null);
+                      if (!isSidebarOpen) {
+                        dispatch(setSidebar(true));
+                      }
                     }}
                     className={`flex flex-row items-center cursor-pointer transition-all duration-200 ease-soft-in-out justify-center w-full h-full my-1 py-3 px-2 ${
                       activeLink.name === link.name
