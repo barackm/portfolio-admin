@@ -86,24 +86,25 @@ const Sidebar = () => {
           <ul className='flex flex-col '>
             {links.map((link) => (
               <li key={link.id}>
-                <button
-                  onClick={() => setActiveLink(link)}
-                  className={`flex flex-row items-center transition-all duration-200 ease-soft-in-out justify-center w-full h-full my-1 py-3 px-2 ${
-                    activeLink.name === link.name
-                      ? 'bg-[rgba(255,255,255,0.2)]'
-                      : ''
-                  } rounded-2 hover:bg-[rgba(255,255,255,0.2)]`}
-                >
-                  <div
-                    className={`flex justify-center align-middle w-full h-full  ${
+                <Link href={link.link}>
+                  <a
+                    onClick={() => {
+                      setActiveLink(link);
+                      setActiveChildLink(link.children[0] || null);
+                    }}
+                    className={`flex flex-row items-center cursor-pointer transition-all duration-200 ease-soft-in-out justify-center w-full h-full my-1 py-3 px-2 ${
+                      activeLink.name === link.name
+                        ? 'bg-[rgba(255,255,255,0.2)] text-white'
+                        : 'text-slate-400'
+                    } rounded-2 flex justify-center align-middle w-full h-full  ${
                       activeLink.name === link.name
                         ? 'text-white'
                         : 'text-slate-400'
                     }`}
                   >
                     {link.icon}
-                  </div>
-                </button>
+                  </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -112,18 +113,25 @@ const Sidebar = () => {
           <ul>
             {secondaryLinks.map((link: any) => (
               <li key={link.id}>
-                <button
-                  onClick={() => setActiveLink(link)}
-                  className={`flex flex-row items-center transition-all duration-200 ease-soft-in-out justify-center w-full h-full my-1 py-3 px-2 ${
-                    activeLink.name === link.name
-                      ? 'bg-[rgba(255,255,255,0.2)] text-white'
-                      : 'text-slate-400'
-                  } rounded-2 `}
-                >
-                  <div className='flex justify-center align-middle w-full h-full'>
+                <Link href={link.link}>
+                  <a
+                    onClick={() => {
+                      setActiveLink(link);
+                      setActiveChildLink(link.children[0] || null);
+                    }}
+                    className={`flex flex-row items-center cursor-pointer transition-all duration-200 ease-soft-in-out justify-center w-full h-full my-1 py-3 px-2 ${
+                      activeLink.name === link.name
+                        ? 'bg-[rgba(255,255,255,0.2)] text-white'
+                        : 'text-slate-400'
+                    } rounded-2 flex justify-center align-middle w-full h-full  ${
+                      activeLink.name === link.name
+                        ? 'text-white'
+                        : 'text-slate-400'
+                    }`}
+                  >
                     {link.icon}
-                  </div>
-                </button>
+                  </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -162,7 +170,7 @@ const Sidebar = () => {
             <ul>
               {activeLink.children.map((link) => (
                 <li key={link.id}>
-                  <Link href={link.link}>
+                  <Link href={link.link} as={link.paramName ? link.link : ''}>
                     <a
                       className={`flex flex-row w-full align-middle h-full transition-all duration-200 ease-soft-in-out ${
                         activeChildLink.id === link.id

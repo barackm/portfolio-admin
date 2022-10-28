@@ -11,6 +11,7 @@ import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import SaveAsOutlinedIcon from '@mui/icons-material/SaveAsOutlined';
 import PendingActionsOutlinedIcon from '@mui/icons-material/PendingActionsOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import routes from '../../utlis/routes';
 
 export const links = [
   {
@@ -44,18 +45,20 @@ export const links = [
   {
     id: 3,
     name: 'Projects',
-    link: '/projects',
+    link: routes.projects,
     children: [
       {
         id: 1,
         name: 'Projects',
-        link: '/projects',
+        link: routes.projects,
+
         icon: <ListAltOutlinedIcon />,
       },
       {
         id: 2,
         name: 'New',
-        link: '/projects/new',
+        link: `${routes.projects}/new`,
+        paramName: 'id',
         icon: <AddBoxOutlinedIcon />,
       },
     ],
