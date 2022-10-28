@@ -10,7 +10,7 @@ interface LayoutProps {
 const Layout = (props: LayoutProps) => {
   const { children } = props;
   const { isSidebarOpen } = useSelector((state: any) => state.entites.ui);
-  const { currentUser } = useSelector((state: any) => state.auth);
+  const { currentUser, loading } = useSelector((state: any) => state.auth);
 
   return (
     <>
@@ -21,7 +21,7 @@ const Layout = (props: LayoutProps) => {
         } px-6 py-6 ${!currentUser && 'w-full xl:ml-0'}`}
       >
         {currentUser && <Header />}
-        {children}
+        {!loading && children}
       </main>
     </>
   );
