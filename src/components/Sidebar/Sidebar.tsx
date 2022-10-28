@@ -133,13 +133,13 @@ const Sidebar = () => {
           <div className='flex flex-row items-center justify-center mb-4'>
             <div className='flex flex-row items-center justify-center w-full h-full text-white overflow-hidden'>
               <Link href='/profile'>
-                <a className='flex flex-row items-center justify-center'>
+                <a className='flex rounded-full overflow-hidden flex-row items-center justify-center  border-2 border-white'>
                   <Image
                     src='/images/avatar.jpg'
-                    width={40}
-                    height={40}
+                    width={35}
+                    height={35}
                     alt='Logo'
-                    className='rounded-full border-4 border-white'
+                    className=''
                   />
                 </a>
               </Link>
