@@ -1,5 +1,6 @@
 import { toast } from 'react-toastify';
 import { loginUserAsync } from '../api/auth';
+import { apiCallBegan } from '../store/actions/api';
 import {
   authRequestFailed,
   authRequestStarted,
@@ -11,26 +12,42 @@ import routes from '../utlis/routes';
 import storage from './storageService';
 
 export const loginUser = (data: any, router: any) => async (dispatch: any) => {
-  dispatch(authRequestStarted());
-
-  try {
-    const { data: userData } = await loginUserAsync({
-      email: data.email,
-      password: data.password,
-    });
-    const { user, token } = userData;
-    dispatch(authRequestSuccess(user));
-    storage.setAuthToken(token);
-    router.push(routes.home);
-  } catch (error) {
-    const errorMessage = getErrorMessage(error);
-    displayError(error);
-    dispatch(authRequestFailed(errorMessage));
-  }
+  dispatch(
+    apiCallBegan({
+      url: '/auth/login',
+      method: 'POST',
+      data,
+      onStart: authRequestStarted.type,
+      onSuccess: authRequestSuccess.type,
+      onError: authRequestFailed.type,
+      showErrorToast: true,
+      successAction: (payload: { user: any; token: string }) => {
+        const { token } = payload;
+        storage.setAuthToken(token);
+        router.push(routes.home);
+      },
+    }),
+  );
 };
 
 export const logoutUser = (router: any) => async (dispatch: any) => {
   storage.removeAuthToken();
   dispatch(authRequestSuccess(null));
   router.push(routes.login);
+};
+
+export const getCurrentUser = () => async (dispatch: any) => {
+  dispatch(
+    apiCallBegan({
+      url: '/auth/me',
+      onStart: authRequestStarted.type,
+      onSuccess: authRequestSuccess.type,
+      onError: authRequestFailed.type,
+      showErrorToast: true,
+      successAction: (payload: { user: any; token: string }) => {
+        const { token } = payload;
+        storage.setAuthToken(token);
+      },
+    }),
+  );
 };

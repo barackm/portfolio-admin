@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PersonIcon from '@mui/icons-material/Person';
 import * as Yup from 'yup';
 import LockIcon from '@mui/icons-material/Lock';
@@ -9,13 +9,20 @@ import Form from '../../components/form/Form';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { useSelector } from 'react-redux';
 import { loginUser } from '../../services/authService';
-import { useAppDispatch } from '../../hooks/store';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import routes from '../../utlis/routes';
 
 const Login = () => {
-  const { loading } = useSelector((state: any) => state.auth);
+  const { loading, currentUser } = useAppSelector((state: any) => state.auth);
   const router = useRouter();
+
+  useEffect(() => {
+    if (currentUser) {
+      router.push(routes.home);
+    }
+  }, [currentUser, router]);
+
   const validationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid Email Address').required('Required'),
     password: Yup.string()

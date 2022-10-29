@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PersonIcon from '@mui/icons-material/Person';
 import * as Yup from 'yup';
 import LockIcon from '@mui/icons-material/Lock';
@@ -7,9 +7,19 @@ import TextInput from '../../components/common/Input/TextInput';
 import Form from '../../components/form/Form';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import { useAppSelector } from '../../hooks/store';
+import routes from '../../utlis/routes';
 
 const Register = () => {
+  const { loading, currentUser } = useAppSelector((state: any) => state.auth);
   const router = useRouter();
+
+  useEffect(() => {
+    if (currentUser) {
+      router.push(routes.home);
+    }
+  }, [currentUser, router]);
+
   const validationSchema = Yup.object().shape({
     firstName: Yup.string()
       .min(3, 'Too short, at least 3 chars')
@@ -98,6 +108,7 @@ const Register = () => {
                       className='bg-primaryColor'
                       type='submit'
                       usesFormik
+                      loading={loading}
                     >
                       Register
                     </Button>

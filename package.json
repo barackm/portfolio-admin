@@ -18,6 +18,7 @@
     "formik": "^2.2.9",
     "jwt-decode": "^3.1.2",
     "lottie-react": "^2.3.1",
+    "moment": "^2.29.4",
     "mongoose": "^6.6.1",
     "next": "12.3.0",
     "node-sass": "^7.0.3",

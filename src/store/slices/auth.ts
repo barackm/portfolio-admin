@@ -13,8 +13,9 @@ const slice = createSlice({
       state.error = null;
     },
     authRequestSuccess: (state: any, action: any) => {
+      const { user } = action.payload || {};
       state.loading = false;
-      state.currentUser = action.payload;
+      state.currentUser = user;
     },
     authRequestFailed: (state: any, action: any) => {
       state.loading = false;
