@@ -7,9 +7,9 @@ import { useAppDispatch } from '../../hooks/store';
 const Header = () => {
   const dispatch = useAppDispatch();
   const headerRef: any = useRef(null);
-  const { isSidebarOpen } = useSelector((state: any) => state.entites.ui);
+  const { isSidebarOpen } = useSelector((state: any) => state.entities.ui);
   const [scrolling, setScrolling] = React.useState(false);
-  //   return (check if the user started to scroll down, if so, then add the class 'top-2' to the header, otherwise remove it)
+
   useEffect(() => {
     const handleScroll = () => {
       if (headerRef.current) {

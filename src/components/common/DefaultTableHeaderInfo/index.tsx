@@ -16,19 +16,17 @@ const DefaultTableHeaderInfo = (props: DefaultTableHeaderInfoProps) => {
       <div className='flex flex-col'>
         <div className='flex'>
           <div className='flex-1'>
-            <span className='text-2xl font-normal text-slate-800'>{title}</span>
-            <p className='text-slate-400 font-light text-[0.9rem]'>
-              {subTitle}
-            </p>
+            <span className='text-3xl font-normal text-slate-800'>{title}</span>
+            <p className='text-slate-400 font-light text-[1rem]'>{subTitle}</p>
           </div>
           <div className=''>
-            <Button className='mr-1'>
+            <Button className='mr-1 shadow-none'>
               <span className='text-xs'>+ Add new</span>
             </Button>
-            <Button variant='outlined' className=' mr-1'>
+            <Button variant='outlined' className=' mr-1 shadow-none'>
               <span className='text-xs'>Import</span>
             </Button>
-            <Button variant='outlined'>
+            <Button variant='outlined' className='shadow-none'>
               <span className='text-xs'>Export</span>
             </Button>
           </div>

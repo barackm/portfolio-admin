@@ -5,8 +5,9 @@ export const shouldFetchNow = (
   timeFormat: 'minutes' | 'hours' | 'seconds',
   comparisonTime: number,
 ) => {
-  const currentTime = moment();
-  const lastFetchTime = moment(timeSaved);
-  const diff = currentTime.diff(lastFetchTime, timeFormat);
-  return diff < comparisonTime;
+  if (!timeSaved) return true;
+  const timeSavedMoment = moment(timeSaved);
+  const timeNow = moment();
+  const timeDiff = timeNow.diff(timeSavedMoment, timeFormat);
+  return timeDiff > comparisonTime;
 };

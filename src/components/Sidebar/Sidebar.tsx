@@ -59,7 +59,7 @@ const Sidebar = () => {
     dispatch(logoutUser(router));
   };
 
-  const { isSidebarOpen } = useSelector((state: any) => state.entites.ui);
+  const { isSidebarOpen } = useSelector((state: any) => state.entities.ui);
   const { firstName, lastName, email } = currentUser;
   return (
     <aside

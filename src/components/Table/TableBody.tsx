@@ -15,7 +15,7 @@ const TableBody = (props: TableBodyProps) => {
           {columns.map((column: any) => (
             <td
               key={column.path}
-              className='font-normal leading-normal text-sm px-4 py-3 border-b border-gray-200 text-slate-400'
+              className='font-light leading-normal text-sm px-4 py-3 border-b border-gray-200 text-slate-600'
             >
               {column.content ? column.content(item) : item[column.path]}
             </td>

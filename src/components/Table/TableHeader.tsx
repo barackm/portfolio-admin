@@ -36,14 +36,14 @@ const TableHeader = (props: TableHeaderProps) => {
       <div className='absolute right-0 flex flex-col justify-center items-center'>
         <span>
           <ArrowDropUpIcon
-            className={`mb-[-0.5rem] mt-[10px] text-xs transition-all duration-300 ease-soft-in-out ${
+            className={`mb-[-0.5rem] mt-[10px] text-[25px] transition-all duration-300 ease-soft-in-out ${
               sortColumn.order === 'asc' ? 'text-primaryColor' : 'text-gray-400'
             }`}
           />
         </span>
         <span>
           <ArrowDropDownIcon
-            className={`mt-[-0.5rem] mb-[10px] text-xs transition-all duration-300 ease-soft-in-out ${
+            className={`mt-[-0.5rem] mb-[10px] text-[25px] transition-all duration-300 ease-soft-in-out ${
               sortColumn.order === 'desc'
                 ? 'text-primaryColor'
                 : 'text-gray-400'
@@ -60,7 +60,7 @@ const TableHeader = (props: TableHeaderProps) => {
         {columns.map((column: any) => (
           <th
             key={column.path}
-            className={`text-xs border-b text-slate-400 font-semibold text-left py-2 px-5 uppercase min-w-[150px] ${
+            className={`text-[11px] border-b text-slate-400 font-semibold text-left py-2 px-5 uppercase min-w-[150px] ${
               column.colClasses || ''
             }`}
           >
@@ -69,10 +69,10 @@ const TableHeader = (props: TableHeaderProps) => {
               onClick={() => raiseSort(column.path)}
               className='flex relative justify-center items-center'
             >
-              <span className={`flex-1 ${sortTable ? 'mr-2' : ''}`}>
+              <span className={`flex-1  ${sortTable ? 'mr-2' : ''}`}>
                 {column.label}
               </span>
-              {sortTable && renderSortIcon(column)}
+              {sortTable && !column.ignoreSort && renderSortIcon(column)}
             </a>
           </th>
         ))}

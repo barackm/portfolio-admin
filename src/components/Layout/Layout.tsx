@@ -9,7 +9,7 @@ interface LayoutProps {
 
 const Layout = (props: LayoutProps) => {
   const { children } = props;
-  const { isSidebarOpen } = useSelector((state: any) => state.entites.ui);
+  const { isSidebarOpen } = useSelector((state: any) => state.entities.ui);
   const { currentUser, loading } = useSelector((state: any) => state.auth);
 
   return (
