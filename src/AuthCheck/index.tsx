@@ -57,6 +57,7 @@ const AuthCheck = (props: AuthCheckProps) => {
 
   useEffect(() => {
     getUserInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <>{fetching ? <LoadingScreen /> : children}</>;
