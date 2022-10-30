@@ -40,7 +40,10 @@ const Header = () => {
     >
       <div className='flex justify-center px-5'>
         <div>
-          <button onClick={() => dispatch(toggleSidebar())}>
+          <button
+            onClick={() => dispatch(toggleSidebar())}
+            title='actionButton'
+          >
             <MenuOutlinedIcon />
           </button>
         </div>

@@ -16,6 +16,7 @@ const TableLink = (props: TableLinkProps) => {
       <a
         className='text-blue-500 hover:text-blue-600'
         onClick={() => onClick && onClick()}
+        target={external ? '_blank' : ''}
       >
         {external && (
           <span className='inline-block mr-1'>

@@ -27,3 +27,12 @@ const TableBody = (props: TableBodyProps) => {
 };
 
 export default TableBody;
+
+const convertNumberToK = (num: number) => {
+  // round the number to remove decimal places
+  const roundedNum = Math.round(num);
+  if (num < 1000) return num;
+  if (num < 1000000) return `${(num / 1000).toFixed(1)}K`;
+  if (num < 1000000000) return `${(num / 1000000).toFixed(1)}M`;
+  return `${(num / 1000000000).toFixed(1)}B`;
+};

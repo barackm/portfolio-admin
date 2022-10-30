@@ -4,17 +4,17 @@ import Stack from '@mui/material/Stack';
 
 interface AppPaginationProps {
   count: number;
-  variant?: 'text' | 'outlined' | 'contained';
+  variant: 'text' | 'outlined';
   shape: 'rounded' | 'circular';
   onChange: (event: React.ChangeEvent<unknown>, value: number) => void;
 }
 const AppPagination = (props: AppPaginationProps) => {
-  const { count, variant = 'outlined', shape, onChange } = props;
+  const { count, variant, shape, onChange } = props;
   return (
     <Stack spacing={2}>
       <Pagination
         count={count}
-        variant='outlined'
+        variant={variant}
         shape={shape}
         onChange={onChange}
       />
@@ -24,8 +24,8 @@ const AppPagination = (props: AppPaginationProps) => {
 
 AppPagination.defaultProps = {
   count: 10,
-  variant: 'outlined',
-  shape: 'rounded',
+  variant: 'text',
+  shape: 'circular',
   onChange: () => {},
 };
 
