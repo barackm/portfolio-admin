@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import * as Yup from 'yup';
 import Button from '../../../components/common/Button';
+import Select from '../../../components/common/Input/Select';
 import Textarea from '../../../components/common/Input/Textarea';
 import TextInput from '../../../components/common/Input/TextInput';
 import Page from '../../../components/common/Page';
@@ -47,7 +48,20 @@ const Project = () => {
     }
     const project = projects.find((project: any) => project._id === id);
     if (project) {
-      setProject(project);
+      setProject({
+        ...project,
+        tags: project.tags.map((tag: any) => {
+          return { label: tag, value: tag };
+        }),
+        technologies: project.technologies.map((tech: any) => {
+          return { label: tech, value: tech };
+        }),
+        category: {
+          label: project.category.name,
+          value: project.category._id,
+          ...project.category,
+        },
+      });
     }
   }, [id, projects]);
 
@@ -87,6 +101,7 @@ const Project = () => {
             }}
             onSubmit={(values) => console.log(values)}
             validationSchema={validationSchema}
+            enableReinitialize={project?._id || false}
           >
             <TextInput name='title' label='Project Name' />
             <div className='my-4' />
@@ -94,6 +109,28 @@ const Project = () => {
             <div className='my-4' />
             <TextInput name='liveDemoUrl' label='Live Demo Url' />
             <div className='my-4' />
+            <TextInput name='sourceCodeUrl' label='Source Code Url' />
+            <div className='my-4' />
+            <Select
+              name='category'
+              label='Category'
+              options={categories.map((category: any) => ({
+                ...category,
+                label: category.name,
+                value: category._id,
+              }))}
+            />
+            <div className='my-4' />
+            <Select name='tags' isCreatable isMulti label='Tags' />
+            <div className='my-4' />
+            <Select
+              name='technologies'
+              isCreatable
+              isMulti
+              label='Technologies'
+            />
+            <div className='my-4' />
+
             <Button usesFormik type='submit'>
               {project?._id ? `Save` : 'Create'}
             </Button>
