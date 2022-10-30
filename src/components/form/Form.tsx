@@ -4,7 +4,7 @@ import React from 'react';
 interface FormikProps {
   initialValues: any;
   onSubmit: (values: any) => void;
-  validationSchema: any;
+  validationSchema?: any;
   children: React.ReactNode;
 }
 const Form = (props: FormikProps) => {
@@ -14,6 +14,7 @@ const Form = (props: FormikProps) => {
       initialValues={initialValues}
       onSubmit={onSubmit}
       validationSchema={validationSchema}
+      enableReinitialize
     >
       {() => <FormikForm>{children}</FormikForm>}
     </Formik>

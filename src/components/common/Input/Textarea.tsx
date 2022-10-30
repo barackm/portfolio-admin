@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFormikContext } from 'formik';
 
-interface TextInputProps {
+interface TextareaProps {
   widthAuto?: boolean;
   name?: string;
   id?: string;
@@ -19,7 +19,7 @@ interface TextInputProps {
   isTextArea?: boolean;
 }
 
-const TextInput = (props: TextInputProps) => {
+const Textarea = (props: TextareaProps) => {
   const {
     widthAuto,
     name,
@@ -83,14 +83,14 @@ const TextInput = (props: TextInputProps) => {
             {startIcon}
           </span>
         )}
-        <input
-          type={type}
+        <textarea
           id={name}
           name={name}
+          rows={5}
           value={
             usesFormik && values ? values[name as keyof typeof values] : value
           }
-          onChange={(e) => {
+          onChange={(e: any) => {
             if (usesFormik) {
               handleChange(e);
             } else {
@@ -105,10 +105,13 @@ const TextInput = (props: TextInputProps) => {
             }
           }}
           className={getTextInputClasses()}
-        />{' '}
-        <span className='text-sm ease-soft leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all right-0'>
-          {endIcon}
-        </span>
+        />
+
+        {endIcon && (
+          <span className='text-sm ease-soft leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all right-0'>
+            {endIcon}
+          </span>
+        )}
       </div>
       {(inpurError || error) && (
         <p className='text-sm text-red-600 mb-0' id='email-error'>
@@ -119,7 +122,7 @@ const TextInput = (props: TextInputProps) => {
   );
 };
 
-TextInput.defaultProps = {
+Textarea.defaultProps = {
   widthAuto: true,
   name: 'text-input',
   id: 'text-input',
@@ -132,4 +135,4 @@ TextInput.defaultProps = {
   usesFormik: true,
 };
 
-export default TextInput;
+export default Textarea;

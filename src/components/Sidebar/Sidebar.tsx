@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { logoutUser } from '../../services/authService';
 import { useRouter } from 'next/router';
 import { setSidebar } from '../../store/slices/ui';
+import { getCurrentActiveLink } from '../../utlis/routing';
 
 const Sidebar = () => {
   const [activeLink, setActiveLink] = React.useState(links[0]);
@@ -25,44 +26,6 @@ const Sidebar = () => {
     current: HTMLDivElement | null;
   } = React.useRef(null);
 
-  const findCurrentActiveLink = () => {
-    const currentRoute = window.location.pathname;
-    const currentRoutePages: any = currentRoute
-      .split('/')
-      .filter((page) => page);
-
-    if (currentRoutePages.length > 1) {
-      const currentParentPage = `/${currentRoutePages[0]}/${currentRoutePages[1]}`;
-      const currentParentLink: any = links.find(
-        (link) => link.link === currentParentPage,
-      );
-      if (currentParentLink) {
-        const paramsCount = currentRoutePages.length - 2;
-        const directCurrentChildLink: any = currentParentLink.children.find(
-          (link: any) => link.link === currentRoute,
-        );
-        const alternativeCurrentChildLink: any =
-          currentParentLink.children.find((link: any) => {
-            const linkParamsCount =
-              link.link.split('/').filter((page: any) => page).length - 2;
-
-            return linkParamsCount === paramsCount;
-          });
-        setActiveLink(currentParentLink);
-        setActiveChildLink(
-          directCurrentChildLink ||
-            alternativeCurrentChildLink ||
-            currentParentLink.children[0],
-        );
-      }
-    } else {
-      const currentParentLink: any = links.find(
-        (link) => link.link === currentRoute,
-      );
-      setActiveLink(currentParentLink);
-      setActiveChildLink(currentParentLink?.children[0]);
-    }
-  };
   const isStillHovering = () => {
     if (sidebarRef.current) {
       const isHovering = sidebarRef.current.matches(':hover');
@@ -98,8 +61,13 @@ const Sidebar = () => {
   }, []);
 
   useEffect(() => {
-    findCurrentActiveLink();
-  }, [router.pathname]);
+    const { parent, child } = getCurrentActiveLink(router.asPath, [
+      ...links,
+      ...secondaryLinks,
+    ]);
+    setActiveLink(parent || links[0]);
+    setActiveChildLink(child || parent?.children[0] || links[0].children[0]);
+  }, [router.asPath]);
 
   const { isSidebarOpen } = useSelector((state: any) => state.entities.ui);
   const { firstName, lastName, email } = currentUser;

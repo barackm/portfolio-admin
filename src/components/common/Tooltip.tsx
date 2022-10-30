@@ -11,9 +11,13 @@ const Tooltip = (props: TooltipProps) => {
   const { placement, title, children } = props;
   return (
     <MuiTooltip title='A tooltip' placement={placement}>
-      {children}
+      <span>{children}</span>
     </MuiTooltip>
   );
+};
+
+Tooltip.defaultProps = {
+  placement: 'top',
 };
 
 export default Tooltip;

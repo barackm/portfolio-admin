@@ -1,6 +1,11 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
+import * as Yup from 'yup';
+import Button from '../../../components/common/Button';
+import Textarea from '../../../components/common/Input/Textarea';
+import TextInput from '../../../components/common/Input/TextInput';
 import Page from '../../../components/common/Page';
+import Form from '../../../components/form/Form';
 import { useAppDispatch, useAppSelector } from '../../../hooks/store';
 import { getProjectCategories } from '../../../services/projectCategoriesService';
 import { getProjects } from '../../../services/projectsService';
@@ -14,7 +19,6 @@ const Project = () => {
   const { list: categories, loading: loadingCategories } = useAppSelector(
     (state: any) => state.entities.projectCategories,
   );
-
   const [project, setProject] = React.useState({
     category: {},
     description: '',
@@ -23,13 +27,28 @@ const Project = () => {
     tags: [],
     technologies: [],
     title: '',
+    _id: null,
   });
 
   const dispatch = useAppDispatch();
   useEffect(() => {
-    if (id === 'new') return;
+    if (id === 'new') {
+      setProject({
+        category: {},
+        description: '',
+        liveDemoUrl: '',
+        sourceCodeUrl: '',
+        tags: [],
+        technologies: [],
+        title: '',
+        _id: null,
+      });
+      return;
+    }
     const project = projects.find((project: any) => project._id === id);
-    setProject(project);
+    if (project) {
+      setProject(project);
+    }
   }, [id, projects]);
 
   useEffect(() => {
@@ -37,9 +56,57 @@ const Project = () => {
     dispatch(getProjectCategories());
   }, [dispatch]);
 
+  const validationSchema = Yup.object().shape({
+    title: Yup.string().required().label('Title'),
+    description: Yup.string().required().label('Description'),
+    liveDemoUrl: Yup.string().url().label('Live Demo Url'),
+    sourceCodeUrl: Yup.string().url().label('Source Code Url'),
+    category: Yup.object().required().label('Category'),
+    tags: Yup.array().required().label('Tags'),
+    technologies: Yup.array().required().label('Technologies'),
+  });
+
   return (
     <Page>
-      <h3>Project</h3>
+      <div>
+        <div className='mt-10 py-10 px-4 pt-6 bg-white rounded-xl shadow-soft-3xl'>
+          <div className='mb-6'>
+            <h1 className='text-3xl font-normal text-gray-800'>
+              {project?._id ? `Edit Project` : 'New Project'}
+            </h1>
+          </div>
+          <Form
+            initialValues={{
+              title: project.title,
+              description: project.description,
+              liveDemoUrl: project.liveDemoUrl,
+              sourceCodeUrl: project.sourceCodeUrl,
+              tags: project.tags,
+              technologies: project.technologies,
+              category: project.category,
+            }}
+            onSubmit={(values) => console.log(values)}
+            validationSchema={validationSchema}
+          >
+            <TextInput name='title' label='Project Name' />
+            <div className='my-4' />
+            <Textarea name='description' label='Project Description' />
+            <div className='my-4' />
+            <TextInput name='liveDemoUrl' label='Live Demo Url' />
+            <div className='my-4' />
+            <Button usesFormik type='submit'>
+              {project?._id ? `Save` : 'Create'}
+            </Button>
+            <Button
+              color='secondary'
+              className='ml-2'
+              onClick={() => router.back()}
+            >
+              Cancel
+            </Button>
+          </Form>
+        </div>
+      </div>
     </Page>
   );
 };

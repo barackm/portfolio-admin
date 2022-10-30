@@ -19,12 +19,14 @@ export const links = [
     name: 'Dashboard',
     link: '/',
     icon: <HomeOutlinedIcon />,
+    description: 'Dashboard',
     children: [
       {
         id: 1,
         name: 'Dashboard',
         link: '/',
         icon: <HomeOutlinedIcon />,
+        description: 'Dashboard',
       },
     ],
   },
@@ -32,27 +34,31 @@ export const links = [
     id: 2,
     name: 'Admin',
     link: '/admin',
+    icon: <AdminPanelSettingsOutlinedIcon />,
+    description: 'Admin Panel',
     children: [
       {
         id: 1,
         name: 'Dashboard',
         link: '/admin',
         icon: <AdminPanelSettingsOutlinedIcon />,
+        description: 'Admin Panel',
       },
     ],
-    icon: <AdminPanelSettingsOutlinedIcon />,
   },
   {
     id: 3,
     name: 'Projects',
     link: routes.projects,
+    icon: <ListAltOutlinedIcon />,
+    description: 'Projects List',
     children: [
       {
         id: 1,
         name: 'Projects',
         link: routes.projects,
-
         icon: <ListAltOutlinedIcon />,
+        description: 'Projects List',
       },
       {
         id: 2,
@@ -60,61 +66,69 @@ export const links = [
         link: `${routes.projects}/new`,
         paramName: 'id',
         icon: <AddBoxOutlinedIcon />,
+        description: 'Edit Project',
       },
     ],
-    icon: <ListAltOutlinedIcon />,
   },
   {
     id: 4,
     name: 'Blog',
     link: '/blog',
+    icon: <BookOutlinedIcon />,
+    description: 'Blog',
     children: [
       {
         id: 1,
         name: 'Blog',
         link: '/blog',
         icon: <BookOutlinedIcon />,
+        description: 'Blog',
       },
       {
         id: 2,
         name: 'New',
         link: '/blog/new',
         icon: <AddBoxOutlinedIcon />,
+        description: 'New Blog',
       },
       {
         id: 3,
         name: 'Drafts',
         link: '/blog/drafts',
         icon: <SaveAsOutlinedIcon />,
+        description: 'Blog Drafts',
       },
       {
         id: 4,
         name: 'Scheduled',
         link: '/blog/scheduled',
         icon: <PendingActionsOutlinedIcon />,
+        description: 'Scheduled Blog',
       },
     ],
-    icon: <BookOutlinedIcon />,
   },
   {
     id: 5,
     name: 'Users',
     link: '/users',
+    icon: <PeopleAltOutlinedIcon />,
+    description: 'Users',
     children: [
       {
         id: 1,
         name: 'Users',
         link: '/users',
         icon: <PeopleAltOutlinedIcon />,
+        description: 'Users List',
       },
       {
         id: 2,
         name: 'New',
         link: '/users/new',
         icon: <PersonAddAltOutlinedIcon />,
+        description: 'New User',
       },
     ],
-    icon: <PeopleAltOutlinedIcon />,
   },
 ];
 
@@ -124,12 +138,14 @@ export const secondaryLinks = [
     name: 'Settings',
     link: '/settings',
     icon: <SettingsOutlinedIcon />,
+    description: 'Settings',
     children: [
       {
         id: 1,
         name: 'Settings',
         link: '/settings',
         icon: <SettingsOutlinedIcon />,
+        description: 'Settings',
       },
     ],
   },
