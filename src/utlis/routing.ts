@@ -129,3 +129,41 @@ export const getCurrentActiveLink = (path: string, routes: any[]) => {
     child: lastPathChild,
   };
 };
+
+export const isCurrentRouteActive = (
+  path: string,
+  curentLink: any,
+  options: {
+    isParent?: boolean;
+    router?: any;
+  },
+) => {
+  const { isParent, router } = options;
+  const pathsArray = path.split('/').filter((item) => item !== '');
+  const splitLink = curentLink.split('/').filter((item: any) => item !== '');
+  if (isParent) {
+    if (
+      pathsArray.length === 1 &&
+      (curentLink === '/dashboard' || curentLink === '/')
+    ) {
+      return true;
+    }
+
+    return pathsArray[0] === splitLink[0] && pathsArray[1] === splitLink[1];
+  } else {
+    if (
+      pathsArray.length === 1 &&
+      splitLink.length === 1 &&
+      path === curentLink
+    ) {
+      return true;
+    }
+    if (path === curentLink) {
+      return true;
+    }
+    const isDynamicRoute = router.pathname.includes('[id]');
+    if (isDynamicRoute) {
+      return splitLink[splitLink.length - 1] === 'new';
+    }
+  }
+};

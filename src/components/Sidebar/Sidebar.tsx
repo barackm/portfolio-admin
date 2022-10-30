@@ -10,18 +10,17 @@ import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { logoutUser } from '../../services/authService';
 import { useRouter } from 'next/router';
 import { setSidebar } from '../../store/slices/ui';
-import { getCurrentActiveLink } from '../../utlis/routing';
+import {
+  getCurrentActiveLink,
+  isCurrentRouteActive,
+} from '../../utlis/routing';
 
 const Sidebar = () => {
-  const [activeLink, setActiveLink] = React.useState(links[0]);
-  const [activeChildLink, setActiveChildLink] = React.useState(
-    links[0].children[0],
-  );
   const [sidebarOnHover, setSidebarOnHover] = React.useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { currentUser }: any = useAppSelector((state) => state.auth);
-
+  const [activeLink, setActiveLink] = React.useState<any>({ children: [] });
   const sidebarRef: {
     current: HTMLDivElement | null;
   } = React.useRef(null);
@@ -66,7 +65,6 @@ const Sidebar = () => {
       ...secondaryLinks,
     ]);
     setActiveLink(parent || links[0]);
-    setActiveChildLink(child || parent?.children[0] || links[0].children[0]);
   }, [router.asPath]);
 
   const { isSidebarOpen } = useSelector((state: any) => state.entities.ui);
@@ -102,17 +100,20 @@ const Sidebar = () => {
                   <a
                     onClick={() => {
                       setActiveLink(link);
-                      setActiveChildLink(link.children[0] || null);
                       if (!isSidebarOpen) {
                         dispatch(setSidebar(true));
                       }
                     }}
                     className={`flex flex-row items-center cursor-pointer transition-all duration-200 ease-soft-in-out justify-center w-full h-full my-1 py-3 px-2 ${
-                      activeLink.name === link.name
+                      isCurrentRouteActive(router.asPath, link.link, {
+                        isParent: true,
+                      })
                         ? 'bg-[rgba(255,255,255,0.2)] text-white'
                         : 'text-slate-400'
                     } rounded-2 flex justify-center align-middle w-full h-full  ${
-                      activeLink.name === link.name
+                      isCurrentRouteActive(router.asPath, link.link, {
+                        isParent: true,
+                      })
                         ? 'text-white'
                         : 'text-slate-400'
                     }`}
@@ -130,16 +131,16 @@ const Sidebar = () => {
               <li key={link.id}>
                 <Link href={link.link}>
                   <a
-                    onClick={() => {
-                      setActiveLink(link);
-                      setActiveChildLink(link.children[0] || null);
-                    }}
                     className={`flex flex-row items-center cursor-pointer transition-all duration-200 ease-soft-in-out justify-center w-full h-full my-1 py-3 px-2 ${
-                      activeLink.name === link.name
+                      isCurrentRouteActive(router.asPath, link.link, {
+                        isParent: true,
+                      })
                         ? 'bg-[rgba(255,255,255,0.2)] text-white'
                         : 'text-slate-400'
                     } rounded-2 flex justify-center align-middle w-full h-full  ${
-                      activeLink.name === link.name
+                      isCurrentRouteActive(router.asPath, link.link, {
+                        isParent: true,
+                      })
                         ? 'text-white'
                         : 'text-slate-400'
                     }`}
@@ -183,20 +184,25 @@ const Sidebar = () => {
               <span className='text-md'>{activeLink.name}</span>
             </div>
             <ul>
-              {activeLink.children.map((link) => (
+              {activeLink.children.map((link: any) => (
                 <li key={link.id}>
                   <Link href={link.link} as={link.paramName ? link.link : ''}>
                     <a
                       className={`flex flex-row w-full align-middle h-full transition-all duration-200 ease-soft-in-out ${
-                        activeChildLink.id === link.id
+                        isCurrentRouteActive(router.asPath, link.link, {
+                          isParent: false,
+                          router,
+                        })
                           ? 'text-white'
                           : 'text-slate-400'
                       } my-1 py-2 px-2 rounded-1 hover:bg-[rgba(255,255,255,0.2)] ${
-                        activeChildLink.id === link.id
+                        isCurrentRouteActive(router.asPath, link.link, {
+                          isParent: false,
+                          router,
+                        })
                           ? 'bg-[rgba(255,255,255,0.2)]'
                           : ''
                       }`}
-                      onClick={() => setActiveChildLink(link)}
                     >
                       <div className='flex align-middle w-full h-full'>
                         <div className='mr-2 flex justify-center align-middle'>
