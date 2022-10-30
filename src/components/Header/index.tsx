@@ -76,13 +76,18 @@ const Header = () => {
               )}
               {breadcrumb.paths.map((item: any, index: number) =>
                 item.isCurrent ? (
-                  <span key={index} className='text-gray-800 font-light'>
+                  <span
+                    key={index}
+                    className='text-gray-800 font-normal text-sm'
+                  >
                     {item.description}
                   </span>
                 ) : (
                   <div key={index}>
                     <Link href={item.path}>
-                      <a className='text-gray-600 font-light'>{item.name}</a>
+                      <a className='text-gray-600 font-normal text-sm'>
+                        {item.name}
+                      </a>
                     </Link>
                     <span className='mx-2 text-gray-600 font-light'>/</span>
                   </div>
@@ -90,7 +95,7 @@ const Header = () => {
               )}
             </div>
             <div className='flex'>
-              <span className='font-medium'>{breadcrumb.description}</span>
+              <span className='font-normal'>{breadcrumb.description}</span>
             </div>
           </div>
           <div>
