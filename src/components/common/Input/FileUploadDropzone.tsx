@@ -5,6 +5,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import Tooltip from '../Tooltip';
+import { getFileSize } from '../../../utlis/files';
 
 interface FileUploadDropzoneProps {
   label?: string;
@@ -135,18 +136,22 @@ const FileUploadDropzone = (props: FileUploadDropzoneProps) => {
               <div className='flex flex-col w-[120px] justify-center items-center rounded-xl overflow-hidden relative'>
                 <div className='absolute z-100 w-full flex flex-col items-center'>
                   <span className='text-gray-DEFAULT-50 p-1 text-xs bg-gray-600 rounded-1'>
-                    30 KB
+                    {getFileSize(file.size) || 'Unknown size'}
                   </span>
-                  <div className='w-[90%] h-5 bg-gray-50 mt-2 rounded-[2px] px-1 flex items-center'>
+                  <div className='w-[95%] h-5 bg-gray-500 mt-2 rounded-[2px] px-1 flex items-center overflow-hidden'>
                     <Tooltip title={file.name}>
-                      <span className='text-sm font-light block w-[90%] whitespace-nowrap overflow-hidden overflow-ellipsis '>
+                      <span className='text-sm font-light flex w-full whitespace-nowrap overflow-hidden overflow-ellipsis '>
                         {file.name}
                       </span>
                     </Tooltip>
                   </div>
                 </div>
                 <Image
-                  src={URL.createObjectURL(file)}
+                  src={
+                    file.path && file.path.startsWith('http')
+                      ? file.path
+                      : URL.createObjectURL(file)
+                  }
                   alt={file.name}
                   width={120}
                   height={120}
@@ -157,7 +162,7 @@ const FileUploadDropzone = (props: FileUploadDropzoneProps) => {
                 className='text-primaryColor hover:text-secondaryColor transition-all ease-soft'
                 onClick={() => handleRemoveFile(file)}
               >
-                Remove Image
+                Remove File
               </button>
             </li>
           ))}

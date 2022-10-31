@@ -50,6 +50,8 @@ const Project = () => {
       return;
     }
     const project = projects.find((project: any) => project._id === id);
+    console.log(project);
+
     if (project) {
       setProject({
         ...project,
@@ -110,6 +112,7 @@ const Project = () => {
               tags: project.tags,
               technologies: project.technologies,
               category: project.category,
+              imageUrl: project.imageUrl,
             }}
             onSubmit={(values) => console.log(values)}
             validationSchema={validationSchema}
