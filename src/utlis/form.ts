@@ -38,6 +38,7 @@ export const getDefaultSelectInputStyles = ({ inpurError, error }: any) => {
       fontSize: '0.9rem',
       borderRadius: '0.4rem',
       cursor: 'pointer',
+      overflow: 'hidden',
       '&:hover': {
         backgroundColor: 'rgb(23 36 79 / 33%)',
         color: '#20326F',

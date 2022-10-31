@@ -10,7 +10,7 @@ interface TooltipProps {
 const Tooltip = (props: TooltipProps) => {
   const { placement, title, children } = props;
   return (
-    <MuiTooltip title='A tooltip' placement={placement}>
+    <MuiTooltip title={title} placement={placement}>
       <span>{children}</span>
     </MuiTooltip>
   );

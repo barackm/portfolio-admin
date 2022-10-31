@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import * as Yup from 'yup';
 import Button from '../../../components/common/Button';
+import FileUploadDropzone from '../../../components/common/Input/FileUploadDropzone';
 import Select from '../../../components/common/Input/Select';
 import Textarea from '../../../components/common/Input/Textarea';
 import TextInput from '../../../components/common/Input/TextInput';
@@ -29,6 +30,7 @@ const Project = () => {
     technologies: [],
     title: '',
     _id: null,
+    imageUrl: [],
   });
 
   const dispatch = useAppDispatch();
@@ -42,6 +44,7 @@ const Project = () => {
         tags: [],
         technologies: [],
         title: '',
+        imageUrl: [],
         _id: null,
       });
       return;
@@ -61,6 +64,14 @@ const Project = () => {
           value: project.category._id,
           ...project.category,
         },
+        imageUrl: project.imageUrl
+          ? [
+              {
+                name: project.imageUrl,
+                path: project.imageUrl,
+              },
+            ]
+          : [],
       });
     }
   }, [id, projects]);
@@ -78,6 +89,7 @@ const Project = () => {
     category: Yup.object().required().label('Category'),
     tags: Yup.array().required().label('Tags'),
     technologies: Yup.array().required().label('Technologies'),
+    imageUrl: Yup.array().label('Image Url'),
   });
 
   return (
@@ -103,6 +115,8 @@ const Project = () => {
             validationSchema={validationSchema}
             enableReinitialize={project?._id || false}
           >
+            <FileUploadDropzone name='imageUrl' label='Project Image' />
+            <div className='my-4' />
             <TextInput name='title' label='Project Name' />
             <div className='my-4' />
             <Textarea name='description' label='Project Description' />
