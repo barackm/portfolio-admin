@@ -11,6 +11,7 @@ const routes = {
   scheduledBlog: '/dashboard/blog/scheduled',
   users: '/dashboard/users',
   newUsers: '/dashboard/users/new',
+  userProfile: '/dashboard/users/profile',
   profile: '/dashboard/profile',
   settings: '/dashboard/settings',
   emailSent: '/auth/emailSent',

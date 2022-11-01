@@ -2,7 +2,7 @@ import { useFormikContext } from 'formik';
 import Image from 'next/image';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import Tooltip from '../Tooltip';
 import { getFileSize } from '../../../utlis/files';

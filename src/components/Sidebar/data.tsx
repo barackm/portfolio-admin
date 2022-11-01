@@ -115,6 +115,13 @@ export const links = [
         description: 'New User',
         canBeDynamic: true,
       },
+      {
+        id: 3,
+        name: 'User Profile',
+        link: routes.userProfile,
+        icon: <PersonAddAltOutlinedIcon />,
+        description: 'User Profile',
+      },
     ],
   },
 ];

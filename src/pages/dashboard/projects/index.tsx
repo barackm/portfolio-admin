@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { GetServerSideProps } from 'next';
+import { GetStaticProps } from 'next';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -11,26 +11,17 @@ import TableActionBtn from '../../../components/common/TableActionBtn';
 import TableLink from '../../../components/common/TableLink';
 import Tag from '../../../components/common/Tag';
 import Table from '../../../components/Table/Table';
-import { useAppSelector } from '../../../hooks/store';
-import { getProjectCategories } from '../../../services/projectCategoriesService';
-import { getProjects } from '../../../services/projectsService';
-import store from '../../../store';
 import Tooltip from '../../../components/common/Tooltip';
 import { getProjectsAsync } from '../../../api/projects';
-import { projectsLoaded } from '../../../store/slices/projects';
 import { useRouter } from 'next/router';
 import routes from '../../../utlis/routes';
-import { projectCategoriesLoaded } from '../../../store/slices/projectCategories';
-import { getProjectCategoriesAsync } from '../../../api/projectCategories';
-
 interface ProjectsProps {
   projects: any;
   categories: any;
 }
 
 const Projects = (props: ProjectsProps) => {
-  const { projects, categories } = props;
-  const { loading } = useAppSelector((state: any) => state.entities.projects);
+  const { projects } = props;
   const [sortColumn, setSortColumn] = React.useState({
     path: 'name',
     order: 'asc',
@@ -149,14 +140,11 @@ const Projects = (props: ProjectsProps) => {
     },
   ];
 
-  console.log(projects);
-
   return (
     <Page>
       <Table
         data={projects}
         columns={columns}
-        loading={loading}
         onSort={(sortColumn) => setSortColumn(sortColumn)}
         sortColumn={sortColumn}
         sortTable
@@ -172,11 +160,9 @@ const Projects = (props: ProjectsProps) => {
   );
 };
 
-export const getServerSideProps = async (context: GetServerSideProps) => {
+export const getStaticProps = async (context: GetStaticProps) => {
   const { data: projects } = await getProjectsAsync();
-  const { data: categories } = await getProjectCategoriesAsync();
-  store.dispatch(projectsLoaded(projects));
-  store.dispatch(projectCategoriesLoaded(categories));
+
   return {
     props: {
       projects,

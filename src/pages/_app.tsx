@@ -25,4 +25,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
+export const getServerSideProps = async (context: any) => {
+  console.log(context, 'context');
+};
 export default MyApp;
