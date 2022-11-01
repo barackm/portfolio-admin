@@ -14,3 +14,11 @@ export const getCurrentUserInfoAsync = async () => {
 export const verifyEmailAsync = async (data: any) => {
   return await http.post(`${url}/verify-email`, data);
 };
+
+export const forgotPasswordAsync = async (data: any) => {
+  return await http.post(`${url}/forgot-password`, data);
+};
+
+export const resetPasswordAsync = async (data: any) => {
+  return await http.post(`${url}/reset-password`, data);
+};

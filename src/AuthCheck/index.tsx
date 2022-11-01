@@ -18,7 +18,7 @@ const AuthCheck = (props: AuthCheckProps) => {
   const { children } = props;
   const dispatch = useAppDispatch();
   const token: any = storage.getAuthToken();
-  const { loading } = useAppSelector((state) => state.auth);
+  const { loading, currentUser } = useAppSelector((state) => state.auth);
   const router = useRouter();
 
   const shoudlGoToLogin = () => {
@@ -29,7 +29,7 @@ const AuthCheck = (props: AuthCheckProps) => {
   };
 
   const getUserInfo = async () => {
-    if (!token) {
+    if (!token && !currentUser) {
       if (shoudlGoToLogin()) {
         router.push(routes.login);
       }

@@ -20,6 +20,7 @@ export const loginUser = (data: any, router: any) => async (dispatch: any) => {
       data,
       onStart: authRequestStarted.type,
       onError: authRequestFailed.type,
+      onSuccess: authRequestSuccess.type,
       showErrorToast: true,
       successAction: (payload: { user: any; token: string }) => {
         const { token, user } = payload;
@@ -34,7 +35,8 @@ export const loginUser = (data: any, router: any) => async (dispatch: any) => {
           );
           return;
         }
-        dispatch(authRequestSuccess(user));
+        toast.success('Login successful, Welcome back');
+        dispatch(authRequestSuccess(payload));
         storage.setAuthToken(token);
         router.push(routes.home);
       },
@@ -127,6 +129,44 @@ export const verifyEmail =
           storage.removeAuthToken();
           router.push(routes.login);
           dispatch(authRequestFailed(error));
+        },
+      }),
+    );
+  };
+
+export const forgotPassword =
+  (data: any, router: any) => async (dispatch: any) => {
+    dispatch(
+      apiCallBegan({
+        url: `${url}/forgot-password`,
+        method: 'POST',
+        data,
+        onStart: authRequestStarted.type,
+        onError: authRequestFailed.type,
+        showErrorToast: true,
+        successAction: () => {
+          router.push(routes.login);
+          toast.success('Password reset email sent, please check your inbox');
+          dispatch(authRequestEnded());
+        },
+      }),
+    );
+  };
+
+export const resetPassword =
+  (data: any, router: any) => async (dispatch: any) => {
+    dispatch(
+      apiCallBegan({
+        url: `${url}/reset-password`,
+        method: 'POST',
+        data,
+        onStart: authRequestStarted.type,
+        onError: authRequestFailed.type,
+        showErrorToast: true,
+        successAction: () => {
+          router.push(routes.login);
+          toast.success('Password reset successfully, Please login');
+          dispatch(authRequestEnded());
         },
       }),
     );

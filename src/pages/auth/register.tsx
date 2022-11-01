@@ -10,6 +10,8 @@ import Image from 'next/image';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import routes from '../../utlis/routes';
 import { registerUser } from '../../services/authService';
+import AuthStyleWrapper from '../../components/auth/AuthStyleWrapper';
+import InputStylesWrapper from '../../components/auth/InputStylesWrapper';
 
 const Register = () => {
   const { loading, currentUser } = useAppSelector((state: any) => state.auth);
@@ -50,104 +52,83 @@ const Register = () => {
   };
 
   return (
-    <div className='flex fixed top-0 left-0 right-0 bottom-0 items-start w-full h-full justify-center overflow-y-auto'>
-      <div className='flex  justify-center w-[100%] sm:w-[90%] md:w-[60%] h-full lg:w-[500px] xl:w-w-[400px] 2xl:w-[500px] '>
-        <div className='flex flex-col items-start w-[90%] max-w-[90%] mt-20'>
-          <div className='flex w-full bg-white rounded-xl shadow-soft-3xl flex-col  py-16 px-6'>
-            <div className='flex justify-center align-middle w-full h-20 bg-primary rounded-t-xl mb-5'>
-              <div className='flex justify-center flex-col align-middle w-full text-center'>
-                <div className='flex justify-center align-middle w-full'>
-                  <Image
-                    src='/images/logo-dark.png'
-                    alt='logo'
-                    width={70}
-                    height={70}
-                  />
-                </div>
-                <p className='font-light text-xl'>Create an account</p>
-              </div>
-            </div>
-            <div className='flex flex-col justify-center align-middle w-full'>
-              <Form
-                onSubmit={handleSubmit}
-                initialValues={{
-                  email: '',
-                  password: '',
-                  firstName: '',
-                  lastName: '',
-                  rememberMe: false,
-                }}
-                validationSchema={validationSchema}
-                enableReinitialize={false}
-              >
-                <div className='flex flex-col justify-center align-middle w-full'>
-                  <div className='flex flex-col justify-center align-middle w-full mb-5'>
-                    <TextInput
-                      placeholder='First Name'
-                      name='firstName'
-                      id='firstName'
-                      usesFormik
-                    />
-                  </div>
-                  <div className='flex flex-col justify-center align-middle w-full mb-5'>
-                    <TextInput
-                      placeholder='Last Name'
-                      name='lastName'
-                      id='lastName'
-                      usesFormik
-                    />
-                  </div>
-                  <div className='flex flex-col justify-center align-middle w-full mb-5'>
-                    <TextInput
-                      placeholder='Email'
-                      type='email'
-                      name='email'
-                      id='email'
-                      usesFormik
-                      startIcon={<PersonIcon />}
-                    />
-                  </div>
-                  <div className='flex flex-col justify-center align-middle w-full mb-5'>
-                    <TextInput
-                      placeholder='Password'
-                      type='password'
-                      name='password'
-                      id='password'
-                      usesFormik
-                      startIcon={<LockIcon />}
-                    />
-                  </div>
+    <AuthStyleWrapper title='Login'>
+      <Form
+        onSubmit={handleSubmit}
+        initialValues={{
+          email: '',
+          password: '',
+          firstName: '',
+          lastName: '',
+          rememberMe: false,
+        }}
+        validationSchema={validationSchema}
+        enableReinitialize={false}
+      >
+        <div className='flex flex-col justify-center align-middle w-full'>
+          <InputStylesWrapper>
+            <TextInput
+              placeholder='First Name'
+              name='firstName'
+              id='firstName'
+              usesFormik
+            />
+          </InputStylesWrapper>
+          <InputStylesWrapper>
+            <TextInput
+              placeholder='Last Name'
+              name='lastName'
+              id='lastName'
+              usesFormik
+            />
+          </InputStylesWrapper>
+          <InputStylesWrapper>
+            <TextInput
+              placeholder='Email'
+              type='email'
+              name='email'
+              id='email'
+              usesFormik
+              startIcon={<PersonIcon />}
+            />
+          </InputStylesWrapper>
+          <InputStylesWrapper>
+            <TextInput
+              placeholder='Password'
+              type='password'
+              name='password'
+              id='password'
+              usesFormik
+              startIcon={<LockIcon />}
+            />
+          </InputStylesWrapper>
 
-                  <div className='flex flex-col justify-center align-middle w-full mb-2'>
-                    <Button
-                      className='bg-primaryColor'
-                      type='submit'
-                      usesFormik
-                      loading={loading}
-                    >
-                      Register
-                    </Button>
-                  </div>
-                  <div className='flex flex-col justify-center align-middle w-full mb-2'>
-                    <p className='text-center text-sm mb-0'>
-                      Already have an account?{' '}
-                    </p>
-                  </div>
-                  <div className='flex flex-col justify-center align-middle w-full mb-2'>
-                    <Button
-                      color='secondary'
-                      onClick={() => router.push('/auth/login')}
-                    >
-                      Login
-                    </Button>
-                  </div>
-                </div>
-              </Form>
-            </div>
-          </div>
+          <InputStylesWrapper>
+            <Button
+              className='bg-primaryColor'
+              type='submit'
+              usesFormik
+              loading={loading}
+            >
+              Register
+            </Button>
+          </InputStylesWrapper>
+          <InputStylesWrapper>
+            <p className='text-center text-sm mb-0'>
+              Already have an account?{' '}
+            </p>
+          </InputStylesWrapper>
+          <InputStylesWrapper>
+            <Button
+              color='secondary'
+              onClick={() => router.push('/auth/login')}
+            >
+              Login
+            </Button>
+          </InputStylesWrapper>
         </div>
-      </div>
-    </div>
+      </Form>
+    </AuthStyleWrapper>
   );
 };
 

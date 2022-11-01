@@ -21,6 +21,7 @@ const VerifyEmail = () => {
       if (token) {
         verifyEmail();
       } else {
+        router.push(routes.login);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

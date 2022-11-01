@@ -1,23 +1,21 @@
-import React, { useEffect } from 'react';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
 import PersonIcon from '@mui/icons-material/Person';
+import React, { useEffect } from 'react';
 import * as Yup from 'yup';
-import LockIcon from '@mui/icons-material/Lock';
 import Button from '../../components/common/Button';
-import Switch from '../../components/common/Input/Switch';
 import TextInput from '../../components/common/Input/TextInput';
 import Form from '../../components/form/Form';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import Image from 'next/image';
-import { loginUser } from '../../services/authService';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import routes from '../../utlis/routes';
 import AuthStyleWrapper from '../../components/auth/AuthStyleWrapper';
 import InputStylesWrapper from '../../components/auth/InputStylesWrapper';
+import { forgotPassword } from '../../services/authService';
 
-const Login = () => {
+const ForgotPassword = () => {
   const { loading, currentUser } = useAppSelector((state: any) => state.auth);
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (currentUser) {
@@ -27,25 +25,18 @@ const Login = () => {
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid Email Address').required('Required'),
-    password: Yup.string()
-      .min(6, 'Too short, at least 6 chars')
-      .required('Required'),
   });
 
-  const dispatch = useAppDispatch();
-
   const handleSubmit = (values: any) => {
-    dispatch(loginUser(values, router));
+    dispatch(forgotPassword(values, router));
   };
 
   return (
-    <AuthStyleWrapper title='Login'>
+    <AuthStyleWrapper title='Reset your password'>
       <Form
         onSubmit={handleSubmit}
         initialValues={{
           email: '',
-          password: '',
-          rememberMe: false,
         }}
         validationSchema={validationSchema}
       >
@@ -60,19 +51,7 @@ const Login = () => {
               startIcon={<PersonIcon />}
             />
           </InputStylesWrapper>
-          <InputStylesWrapper>
-            <TextInput
-              placeholder='Password'
-              type='password'
-              name='password'
-              id='password'
-              usesFormik
-              startIcon={<LockIcon />}
-            />
-          </InputStylesWrapper>
-          <InputStylesWrapper>
-            <Switch usesFormik label='Remember me' name='rememberMe' />
-          </InputStylesWrapper>
+
           <InputStylesWrapper>
             <Button
               className='bg-primaryColor'
@@ -80,34 +59,18 @@ const Login = () => {
               usesFormik
               loading={loading}
             >
-              Login
+              Send Reset Link
             </Button>
           </InputStylesWrapper>
           <InputStylesWrapper>
             <p className='text-center text-sm mb-0'>
-              Don&apos;t have an account?{' '}
+              <span>Remember your password?</span>
             </p>
           </InputStylesWrapper>
           <InputStylesWrapper>
-            <Button
-              color='secondary'
-              onClick={() => router.push('/auth/register')}
-            >
-              Register
+            <Button color='secondary' onClick={() => router.push(routes.login)}>
+              Login
             </Button>
-          </InputStylesWrapper>
-          <InputStylesWrapper>
-            <p className='block text-center'>
-              Password forgotten?{' '}
-              <Link href={routes.forgotPassword}>
-                <a
-                  href='#'
-                  className='font-medium text-secondaryColor hover:underline'
-                >
-                  Reset password
-                </a>
-              </Link>
-            </p>
           </InputStylesWrapper>
         </div>
       </Form>
@@ -115,4 +78,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ForgotPassword;

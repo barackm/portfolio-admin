@@ -157,9 +157,9 @@ const Sidebar = () => {
           <div className='flex flex-row items-center justify-center mb-4'>
             <div className='flex flex-row items-center justify-center w-full h-full text-white overflow-hidden'>
               <Link href='/profile'>
-                <a className='flex rounded-full overflow-hidden flex-row items-center justify-center  border-2 border-white'>
+                <a className='flex rounded-full overflow-hidden flex-row items-center justify-center  border-2 border-white bg-white'>
                   <Image
-                    src='/images/avatar.jpg'
+                    src={currentUser?.avatarUrl || '/images/avatar.png'}
                     width={35}
                     height={35}
                     alt='Logo'

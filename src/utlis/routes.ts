@@ -14,6 +14,7 @@ const routes = {
   profile: '/dashboard/profile',
   settings: '/dashboard/settings',
   emailSent: '/auth/emailSent',
+  forgotPassword: '/auth/forgotPassword',
 };
 
 export default routes;
