@@ -21,9 +21,18 @@ const AuthCheck = (props: AuthCheckProps) => {
   const { loading } = useAppSelector((state) => state.auth);
   const router = useRouter();
 
+  const shoudlGoToLogin = () => {
+    const path = router.pathname;
+    const paths = ['/auth', '/emailSent', '/verifyEmail'];
+    const shouldRedirect = paths.some((p) => path.includes(p));
+    return !shouldRedirect;
+  };
+
   const getUserInfo = async () => {
     if (!token) {
-      router.push(routes.login);
+      if (shoudlGoToLogin()) {
+        router.push(routes.login);
+      }
       dispatch(authRequestSuccess(null));
       return;
     }
@@ -36,7 +45,7 @@ const AuthCheck = (props: AuthCheckProps) => {
       router.push(routes.login);
       return;
     } else {
-      dispatch(getCurrentUser());
+      dispatch(getCurrentUser(router));
     }
   };
 

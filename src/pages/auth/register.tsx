@@ -7,12 +7,14 @@ import TextInput from '../../components/common/Input/TextInput';
 import Form from '../../components/form/Form';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { useAppSelector } from '../../hooks/store';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import routes from '../../utlis/routes';
+import { registerUser } from '../../services/authService';
 
 const Register = () => {
   const { loading, currentUser } = useAppSelector((state: any) => state.auth);
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (currentUser) {
@@ -32,6 +34,20 @@ const Register = () => {
       .min(6, 'Too short, at least 6 chars')
       .required('Required'),
   });
+
+  const handleSubmit = (values: any) => {
+    dispatch(
+      registerUser(
+        {
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          password: values.password,
+        },
+        router,
+      ),
+    );
+  };
 
   return (
     <div className='flex fixed top-0 left-0 right-0 bottom-0 items-start w-full h-full justify-center overflow-y-auto'>
@@ -53,9 +69,7 @@ const Register = () => {
             </div>
             <div className='flex flex-col justify-center align-middle w-full'>
               <Form
-                onSubmit={(values) => {
-                  console.log(values);
-                }}
+                onSubmit={handleSubmit}
                 initialValues={{
                   email: '',
                   password: '',
@@ -64,6 +78,7 @@ const Register = () => {
                   rememberMe: false,
                 }}
                 validationSchema={validationSchema}
+                enableReinitialize={false}
               >
                 <div className='flex flex-col justify-center align-middle w-full'>
                   <div className='flex flex-col justify-center align-middle w-full mb-5'>

@@ -13,6 +13,7 @@ const routes = {
   newUsers: '/dashboard/users/new',
   profile: '/dashboard/profile',
   settings: '/dashboard/settings',
+  emailSent: '/auth/emailSent',
 };
 
 export default routes;

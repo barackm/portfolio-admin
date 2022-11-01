@@ -146,20 +146,22 @@ const FileUploadDropzone = (props: FileUploadDropzoneProps) => {
                     </Tooltip>
                   </div>
                 </div>
-                <Image
-                  src={
-                    file.path && file.path.startsWith('http')
-                      ? file.path
-                      : URL.createObjectURL(file)
-                  }
-                  alt={file.name}
-                  width={120}
-                  height={120}
-                />
+                <div className='border rounded-xl overflow-hidden h-[120px]'>
+                  <Image
+                    src={
+                      file.path && file.path.startsWith('http')
+                        ? file.path
+                        : URL.createObjectURL(file)
+                    }
+                    alt={file.name}
+                    width={120}
+                    height={120}
+                  />
+                </div>
               </div>
               <button
                 type='button'
-                className='text-primaryColor hover:text-secondaryColor transition-all ease-soft'
+                className='text-slate-700 hover:text-secondaryColor transition-all ease-soft'
                 onClick={() => handleRemoveFile(file)}
               >
                 Remove File

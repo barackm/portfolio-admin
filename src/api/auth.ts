@@ -10,3 +10,7 @@ export const loginUserAsync = async (data: any) => {
 export const getCurrentUserInfoAsync = async () => {
   return await http.get(`${url}/me`);
 };
+
+export const verifyEmailAsync = async (data: any) => {
+  return await http.post(`${url}/verify-email`, data);
+};

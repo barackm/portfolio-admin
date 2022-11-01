@@ -21,10 +21,18 @@ const slice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    authRequestEnded: (state: any) => {
+      state.loading = false;
+      state.error = null;
+    },
   },
 });
 
-export const { authRequestStarted, authRequestSuccess, authRequestFailed } =
-  slice.actions;
+export const {
+  authRequestStarted,
+  authRequestSuccess,
+  authRequestFailed,
+  authRequestEnded,
+} = slice.actions;
 
 export default slice.reducer;

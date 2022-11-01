@@ -18,6 +18,7 @@ const api =
       onError,
       showErrorToast,
       successAction,
+      errorAction,
     } = action.payload;
 
     if (onStart) dispatch({ type: onStart });
@@ -41,6 +42,7 @@ const api =
       if (showErrorToast) {
         displayError(error);
       }
+      if (errorAction) errorAction(error);
     }
   };
 

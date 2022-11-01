@@ -9,6 +9,7 @@ export const apiCallBegan = createAction<{
   data?: any;
   showErrorToast?: boolean;
   successAction?: any;
+  errorAction?: any;
 }>('api/callBegan');
 export const apiCallSuccess = createAction<{
   type: string;
