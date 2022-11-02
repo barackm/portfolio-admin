@@ -53,12 +53,7 @@ const ForgotPassword = () => {
           </InputStylesWrapper>
 
           <InputStylesWrapper>
-            <Button
-              className='bg-primaryColor'
-              type='submit'
-              usesFormik
-              loading={loading}
-            >
+            <Button className='bg-primaryColor' usesFormik loading={loading}>
               Send Reset Link
             </Button>
           </InputStylesWrapper>

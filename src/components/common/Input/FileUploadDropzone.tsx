@@ -74,7 +74,9 @@ const FileUploadDropzone = (props: FileUploadDropzoneProps) => {
   };
 
   const handleAddFile = (acceptedFiles: any) => {
-    const newFiles = [...formattedFiles, ...acceptedFiles];
+    const newFiles = isMulti
+      ? [...formattedFiles, ...acceptedFiles]
+      : [...acceptedFiles];
     if (usesFormik) {
       setFieldValue(name, newFiles);
     } else {

@@ -74,12 +74,7 @@ const Login = () => {
             <Switch usesFormik label='Remember me' name='rememberMe' />
           </InputStylesWrapper>
           <InputStylesWrapper>
-            <Button
-              className='bg-primaryColor'
-              type='submit'
-              usesFormik
-              loading={loading}
-            >
+            <Button className='bg-primaryColor' usesFormik loading={loading}>
               Login
             </Button>
           </InputStylesWrapper>

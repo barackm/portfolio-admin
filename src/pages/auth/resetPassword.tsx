@@ -81,12 +81,7 @@ const ResetPassword = () => {
         </InputStylesWrapper>
 
         <InputStylesWrapper className='mt-5'>
-          <Button
-            className='bg-primaryColor'
-            type='submit'
-            usesFormik
-            loading={loading}
-          >
+          <Button className='bg-primaryColor' usesFormik loading={loading}>
             Reset Password
           </Button>
         </InputStylesWrapper>

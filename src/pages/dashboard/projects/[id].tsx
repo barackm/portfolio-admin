@@ -1,6 +1,7 @@
 import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
+import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 import { getProjectCategoriesAsync } from '../../../api/projectCategories';
 import {
@@ -16,6 +17,8 @@ import Textarea from '../../../components/common/Input/Textarea';
 import TextInput from '../../../components/common/Input/TextInput';
 import Page from '../../../components/common/Page';
 import Form from '../../../components/form/Form';
+import { displayError } from '../../../utlis/errorHandler';
+import routes from '../../../utlis/routes';
 interface ProjectPros {
   project: any;
   categories: any;
@@ -25,6 +28,7 @@ const Project = (props: ProjectPros) => {
   const router = useRouter();
   const { project, categories } = props;
   const [fetching, setFetching] = React.useState(false);
+  const [uploadedImageUrl, setUploadedImageUrl] = React.useState('');
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required().label('Title'),
@@ -39,46 +43,61 @@ const Project = (props: ProjectPros) => {
     tags: Yup.array().label('Tags'),
     technologies: Yup.array().label('Technologies'),
     imageUrl: Yup.array().label('Image Url'),
-    // .test(
   });
 
   const handleSubmit = (values: any) => {
-    const body = {
-      title: values.title,
-      description: values.description,
-      liveDemoUrl: values.liveDemoUrl,
-      sourceCodeUrl: values.sourceCodeUrl,
-      categoryId: values.category._id,
-      tags: values.tags.map((tag: any) => tag.label),
-      technologies: values.technologies.map((tech: any) => tech.label),
-      imageUrl: values.imageUrl[0],
-    };
+    const formData = new FormData();
+    formData.append('title', values.title);
+    formData.append('description', values.description);
+    formData.append('liveDemoUrl', values.liveDemoUrl);
+    formData.append('sourceCodeUrl', values.sourceCodeUrl);
+    formData.append('categoryId', values.category._id);
+    formData.append(
+      'tags',
+      values.tags.map((tag: any) => tag.label),
+    );
+    formData.append(
+      'technologies',
+      values.technologies.map((tech: any) => tech.label),
+    );
 
-    // if (project._id) {
-    //   handleUpdateProject(body, project._id);
-    // } else {
-    //   handleCreateProject(body);
-    // }
-    console.log(body);
+    formData.append(
+      'imageUrl',
+      values.imageUrl[0].path.includes('http')
+        ? values.imageUrl.path
+        : values.imageUrl[0],
+    );
+
+    if (project._id) {
+      handleUpdateProject(formData, project._id);
+    } else {
+      handleCreateProject(formData);
+    }
   };
 
   const handleUpdateProject = async (values: any, projectId: string) => {
     setFetching(true);
     try {
-      const { data } = await updateProjectAsync(values, projectId);
+      await updateProjectAsync(values, projectId);
       setFetching(false);
+      toast.success('Project updated successfully');
+      router.push(routes.projects);
     } catch (error) {
       setFetching(false);
+      displayError(error);
     }
   };
 
   const handleCreateProject = async (values: any) => {
     setFetching(true);
     try {
-      const { data } = await createProjectAsync(values);
+      await createProjectAsync(values);
       setFetching(false);
+      toast.success('Project created successfully');
+      router.push(routes.projects);
     } catch (error) {
       setFetching(false);
+      displayError(error);
     }
   };
 
@@ -136,7 +155,7 @@ const Project = (props: ProjectPros) => {
             />
             <div className='my-4' />
 
-            <Button usesFormik type='submit'>
+            <Button usesFormik loading={fetching}>
               {project?._id ? `Save` : 'Create'}
             </Button>
             <Button
@@ -204,10 +223,14 @@ export const getStaticProps: GetStaticProps = async ({ params }: any) => {
               value: project.category._id,
             }
           : null,
-        imageUrl: project.imageUrl && {
-          path: project.imageUrl,
-          name: project.imageUrl,
-        },
+        imageUrl: project.imageUrl
+          ? [
+              {
+                path: project.imageUrl,
+                name: project.imageUrl,
+              },
+            ]
+          : [],
       },
       categories,
     },
