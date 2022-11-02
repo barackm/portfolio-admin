@@ -1,16 +1,10 @@
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import EqualizerOutlinedIcon from '@mui/icons-material/EqualizerOutlined';
 import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined';
 import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import SeparatorLine from '../common/SeparatorLine';
-import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
+// import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
-import SaveAsOutlinedIcon from '@mui/icons-material/SaveAsOutlined';
-import PendingActionsOutlinedIcon from '@mui/icons-material/PendingActionsOutlined';
-import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import routes from '../../utlis/routes';
 
 export const links = [
@@ -64,32 +58,18 @@ export const links = [
     children: [
       {
         id: 1,
-        name: 'Blog',
+        name: 'Articles',
         link: routes.blog,
         icon: <BookOutlinedIcon />,
-        description: 'Blog',
+        description: 'Articles List',
       },
       {
         id: 2,
         name: 'New',
         link: `${routes.blog}/new`,
         icon: <AddBoxOutlinedIcon />,
-        description: 'New Blog',
+        description: 'New Article',
         canBeDynamic: true,
-      },
-      {
-        id: 3,
-        name: 'Drafts',
-        link: routes.blogDrafts,
-        icon: <SaveAsOutlinedIcon />,
-        description: 'Blog Drafts',
-      },
-      {
-        id: 4,
-        name: 'Scheduled',
-        link: routes.scheduledBlog,
-        icon: <PendingActionsOutlinedIcon />,
-        description: 'Scheduled Blog',
       },
     ],
   },
@@ -127,20 +107,20 @@ export const links = [
 ];
 
 export const secondaryLinks = [
-  {
-    id: 1,
-    name: 'Settings',
-    link: routes.settings,
-    icon: <SettingsOutlinedIcon />,
-    description: 'Settings',
-    children: [
-      {
-        id: 1,
-        name: 'Settings',
-        link: routes.settings,
-        icon: <SettingsOutlinedIcon />,
-        description: 'Settings',
-      },
-    ],
-  },
+  // {
+  //   id: 1,
+  //   name: 'Settings',
+  //   link: routes.settings,
+  //   icon: <SettingsOutlinedIcon />,
+  //   description: 'Settings',
+  //   children: [
+  //     {
+  //       id: 1,
+  //       name: 'Settings',
+  //       link: routes.settings,
+  //       icon: <SettingsOutlinedIcon />,
+  //       description: 'Settings',
+  //     },
+  //   ],
+  // },
 ];

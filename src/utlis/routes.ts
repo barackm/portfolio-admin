@@ -7,8 +7,6 @@ const routes = {
   newProject: '/dashboard/projects/new',
   blog: '/dashboard/blog',
   newBlog: '/dashboard/blog/new',
-  blogDrafts: '/dashboard/blog/drafts',
-  scheduledBlog: '/dashboard/blog/scheduled',
   users: '/dashboard/users',
   newUsers: '/dashboard/users/new',
   userProfile: '/dashboard/users/profile',

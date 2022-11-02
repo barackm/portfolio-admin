@@ -1,13 +1,16 @@
 import { toast } from 'react-toastify';
 
 export const getErrorMessage = (error: any) => {
-  if (error.response) {
-    return error.response.data;
-  } else if (error.request) {
-    return error.request;
-  } else {
-    return error.message;
+  if (
+    error &&
+    error.response &&
+    error.response.data &&
+    error.response.data.message
+  ) {
+    return error.response.data.message;
   }
+
+  return error.message || 'Something went wrong';
 };
 
 export const displayError = (error: any) => {
@@ -18,7 +21,5 @@ export const displayError = (error: any) => {
 
   if (expectedError) {
     return toast.error(getErrorMessage(error));
-  } else {
-    return toast.error('An unexpected error occurred.');
   }
 };
