@@ -10,3 +10,7 @@ export const getArticlesAsync = async () => {
 export const getSingleArticleAsync = async (articleId: string) => {
   return await http.get(`${url}/${articleId}`);
 };
+
+export const deleteArticleAsync = async (articleId: string) => {
+  return await http.delete(`${url}/${articleId}`);
+};

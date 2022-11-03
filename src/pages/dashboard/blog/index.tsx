@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { GetStaticProps } from 'next';
+import { GetServerSideProps, GetStaticProps } from 'next';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -14,13 +14,16 @@ import Table from '../../../components/Table/Table';
 import Tooltip from '../../../components/common/Tooltip';
 import { useRouter } from 'next/router';
 import routes from '../../../utlis/routes';
-import { getArticlesAsync } from '../../../api/articles';
+import { deleteArticleAsync, getArticlesAsync } from '../../../api/articles';
+import { toast } from 'react-toastify';
+import { displayError } from '../../../utlis/errorHandler';
 interface ArticlesProps {
   articles: any[];
 }
 
 const Articles = (props: ArticlesProps) => {
   const { articles } = props;
+  const [fetching, setFetching] = React.useState(false);
   const [sortColumn, setSortColumn] = React.useState({
     path: 'title',
     order: 'asc',
@@ -68,7 +71,7 @@ const Articles = (props: ArticlesProps) => {
             </TableActionBtn>
           </Tooltip>
           <Tooltip title='Delete Article'>
-            <TableActionBtn>
+            <TableActionBtn onClick={() => handleDeleteArticle(article._id)}>
               <DeleteIcon className='text-inherit text-red-400 hover:text-red-500' />
             </TableActionBtn>
           </Tooltip>
@@ -76,6 +79,22 @@ const Articles = (props: ArticlesProps) => {
       ),
     },
   ];
+
+  const refreshData = () => {
+    router.replace(router.asPath);
+  };
+  const handleDeleteArticle = async (id: string) => {
+    setFetching(true);
+    try {
+      await deleteArticleAsync(id);
+      setFetching(false);
+      toast.success('Article deleted successfully');
+      refreshData();
+    } catch (error) {
+      displayError(error);
+      setFetching(false);
+    }
+  };
 
   return (
     <Page>
@@ -97,7 +116,7 @@ const Articles = (props: ArticlesProps) => {
   );
 };
 
-export const getStaticProps = async (context: GetStaticProps) => {
+export const getServerSideProps = async (context: GetServerSideProps) => {
   const { data: articles } = await getArticlesAsync();
 
   return {
