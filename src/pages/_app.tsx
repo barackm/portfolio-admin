@@ -4,9 +4,10 @@ import { ToastContainer } from 'react-toastify';
 import AuthCheck from '../AuthCheck';
 import Layout from '../components/Layout/Layout';
 import store from '../store';
-import '../styles/globals.css';
+import '../styles/globals.scss';
 import 'react-toastify/dist/ReactToastify.css';
 import Head from 'next/head';
+import Form from '../components/form/Form';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

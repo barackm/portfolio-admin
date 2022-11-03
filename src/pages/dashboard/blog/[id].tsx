@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import useSWR from 'swr';
 
 import Page from '../../../components/common/Page';
+import Editor from '../../../components/Editor';
 import http from '../../../services/httpService';
 import { API_END_POINT } from '../../../utlis/constants/constants';
 import routes from '../../../utlis/routes';
@@ -46,6 +47,7 @@ const Artice = (props: ArticeProps) => {
     <Page>
       <div className='mt-10 py-10 px-4 pt-6 bg-white rounded-xl shadow-soft-3xl'>
         Article
+        <Editor />
       </div>
     </Page>
   );

@@ -30,3 +30,28 @@ a {
     background: black;
   } */
 }
+
+.ql-toolbar {
+  border-top-left-radius: 0.3rem;
+  border-top-right-radius: 0.3rem;
+  width: 100%;
+  // SHOULD BE STICKY WHEN SCROLLING
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: white;
+}
+
+.ql-container {
+  width: 100%;
+  border-bottom-left-radius: 0.3rem;
+  border-bottom-right-radius: 0.3rem;
+  min-height: 10cm;
+  // A4 
+  max-height: 29.7cm;
+
+  .ql-editor {
+    min-height: 10cm;
+    max-height: 29.7cm;
+  }
+}
