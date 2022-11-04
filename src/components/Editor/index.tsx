@@ -1,10 +1,8 @@
 import React from 'react';
 import { useCallback, useEffect, useState } from 'react';
-// @ts-ignore
 const Quill = typeof window === 'object' ? require('quill') : () => false;
 import 'quill/dist/quill.snow.css';
 
-const SAVE_INTERVAL_MS = 2000;
 const TOOLBAR_OPTIONS = [
   [{ header: [1, 2, 3, 4, 5, 6, false] }],
   [{ font: [] }],
@@ -17,8 +15,30 @@ const TOOLBAR_OPTIONS = [
   ['clean'],
 ];
 
-const Editor = () => {
-  const [quill, setQuill] = useState();
+interface EditorProps {
+  onChange?: (value: string) => void;
+  value?: string;
+}
+
+const Editor = (props: EditorProps) => {
+  const { onChange, value } = props;
+  const [quill, setQuill] = useState<any>();
+
+  useEffect(() => {
+    if (quill == null) return;
+
+    const handler = (delta: any, oldDelta: any, source: any) => {
+      if (source !== 'user') return;
+      onChange?.(quill.root.innerHTML);
+    };
+
+    quill.on('text-change', handler);
+
+    return () => {
+      quill.off('text-change', handler);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quill]);
 
   const wrapperRef = useCallback((wrapper: any) => {
     if (wrapper == null) return;
@@ -26,16 +46,22 @@ const Editor = () => {
     wrapper.innerHTML = '';
     const editor = document?.createElement('div');
     wrapper.append(editor);
-    if (document && document.readyState === 'complete') {
-      const q = new Quill(editor, {
-        theme: 'snow',
-        modules: { toolbar: TOOLBAR_OPTIONS },
-      });
-      // q.disable();
-      // q.setText('Loading...');
-      // setQuill(q);
-    }
+
+    const q = new Quill(editor, {
+      theme: 'snow',
+      modules: { toolbar: TOOLBAR_OPTIONS },
+      placeholder: 'Start writing...',
+    });
+    setQuill(q);
   }, []);
+
+  useEffect(() => {
+    if (quill == null) return;
+    if (value !== quill.root.innerHTML) {
+      quill.root.innerHTML = value || '';
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quill, value]);
 
   return (
     <div className='my-5'>

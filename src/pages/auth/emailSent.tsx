@@ -11,7 +11,7 @@ import LoadingIndicator from '../../components/common/LoadingIndicator';
 import Button from '../../components/common/Button';
 import Link from 'next/link';
 
-const EmailSend = () => {
+const EmailSent = () => {
   const userEmail = storage.get(USER_EMAIL);
   const token = storage.getAuthToken();
   const router = useRouter();
@@ -86,4 +86,4 @@ const EmailSend = () => {
   );
 };
 
-export default EmailSend;
+export default EmailSent;

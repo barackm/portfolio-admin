@@ -54,24 +54,22 @@ const AuthCheck = (props: AuthCheckProps) => {
   };
 
   useEffect(() => {
-    if (document.readyState === 'complete') {
-      const socket = io('http://localhost:3900/' as string);
+    const socket = io('http://localhost:3900/' as string);
 
-      socket.on('connect', () => {
-        console.log('connected');
-        dispatch(socketConnected(socket));
-      });
-      socket.on('disconnect', () => {
-        console.log('disconnected');
-      });
-      socket.on('connect_error', (error) => {
-        console.log('connect_error+++', error);
-      });
+    socket.on('connect', () => {
+      console.log('connected');
+      dispatch(socketConnected(socket));
+    });
+    socket.on('disconnect', () => {
+      console.log('disconnected');
+    });
+    socket.on('connect_error', (error) => {
+      console.log('connect_error+++', error);
+    });
 
-      return () => {
-        socket.disconnect();
-      };
-    }
+    return () => {
+      socket.disconnect();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -4,11 +4,13 @@ import useSWR from 'swr';
 
 import Page from '../../../components/common/Page';
 import Editor from '../../../components/Editor';
+import { useAppSelector } from '../../../hooks/store';
 import http from '../../../services/httpService';
 import { API_END_POINT } from '../../../utlis/constants/constants';
 import routes from '../../../utlis/routes';
 const apiUrl = `${API_END_POINT}articles`;
 
+const SAVE_INTERVAL_MS = 2000;
 interface ArticeProps {}
 
 const postFetcher = (url: string) => http.post(url).then((res) => res.data);
@@ -17,7 +19,15 @@ const putFetcher = (url: string) => http.put(url).then((res) => res.data);
 
 const Artice = (props: ArticeProps) => {
   const router = useRouter();
-  const [article, setArticle] = React.useState<any>(null);
+  const [article, setArticle] = React.useState<any>({
+    title: '',
+    draft: '',
+    tags: [],
+    mainImageUrl: '',
+  });
+  const { io } = useAppSelector<any>((state) => state.socket);
+  const { currentUser } = useAppSelector<any>((state) => state.auth);
+
   const { id } = router.query;
   const shouldNotFetch = !id || article?.isNewArticle;
   const url = `${apiUrl}/${id === 'new' ? 'new-article' : id}`;
@@ -41,13 +51,30 @@ const Artice = (props: ArticeProps) => {
     }
   }, [data, router]);
 
-  console.log('article', article);
+  const handleChange = (content: any) => {
+    setArticle((prev: any) => ({ ...prev, draft: content }));
+  };
+
+  const handleAutoSave = async () => {
+    const data = {
+      currentUser,
+      article,
+    };
+
+    io && io.emit('auto-save-article', data);
+  };
+
+  useEffect(() => {
+    const interval = setInterval(handleAutoSave, SAVE_INTERVAL_MS);
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [article]);
 
   return (
     <Page>
       <div className='mt-10 py-10 px-4 pt-6 bg-white rounded-xl shadow-soft-3xl'>
         Article
-        <Editor />
+        {!loading && <Editor onChange={handleChange} value={article.draft} />}
       </div>
     </Page>
   );
