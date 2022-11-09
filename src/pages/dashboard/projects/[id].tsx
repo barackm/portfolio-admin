@@ -2,6 +2,7 @@ import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { toast } from 'react-toastify';
+import useSWR from 'swr';
 import * as Yup from 'yup';
 import { getProjectCategoriesAsync } from '../../../api/projectCategories';
 import {
@@ -19,16 +20,26 @@ import Page from '../../../components/common/Page';
 import Form from '../../../components/form/Form';
 import { displayError } from '../../../utlis/errorHandler';
 import routes from '../../../utlis/routes';
-interface ProjectPros {
-  project: any;
-  categories: any;
-}
 
-const Project = (props: ProjectPros) => {
+const Project = () => {
   const router = useRouter();
-  const { project, categories } = props;
+  const { id } = router.query;
+  const { data: categories = [] } = useSWR('/projectCategories');
+  const defaultProjectData = {
+    title: '',
+    description: '',
+    category: {},
+    liveDemoUrl: '',
+    githubUrl: '',
+    sourceCodeUrl: '',
+    tags: [],
+    technologies: [],
+    imageUrl: [],
+  };
+  const { data: project = id === 'new' ? defaultProjectData : {}, error } =
+    useSWR(id && id !== 'new' ? `/projects/${id}` : null);
+
   const [fetching, setFetching] = React.useState(false);
-  const [uploadedImageUrl, setUploadedImageUrl] = React.useState('');
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required().label('Title'),
@@ -173,66 +184,3 @@ const Project = (props: ProjectPros) => {
 };
 
 export default Project;
-
-export const getStaticPaths = async () => {
-  const { data: projects } = await getProjectsAsync();
-
-  const projectsWithNew = [...projects, { _id: 'new' }];
-
-  const paths = projectsWithNew.map((project: any) => ({
-    params: { id: project._id },
-  }));
-
-  return {
-    paths,
-    fallback: false,
-  };
-};
-
-export const getStaticProps: GetStaticProps = async ({ params }: any) => {
-  const defaultEmptyProject = {
-    title: '',
-    description: '',
-    liveDemoUrl: '',
-    sourceCodeUrl: '',
-    tags: [],
-    technologies: [],
-    category: null,
-    imageUrl: '',
-  };
-
-  const { data: project } =
-    params.id === 'new'
-      ? { data: defaultEmptyProject }
-      : await getSingleProjectAsync(params.id);
-  const { data: categories } = await getProjectCategoriesAsync();
-
-  return {
-    props: {
-      project: {
-        ...project,
-        tags: project.tags.map((tag: any) => ({ label: tag, value: tag })),
-        technologies: project.technologies.map((tech: any) => ({
-          label: tech,
-          value: tech,
-        })),
-        category: project.category
-          ? {
-              ...project.category,
-              label: project.category.name,
-              value: project.category._id,
-            }
-          : null,
-        imageUrl: project.imageUrl
-          ? [
-              {
-                path: project.imageUrl,
-                name: project.imageUrl,
-              },
-            ]
-          : [],
-      },
-      categories,
-    },
-  };
-};

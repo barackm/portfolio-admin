@@ -6,6 +6,7 @@ const slice = createSlice({
     currentUser: null,
     loading: false,
     error: null,
+    token: null,
   },
   reducers: {
     authRequestStarted: (state: any) => {
@@ -13,9 +14,10 @@ const slice = createSlice({
       state.error = null;
     },
     authRequestSuccess: (state: any, action: any) => {
-      const { user } = action.payload || {};
+      const { user, token } = action.payload || {};
       state.loading = false;
       state.currentUser = user;
+      state.token = token;
     },
     authRequestFailed: (state: any, action: any) => {
       state.loading = false;

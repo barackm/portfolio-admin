@@ -7,26 +7,29 @@ import store from '../store';
 import '../styles/globals.scss';
 import 'react-toastify/dist/ReactToastify.css';
 import Head from 'next/head';
-import Form from '../components/form/Form';
+import { SWRConfig } from 'swr';
+import axios from 'axios';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Provider store={store}>
-      <Head>
-        <title>Barack M. | Admin</title>
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
-      <ToastContainer />
-      <AuthCheck>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </AuthCheck>
-    </Provider>
+    <SWRConfig
+      value={{
+        fetcher: (params) => axios(params).then((res) => res.data),
+      }}
+    >
+      <Provider store={store}>
+        <Head>
+          <title>Barack M. | Admin</title>
+          <link rel='icon' href='/favicon.ico' />
+        </Head>
+        <ToastContainer />
+        <AuthCheck>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </AuthCheck>
+      </Provider>
+    </SWRConfig>
   );
 }
-
-export const getServerSideProps = async (context: any) => {
-  console.log(context, 'context');
-};
 export default MyApp;

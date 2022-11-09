@@ -1,11 +1,12 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { authorization } from '../utlis/constants/constants';
+import { API_END_POINT, authorization } from '../utlis/constants/constants';
 import storage from './storageService';
 
 axios.defaults.headers.common[
   authorization
 ] = `Bearer ${storage.getAuthToken()}`;
+axios.defaults.baseURL = API_END_POINT.split('/').slice(0, -1).join('/');
 axios.interceptors.response.use(
   (resp) => resp,
   (error) => {

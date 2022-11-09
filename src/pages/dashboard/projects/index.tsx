@@ -12,16 +12,12 @@ import TableLink from '../../../components/common/TableLink';
 import Tag from '../../../components/common/Tag';
 import Table from '../../../components/Table/Table';
 import Tooltip from '../../../components/common/Tooltip';
-import { getProjectsAsync } from '../../../api/projects';
 import { useRouter } from 'next/router';
 import routes from '../../../utlis/routes';
-interface ProjectsProps {
-  projects: any;
-  categories: any;
-}
-
-const Projects = (props: ProjectsProps) => {
-  const { projects } = props;
+import useSWR from 'swr';
+const Projects = () => {
+  const { data: projects, error } = useSWR('/projects');
+  const fetching = !projects && !error;
   const [sortColumn, setSortColumn] = React.useState({
     path: 'name',
     order: 'asc',
@@ -143,7 +139,7 @@ const Projects = (props: ProjectsProps) => {
   return (
     <Page>
       <Table
-        data={projects}
+        data={projects || []}
         columns={columns}
         onSort={(sortColumn) => setSortColumn(sortColumn)}
         sortColumn={sortColumn}
@@ -158,16 +154,6 @@ const Projects = (props: ProjectsProps) => {
       />
     </Page>
   );
-};
-
-export const getStaticProps = async (context: GetStaticProps) => {
-  const { data: projects } = await getProjectsAsync();
-
-  return {
-    props: {
-      projects,
-    },
-  };
 };
 
 export default Projects;

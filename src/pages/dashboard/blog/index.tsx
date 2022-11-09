@@ -17,13 +17,13 @@ import routes from '../../../utlis/routes';
 import { deleteArticleAsync, getArticlesAsync } from '../../../api/articles';
 import { toast } from 'react-toastify';
 import { displayError } from '../../../utlis/errorHandler';
-interface ArticlesProps {
-  articles: any[];
-}
+import useSWR, { useSWRConfig } from 'swr';
 
-const Articles = (props: ArticlesProps) => {
-  const { articles } = props;
-  const [fetching, setFetching] = React.useState(false);
+const Articles = () => {
+  const { data: articles, error } = useSWR('/articles');
+  const { mutate } = useSWRConfig();
+  const fetching = !articles && !error;
+  const [loading, setLoading] = React.useState(false);
   const [sortColumn, setSortColumn] = React.useState({
     path: 'title',
     order: 'asc',
@@ -80,26 +80,23 @@ const Articles = (props: ArticlesProps) => {
     },
   ];
 
-  const refreshData = () => {
-    router.replace(router.asPath);
-  };
   const handleDeleteArticle = async (id: string) => {
-    setFetching(true);
+    setLoading(true);
     try {
       await deleteArticleAsync(id);
-      setFetching(false);
+      setLoading(false);
       toast.success('Article deleted successfully');
-      refreshData();
+      mutate('/articles');
     } catch (error) {
       displayError(error);
-      setFetching(false);
+      setLoading(false);
     }
   };
 
   return (
     <Page>
       <Table
-        data={articles}
+        data={articles || []}
         columns={columns}
         onSort={(sortColumn) => setSortColumn(sortColumn)}
         sortColumn={sortColumn}
@@ -114,16 +111,6 @@ const Articles = (props: ArticlesProps) => {
       />
     </Page>
   );
-};
-
-export const getServerSideProps = async (context: GetServerSideProps) => {
-  const { data: articles } = await getArticlesAsync();
-
-  return {
-    props: {
-      articles,
-    },
-  };
 };
 
 export default Articles;
