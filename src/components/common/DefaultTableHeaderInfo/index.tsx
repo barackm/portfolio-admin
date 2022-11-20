@@ -1,15 +1,47 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Button from '../Button';
 import SearchIcon from '@mui/icons-material/Search';
 import TextInput from '../Input/TextInput';
+import { readFromQueryString } from '../../../utlis/queryParams';
+import useSearch from '../../../hooks/useSearch';
+import { updateSearch } from '../../../utlis/constants/browserHistory';
+import useSyncWithSearch from '../../../hooks/useSyncWithSearch';
 
 interface DefaultTableHeaderInfoProps {
   title?: string;
   subTitle?: string;
+  pageSizeQueryField: string;
 }
 
 const DefaultTableHeaderInfo = (props: DefaultTableHeaderInfoProps) => {
-  const { title, subTitle } = props;
+  const { title, subTitle, pageSizeQueryField } = props;
+  const search = useSearch();
+  const pageSize = Number(
+    readFromQueryString(search, pageSizeQueryField) ?? '10',
+  );
+
+  const [pageSizeSearch, setPageSizeSearch] = useSyncWithSearch(
+    pageSizeQueryField,
+    String(pageSize),
+    !search,
+  );
+
+  const searchRef = useRef(search);
+
+  const setPageSize = (pageSizeNumber: number) =>
+    // @ts-ignore
+    setPageSizeSearch(String(pageSizeNumber));
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (!readFromQueryString(searchRef.current, pageSizeQueryField)) {
+        updateSearch({
+          [pageSizeQueryField]: String(pageSize),
+        });
+      }
+    }, 300);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className='px-4 py-6'>
@@ -34,7 +66,15 @@ const DefaultTableHeaderInfo = (props: DefaultTableHeaderInfoProps) => {
         <div className='py-5 flex items-center w-full'>
           <div className='dataTable-dropdown'>
             <label className='text-slate-400 font-light text-sx'>
-              <select className='dataTable-selector text-sm'>
+              <select
+                className='dataTable-selector text-sm'
+                name='limit'
+                value={pageSizeSearch || '10'}
+                onChange={(e) => setPageSize(Number(e.target.value))}
+              >
+                <option value='2' className=''>
+                  2
+                </option>
                 <option value='5' className=''>
                   5
                 </option>

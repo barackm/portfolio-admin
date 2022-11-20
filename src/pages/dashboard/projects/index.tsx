@@ -33,14 +33,9 @@ const Projects = () => {
       colClasses: 'min-w-[150px] max-w-[150px]',
       content: (project: any) => (
         <div className='flex items-center'>
-          <div className='flex items-center'>
-            <Checkbox onChange={() => {}} name='project' />
-          </div>
-          <div>
-            <span className='block w-[120px] whitespace-nowrap text-ellipsis overflow-hidden'>
-              {project.title}
-            </span>
-          </div>
+          <span className='block w-[120px] whitespace-nowrap text-ellipsis overflow-hidden'>
+            {project.title}
+          </span>
         </div>
       ),
     },
@@ -114,11 +109,6 @@ const Projects = () => {
       ignoreSort: true,
       content: (project: any) => (
         <div>
-          <Tooltip title='View Project'>
-            <TableActionBtn>
-              <VisibilityIcon className='text-inherit' />
-            </TableActionBtn>
-          </Tooltip>
           <Tooltip title='Edit Project'>
             <TableActionBtn
               onClick={() => router.push(`${routes.projects}/${project._id}`)}
@@ -144,10 +134,14 @@ const Projects = () => {
         onSort={(sortColumn) => setSortColumn(sortColumn)}
         sortColumn={sortColumn}
         sortTable
+        total={projects?.length}
         title='Projects'
+        pageNumberQueryField='page'
+        pageSizeQueryField='limit'
         topHeaderContent={
           <DefaultTableHeaderInfo
             title='Projects'
+            pageSizeQueryField='limit'
             subTitle='Manage your projects here with easy.'
           />
         }

@@ -10,7 +10,7 @@ interface SelectProps {
   placeholder?: string;
   value?: string;
   label?: string;
-  onChange?: () => void;
+  onChange?: any;
   disabled?: boolean;
   usesFormik?: boolean;
   error?: string;
@@ -64,7 +64,7 @@ const Select = (props: SelectProps) => {
             inpurError,
             error,
           })}
-          onBlur={() => setFieldTouched(name as string)}
+          onBlur={() => usesFormik && setFieldTouched(name as string)}
           onChange={(value) => {
             if (disabled) return;
             if (usesFormik) {

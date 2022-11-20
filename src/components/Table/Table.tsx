@@ -16,6 +16,14 @@ interface TableProps {
   loading?: boolean;
   title?: string;
   topHeaderContent?: JSX.Element;
+  limit?: number;
+  total?: number;
+  page?: number;
+  onPageChange?: (page: number) => void;
+  onLimitChange?: (limit: number) => void;
+  count?: number;
+  pageNumberQueryField?: string;
+  pageSizeQueryField?: string;
 }
 
 const Table = (props: TableProps) => {
@@ -28,6 +36,11 @@ const Table = (props: TableProps) => {
     loading,
     title,
     topHeaderContent,
+    page,
+    onPageChange,
+    pageSizeQueryField,
+    total,
+    pageNumberQueryField,
   } = props;
   return (
     <div className='w-full max-w-full'>
@@ -56,7 +69,11 @@ const Table = (props: TableProps) => {
           </div>
         )}
         <div className='p-4 flex justify-center items-center'>
-          <AppPagination />
+          <AppPagination
+            pageNumberQueryField={pageNumberQueryField || 'page'}
+            total={total || 0}
+            pageSizeQueryField={pageSizeQueryField || 'limit'}
+          />
         </div>
       </div>
     </div>

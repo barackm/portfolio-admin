@@ -20,7 +20,10 @@ import { displayError } from '../../../utlis/errorHandler';
 import useSWR, { useSWRConfig } from 'swr';
 
 const Articles = () => {
-  const { data: articles, error } = useSWR('/articles');
+  const [limit, setLimit] = React.useState(2);
+  const [page, setPage] = React.useState(1);
+  const { data: articlesData, error } = useSWR('/articles?page=1&limit=10');
+  const { articles, total } = articlesData || {};
   const { mutate } = useSWRConfig();
   const fetching = !articles && !error;
   const [loading, setLoading] = React.useState(false);
@@ -39,30 +42,66 @@ const Articles = () => {
       colClasses: 'min-w-[150px] max-w-[150px]',
       content: (article: any) => (
         <div className='flex items-center'>
-          <div className='flex items-center'>
-            <Checkbox onChange={() => {}} name='article' />
-          </div>
-          <div>
-            <span className='block w-[120px] whitespace-nowrap text-ellipsis overflow-hidden'>
-              {article.title}
-            </span>
-          </div>
+          <span className='block w-[120px] whitespace-nowrap text-ellipsis overflow-hidden'>
+            {article.title}
+          </span>
+        </div>
+      ),
+    },
+    {
+      id: 2,
+      label: 'Content',
+      path: 'content',
+      colClasses: 'min-w-[150px] max-w-[150px]',
+      content: (article: any) => (
+        <div className='flex items-center'>
+          <span className='block w-[120px] whitespace-nowrap text-ellipsis overflow-hidden'>
+            {article.content || 'No content'}
+          </span>
         </div>
       ),
     },
     {
       id: 3,
+      label: 'Modified At',
+      path: 'modifiedAt',
+      colClasses: 'min-w-[150px] max-w-[150px]',
+      content: (article: any) => (
+        <div className='flex items-center'>
+          {moment(article.modifiedAt).format('DD/MM/YYYY')}
+        </div>
+      ),
+    },
+    {
+      id: 3,
+      label: 'Status',
+      path: 'isPublished',
+      colClasses: 'min-w-[150px] max-w-[150px]',
+      content: (article: any) => (
+        <div className='flex items-center'>
+          {article.isPublished ? 'Published' : 'Draft'}
+        </div>
+      ),
+    },
+    {
+      id: 3,
+      label: 'Created At',
+      path: 'createdAt',
+      colClasses: 'min-w-[150px] max-w-[150px]',
+      content: (article: any) => (
+        <div className='flex items-center'>
+          {moment(article.createdAt).format('DD/MM/YYYY')}
+        </div>
+      ),
+    },
+    {
+      id: 4,
       label: 'Actions',
       path: '',
       colClasses: 'min-w-[170px]',
       ignoreSort: true,
       content: (article: any) => (
         <div>
-          <Tooltip title='View Article'>
-            <TableActionBtn>
-              <VisibilityIcon className='text-inherit' />
-            </TableActionBtn>
-          </Tooltip>
           <Tooltip title='Edit Article'>
             <TableActionBtn
               onClick={() => router.push(`${routes.blog}/${article._id}`)}
@@ -102,10 +141,17 @@ const Articles = () => {
         sortColumn={sortColumn}
         sortTable
         title='Articles'
+        limit={limit}
+        page={page}
+        total={total}
+        count={Math.ceil(total / limit)}
+        pageNumberQueryField='page'
+        pageSizeQueryField='limit'
         topHeaderContent={
           <DefaultTableHeaderInfo
             title='Articles'
-            subTitle='Manage your articles'
+            pageSizeQueryField='limit'
+            subTitle='Manage your projects here with easy.'
           />
         }
       />

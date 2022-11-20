@@ -5,7 +5,23 @@ interface TextInputProps {
   widthAuto?: boolean;
   name?: string;
   id?: string;
-  type?: 'text' | 'email' | 'password' | 'number' | 'search' | 'tel' | 'url';
+  type?:
+    | 'text'
+    | 'email'
+    | 'password'
+    | 'number'
+    | 'search'
+    | 'tel'
+    | 'url'
+    | 'date'
+    | 'time'
+    | 'datetime-local'
+    | 'month'
+    | 'week'
+    | 'color'
+    | 'file';
+  accepts?: string;
+  multiple?: boolean;
   placeholder?: string;
   value?: string;
   label?: string;
@@ -36,6 +52,8 @@ const TextInput = (props: TextInputProps) => {
     startIcon,
     endIcon,
     isTextArea = false,
+    accepts,
+    multiple,
   } = props;
   const { values, handleChange, setFieldTouched, errors, touched } =
     useFormikContext() || {};
@@ -105,6 +123,8 @@ const TextInput = (props: TextInputProps) => {
             }
           }}
           className={getTextInputClasses()}
+          accept={accepts}
+          multiple={multiple}
         />{' '}
         <span className='text-sm ease-soft leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all right-0'>
           {endIcon}

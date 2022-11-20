@@ -6,11 +6,11 @@ interface TableBodyProps {
 }
 
 const TableBody = (props: TableBodyProps) => {
-  const { data, columns } = props;
+  const { data = [], columns } = props;
 
   return (
     <tbody>
-      {data.map((item: any) => (
+      {data?.map((item: any) => (
         <tr key={item._id}>
           {columns.map((column: any) => (
             <td
