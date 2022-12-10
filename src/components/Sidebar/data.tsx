@@ -87,6 +87,13 @@ export const links = [
         icon: <PeopleAltOutlinedIcon />,
         description: 'Users List',
       },
+      {
+        id: 2,
+        name: 'My Profile',
+        link: routes.profile,
+        icon: <PersonAddAltOutlinedIcon />,
+        description: 'My Profile',
+      },
     ],
   },
 ];

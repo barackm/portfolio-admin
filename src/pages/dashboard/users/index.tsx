@@ -100,13 +100,23 @@ const Users = () => {
       colClasses: '',
       content: (user: IUser) => (
         <div className='block whitespace-nowrap text-ellipsis overflow-hidden'>
-          {user.status === EUserStatus.active ? (
-            <Tag className='bg-green-600 text-slate-50'>{user.status}</Tag>
-          ) : (
-            <Tag className='bg-red-DEFAULT-600 text-slate-50'>
-              {user.status}
-            </Tag>
-          )}
+          <Tag
+            className={`${
+              user.status === EUserStatus.active
+                ? 'bg-green-600 text-slate-50'
+                : ''
+            } ${
+              user.status === EUserStatus.inactive
+                ? 'bg-red-DEFAULT-600 text-slate-50'
+                : ''
+            } ${
+              user.status === EUserStatus.pending
+                ? 'bg-amber-500 text-slate-50'
+                : ''
+            }`}
+          >
+            <span className='text-inherit capitalize'>{user.status}</span>
+          </Tag>
         </div>
       ),
     },

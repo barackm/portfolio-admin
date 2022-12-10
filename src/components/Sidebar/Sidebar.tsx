@@ -14,6 +14,7 @@ import {
   getCurrentActiveLink,
   isCurrentRouteActive,
 } from '../../utlis/routing';
+import routes from '../../utlis/routes';
 
 const Sidebar = () => {
   const [sidebarOnHover, setSidebarOnHover] = React.useState(false);
@@ -156,7 +157,7 @@ const Sidebar = () => {
           </div>
           <div className='flex flex-row items-center justify-center mb-4'>
             <div className='flex flex-row items-center justify-center w-full h-full text-white overflow-hidden'>
-              <Link href='/profile'>
+              <Link href={routes.profile}>
                 <a className='flex rounded-full overflow-hidden flex-row items-center justify-center  border-2 border-white bg-white'>
                   <Image
                     src={currentUser?.avatarUrl || '/images/avatar.png'}

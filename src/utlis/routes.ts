@@ -10,7 +10,7 @@ const routes = {
   users: '/dashboard/users',
   newUsers: '/dashboard/users/new',
   userProfile: '/dashboard/users/profile',
-  profile: '/dashboard/profile',
+  profile: '/dashboard/users/me',
   settings: '/dashboard/settings',
   emailSent: '/auth/emailSent',
   forgotPassword: '/auth/forgotPassword',
