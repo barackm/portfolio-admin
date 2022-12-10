@@ -69,12 +69,19 @@ const User = () => {
     setFetching(true);
     try {
       const { firstName, lastName, email, roleObjects, status } = values;
+      const regularRole = roles?.find(
+        (role: IRole) => role.name === EUserRole.regular,
+      );
       const body = isAdminUpdatingUser
         ? {
             firstName,
             lastName,
             email,
-            roles: roleObjects,
+            roles: !roleObjects.find(
+              (role: IRole) => role.name === EUserRole.regular,
+            )
+              ? [...roleObjects, regularRole]
+              : roleObjects,
             status: status.value,
           }
         : {
