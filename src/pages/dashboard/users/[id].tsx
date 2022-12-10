@@ -1,13 +1,9 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { toast } from 'react-toastify';
-import useSWR, { useSWRConfig } from 'swr';
+import useSWR from 'swr';
 import * as Yup from 'yup';
-import {
-  deleteUserAsync,
-  updateUserAsync,
-  updateUserBulkInfoAsync,
-} from '../../../api/users';
+import { updateUserAsync, updateUserBulkInfoAsync } from '../../../api/users';
 import Button from '../../../components/common/Button';
 import Select from '../../../components/common/Input/Select';
 import TextInput from '../../../components/common/Input/TextInput';
