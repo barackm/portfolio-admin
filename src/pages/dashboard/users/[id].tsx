@@ -41,7 +41,7 @@ const User = () => {
         email,
         roleObjects: roleObjects.map((role: IRole) => ({
           ...role,
-          label: role.name,
+          label: role.label,
           value: role._id,
         })),
         status: {

@@ -10,3 +10,7 @@ export const updateUserAsync = async (_id: string, data: any) => {
 export const updateUserBulkInfoAsync = async (_id: string, data: any) => {
   return await http.put(`${url}/admin/${_id}`, data);
 };
+
+export const updateUserAvatarAsync = async (_id: string, data: any) => {
+  return await http.put(`${url}/${_id}/avatar`, data);
+};

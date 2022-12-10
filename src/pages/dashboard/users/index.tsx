@@ -33,6 +33,7 @@ const Users = () => {
   const router = useRouter();
 
   useEffect(() => {
+    if (!currentUser) return;
     const isAdmin = currentUser.roleObjects.find(
       (role: IRole) => role.name === EUserRole.admin,
     );
