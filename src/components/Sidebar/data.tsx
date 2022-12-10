@@ -73,37 +73,6 @@ export const links = [
       },
     ],
   },
-  {
-    id: 5,
-    name: 'Users',
-    link: routes.users,
-    icon: <PeopleAltOutlinedIcon />,
-    description: 'Users',
-    children: [
-      {
-        id: 1,
-        name: 'Users',
-        link: routes.users,
-        icon: <PeopleAltOutlinedIcon />,
-        description: 'Users List',
-      },
-      {
-        id: 2,
-        name: 'New',
-        link: `${routes.users}/new`,
-        icon: <PersonAddAltOutlinedIcon />,
-        description: 'New User',
-        canBeDynamic: true,
-      },
-      {
-        id: 3,
-        name: 'User Profile',
-        link: routes.userProfile,
-        icon: <PersonAddAltOutlinedIcon />,
-        description: 'User Profile',
-      },
-    ],
-  },
 ];
 
 export const secondaryLinks = [

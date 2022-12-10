@@ -148,6 +148,7 @@ const Articles = () => {
             title='Articles'
             pageSizeQueryField='limit'
             subTitle='Manage your projects here with easy.'
+            routePathToNew={routes.newBlog}
           />
         }
       />
