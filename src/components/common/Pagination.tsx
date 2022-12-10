@@ -4,7 +4,6 @@ import Stack from '@mui/material/Stack';
 import useSearch from '../../hooks/useSearch';
 import useSyncWithSearch from '../../hooks/useSyncWithSearch';
 import { readFromQueryString } from '../../utlis/queryParams';
-import useDidUpdate from '../../hooks/useDidUpdate';
 import { updateSearch } from '../../utlis/constants/browserHistory';
 
 interface AppPaginationProps {

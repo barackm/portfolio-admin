@@ -7,6 +7,8 @@ import {
   authRequestStarted,
   authRequestSuccess,
 } from '../store/slices/auth';
+import { EUserRole, EUserStatus } from '../types/common';
+import { updateToken } from '../utlis/auth';
 import { USER_EMAIL } from '../utlis/constants/constants';
 import routes from '../utlis/routes';
 import storage from './storageService';
@@ -24,6 +26,10 @@ export const loginUser = (data: any, router: any) => async (dispatch: any) => {
       showErrorToast: true,
       successAction: (payload: { user: any; token: string }) => {
         const { token, user } = payload;
+        toast.success('Login successful, Welcome back');
+        dispatch(authRequestSuccess(payload));
+        updateToken(token);
+
         if (!user.isVerified) {
           storage.set(USER_EMAIL, user.email);
           toast.info('Please verify your email');
@@ -35,9 +41,25 @@ export const loginUser = (data: any, router: any) => async (dispatch: any) => {
           );
           return;
         }
-        toast.success('Login successful, Welcome back');
-        dispatch(authRequestSuccess(payload));
-        storage.setAuthToken(token);
+
+        if (user.status === EUserStatus.pending) {
+          toast.info('Your account is pending');
+          router.push(routes.profile);
+          return;
+        }
+        const isOnlyRegularUser =
+          user.roles.length === 1 && user.roles[0].name === EUserRole.regular;
+        if (isOnlyRegularUser && user.status === EUserStatus.active) {
+          toast.info('Your account is pending, waiting for admin approval');
+          router.push(routes.profile);
+          return;
+        }
+        if (user.status === EUserStatus.inactive) {
+          toast.info('Your account is inactive');
+          router.push(routes.profile);
+          return;
+        }
+
         router.push(routes.home);
       },
     }),
@@ -45,7 +67,7 @@ export const loginUser = (data: any, router: any) => async (dispatch: any) => {
 };
 
 export const logoutUser = (router: any) => async (dispatch: any) => {
-  storage.removeAuthToken();
+  updateToken(null);
   dispatch(authRequestSuccess(null));
   router.push(routes.login);
 };

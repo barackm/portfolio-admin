@@ -20,7 +20,10 @@ import { deleteUserAsync } from '../../../api/users';
 import { displayError } from '../../../utlis/errorHandler';
 
 const Users = () => {
-  const { data: users, error } = useSWR('/users');
+  const { data: users, error } = useSWR('/users', {
+    refreshInterval: 10000,
+  });
+
   const { currentUser } = useAppSelector<any>((state) => state.auth);
   const [fetching, setFetching] = React.useState(false);
   const loading = !users && !error;
@@ -187,6 +190,8 @@ const Users = () => {
       },
     },
   ];
+
+  console.log(users);
 
   return (
     <Page>

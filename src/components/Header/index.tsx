@@ -10,6 +10,7 @@ import { links, secondaryLinks } from '../Sidebar/data';
 import Link from 'next/link';
 import routes from '../../utlis/routes';
 import { getBreadcrumb } from '../../utlis/routing';
+import { logoutUser } from '../../services/authService';
 
 const Header = () => {
   const dispatch = useAppDispatch();
@@ -112,6 +113,9 @@ const Header = () => {
             type='button'
             title='logout'
             className='flex items-center justify-center p-2 hover:bg-gray-200 rounded-full'
+            onClick={() => {
+              dispatch(logoutUser(router));
+            }}
           >
             <LogoutIcon />
           </button>
