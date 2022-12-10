@@ -33,6 +33,7 @@ interface TextInputProps {
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
   isTextArea?: boolean;
+  autoComplete?: boolean;
 }
 
 const TextInput = (props: TextInputProps) => {
@@ -47,6 +48,7 @@ const TextInput = (props: TextInputProps) => {
     disabled,
     error,
     showErrorText,
+    autoComplete,
     usesFormik,
     onChange = () => {},
     startIcon,
@@ -117,6 +119,7 @@ const TextInput = (props: TextInputProps) => {
           }}
           disabled={disabled}
           placeholder={placeholder}
+          autoComplete={autoComplete ? 'on' : 'off'}
           onBlur={() => {
             if (usesFormik && setFieldTouched) {
               setFieldTouched(name as keyof typeof values);

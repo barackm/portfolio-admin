@@ -31,7 +31,7 @@ const User = () => {
   const loadingUser = !userData && !error;
   const isCurrentUserAdmin =
     currentUser &&
-    currentUser.roleObjects.find(
+    currentUser.roleObjects?.find(
       (role: IRole) => role.name === EUserRole.admin,
     );
   const isAdminUpdatingUser =
@@ -188,6 +188,7 @@ const User = () => {
                     name='oldPassword'
                     label='Old Password'
                     type='password'
+                    autoComplete={false}
                   />
                   <div className='my-4' />
                   <TextInput

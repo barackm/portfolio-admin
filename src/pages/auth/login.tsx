@@ -8,7 +8,6 @@ import TextInput from '../../components/common/Input/TextInput';
 import Form from '../../components/form/Form';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import { loginUser } from '../../services/authService';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import routes from '../../utlis/routes';
@@ -28,7 +27,7 @@ const Login = () => {
   const validationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid Email Address').required('Required'),
     password: Yup.string()
-      .min(6, 'Too short, at least 6 chars')
+      .min(5, 'Too short, at least 5 chars')
       .required('Required'),
   });
 
