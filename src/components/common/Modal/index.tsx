@@ -10,10 +10,19 @@ interface ModalProps {
   onClose: () => void;
   className?: string;
   onConfirm?: () => void;
+  loading?: boolean;
 }
 
 const Modal = (props: ModalProps) => {
-  const { children, open, title, onClose, className = '', onConfirm } = props;
+  const {
+    children,
+    open,
+    title,
+    onClose,
+    className = '',
+    onConfirm,
+    loading,
+  } = props;
   const mainModalParentRef = React.useRef<HTMLDivElement>(null);
   const modalContentRef = React.useRef<HTMLDivElement>(null);
   const handleClickOutside = (event: any) => {};
@@ -61,10 +70,15 @@ const Modal = (props: ModalProps) => {
             {children}
           </div>
           <div className='flex flex-wrap items-center justify-end p-3 border-t border-solid shrink-0 border-slate-100 rounded-b-xl sticky bottom-0 left-0'>
-            <Button onClick={onConfirm}>
+            <Button onClick={onConfirm} loading={loading}>
               <span className='text-xs'>Confirm</span>
             </Button>
-            <Button className='ml-2' color='secondary' onClick={onClose}>
+            <Button
+              className='ml-2'
+              color='secondary'
+              onClick={onClose}
+              disabled={loading}
+            >
               <span className='text-xs'>Cancel</span>
             </Button>
           </div>

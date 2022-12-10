@@ -14,3 +14,7 @@ export const updateUserBulkInfoAsync = async (_id: string, data: any) => {
 export const updateUserAvatarAsync = async (_id: string, data: any) => {
   return await http.put(`${url}/${_id}/avatar`, data);
 };
+
+export const deleteUserAsync = async (_id: string) => {
+  return await http.delete(`${url}/${_id}`);
+};

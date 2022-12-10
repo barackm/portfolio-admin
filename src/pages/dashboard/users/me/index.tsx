@@ -17,7 +17,6 @@ import { toast } from 'react-toastify';
 import { displayError } from '../../../../utlis/errorHandler';
 
 const Profile: React.FC = () => {
-  const router = useRouter();
   const { currentUser }: any = useAppSelector((state) => state.auth);
   const { avatarUrl, firstName, lastName, email } = currentUser || {};
   const [avatarImage, setAvatarImage] = React.useState<any>(null);

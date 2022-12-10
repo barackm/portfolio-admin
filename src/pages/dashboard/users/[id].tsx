@@ -1,12 +1,17 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { toast } from 'react-toastify';
-import useSWR from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 import * as Yup from 'yup';
-import { updateUserAsync, updateUserBulkInfoAsync } from '../../../api/users';
+import {
+  deleteUserAsync,
+  updateUserAsync,
+  updateUserBulkInfoAsync,
+} from '../../../api/users';
 import Button from '../../../components/common/Button';
 import Select from '../../../components/common/Input/Select';
 import TextInput from '../../../components/common/Input/TextInput';
+import LoadingIndicator from '../../../components/common/LoadingIndicator';
 import Page from '../../../components/common/Page';
 import Form from '../../../components/form/Form';
 import { useAppSelector } from '../../../hooks/store';
@@ -19,11 +24,11 @@ const User = () => {
   const router = useRouter();
   const { id }: any = router.query;
   const { data: userData, error } = useSWR(`/users/${id}`);
-  const { data: roles, error: rolesError } = useSWR(`/roles`);
+  const { data: roles } = useSWR(`/roles`);
   const { currentUser } = useAppSelector<any>((state) => state.auth);
   const [user, setUser] = React.useState<any>({});
   const [fetching, setFetching] = React.useState(false);
-
+  const loadingUser = !userData && !error;
   const isCurrentUserAdmin =
     currentUser &&
     currentUser.roleObjects.find(
@@ -115,64 +120,68 @@ const User = () => {
   return (
     <Page>
       <div>
-        <div className='mt-10 py-10 px-4 pt-6 bg-white rounded-xl shadow-soft-3xl'>
-          <div className='mb-6'>
-            <h1 className='text-3xl font-normal text-gray-800'>
-              {isAdminUpdatingUser
-                ? 'Edit User Details'
-                : 'Update Your Details'}
-            </h1>
-          </div>
-          <Form
-            initialValues={user}
-            onSubmit={handleSubmit}
-            validationSchema={validationSchema}
-            enableReinitialize={true}
-          >
-            <TextInput name='firstName' label='First Name' />
-            <div className='my-4' />
-            <TextInput name='lastName' label='Last Name' />
-            <div className='my-4' />
-            <TextInput name='email' disabled label='Email' />
-            <div className='my-4' />
-            {isAdminUpdatingUser && (
-              <Select
-                name='roleObjects'
-                label='Roles'
-                options={
-                  roles
-                    ? roles.map((role: IRole) => ({
-                        ...role,
-                        label: role.label,
-                        value: role._id,
-                      }))
-                    : []
-                }
-                isMulti
-              />
-            )}
-            <div className='my-4' />
-            {isAdminUpdatingUser && (
-              <Select name='status' label='Status' options={statusOptions} />
-            )}
-            <div className='my-4' />
-
-            <Button usesFormik loading={fetching} type='submit'>
-              Update
-            </Button>
-            <Button
-              color='secondary'
-              className='ml-2'
-              onClick={() =>
-                isAdminUpdatingUser
-                  ? router.push(routes.users)
-                  : router.push(routes.profile)
-              }
+        {loadingUser ? (
+          <LoadingIndicator />
+        ) : (
+          <div className='mt-10 py-10 px-4 pt-6 bg-white rounded-xl shadow-soft-3xl'>
+            <div className='mb-6'>
+              <h1 className='text-3xl font-normal text-gray-800'>
+                {isAdminUpdatingUser
+                  ? 'Edit User Details'
+                  : 'Update Your Details'}
+              </h1>
+            </div>
+            <Form
+              initialValues={user}
+              onSubmit={handleSubmit}
+              validationSchema={validationSchema}
+              enableReinitialize={true}
             >
-              Cancel
-            </Button>
-          </Form>
-        </div>
+              <TextInput name='firstName' label='First Name' />
+              <div className='my-4' />
+              <TextInput name='lastName' label='Last Name' />
+              <div className='my-4' />
+              <TextInput name='email' disabled label='Email' />
+              <div className='my-4' />
+              {isAdminUpdatingUser && (
+                <Select
+                  name='roleObjects'
+                  label='Roles'
+                  options={
+                    roles
+                      ? roles.map((role: IRole) => ({
+                          ...role,
+                          label: role.label,
+                          value: role._id,
+                        }))
+                      : []
+                  }
+                  isMulti
+                />
+              )}
+              <div className='my-4' />
+              {isAdminUpdatingUser && (
+                <Select name='status' label='Status' options={statusOptions} />
+              )}
+              <div className='my-4' />
+
+              <Button usesFormik loading={fetching} type='submit'>
+                Update
+              </Button>
+              <Button
+                color='secondary'
+                className='ml-2'
+                onClick={() =>
+                  isAdminUpdatingUser
+                    ? router.push(routes.users)
+                    : router.push(routes.profile)
+                }
+              >
+                Cancel
+              </Button>
+            </Form>
+          </div>
+        )}
       </div>
     </Page>
   );

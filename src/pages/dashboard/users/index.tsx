@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
-import useSWR from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DefaultTableHeaderInfo from '../../../components/common/DefaultTableHeaderInfo';
@@ -16,12 +16,15 @@ import Modal from '../../../components/common/Modal';
 import { EUserRole, EUserStatus } from '../../../types/common';
 import { useAppSelector } from '../../../hooks/store';
 import { toast } from 'react-toastify';
+import { deleteUserAsync } from '../../../api/users';
+import { displayError } from '../../../utlis/errorHandler';
 
 const Users = () => {
   const { data: users, error } = useSWR('/users');
   const { currentUser } = useAppSelector<any>((state) => state.auth);
-
-  const fetching = !users && !error;
+  const [fetching, setFetching] = React.useState(false);
+  const loading = !users && !error;
+  const { mutate } = useSWRConfig();
   const [activeUserIdToDelete, setActiveUserIdToDelete] = React.useState<
     string | null
   >(null);
@@ -42,6 +45,21 @@ const Users = () => {
       router.push(routes.dashboard);
     }
   }, [currentUser, router]);
+
+  const handleDeleteUser = async () => {
+    if (!activeUserIdToDelete) return;
+    setFetching(true);
+    try {
+      await deleteUserAsync(activeUserIdToDelete);
+      toast.success('User deleted successfully');
+      mutate('/users');
+      setActiveUserIdToDelete(null);
+    } catch (error) {
+      displayError(error);
+    } finally {
+      setFetching(false);
+    }
+  };
 
   const columns = [
     {
@@ -176,6 +194,8 @@ const Users = () => {
         open={!!activeUserIdToDelete}
         onClose={() => setActiveUserIdToDelete(null)}
         title='Delete User'
+        onConfirm={handleDeleteUser}
+        loading={fetching}
       >
         <div className='flex flex-col items-center justify-center'>
           <p className='text-center'>
@@ -189,7 +209,7 @@ const Users = () => {
         onSort={(sortColumn) => setSortColumn(sortColumn)}
         sortColumn={sortColumn}
         sortTable
-        loading={fetching}
+        loading={loading || fetching}
         total={users?.length}
         title='Users'
         pageNumberQueryField='page'
