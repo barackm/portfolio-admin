@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import useSWR from 'swr';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -14,9 +14,13 @@ import { IUser } from '../../../types/user';
 import routes from '../../../utlis/routes';
 import Modal from '../../../components/common/Modal';
 import { EUserRole, EUserStatus } from '../../../types/common';
+import { useAppSelector } from '../../../hooks/store';
+import { toast } from 'react-toastify';
 
 const Users = () => {
   const { data: users, error } = useSWR('/users');
+  const { currentUser } = useAppSelector<any>((state) => state.auth);
+
   const fetching = !users && !error;
   const [activeUserIdToDelete, setActiveUserIdToDelete] = React.useState<
     string | null
@@ -27,6 +31,16 @@ const Users = () => {
   });
 
   const router = useRouter();
+
+  useEffect(() => {
+    const isAdmin = currentUser.roleObjects.find(
+      (role: IRole) => role.name === EUserRole.admin,
+    );
+    if (!isAdmin) {
+      toast.error('You are not authorized to view this page');
+      router.push(routes.dashboard);
+    }
+  }, [currentUser, router]);
 
   const columns = [
     {

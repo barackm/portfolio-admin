@@ -16,7 +16,6 @@ const Modal = (props: ModalProps) => {
   const { children, open, title, onClose, className = '', onConfirm } = props;
   const mainModalParentRef = React.useRef<HTMLDivElement>(null);
   const modalContentRef = React.useRef<HTMLDivElement>(null);
-  const { currentUser } = useAppSelector((state) => state.auth);
   const handleClickOutside = (event: any) => {};
 
   useEffect(() => {
@@ -26,7 +25,6 @@ const Modal = (props: ModalProps) => {
     };
   }, []);
 
-  console.log(currentUser, 'currentUser');
   return (
     <div
       className={`fixed top-0 left-0 w-full h-full overflow-x-hidden  transition-opacity ease-linear z-sticky outline-0 backdrop-saturate-200 backdrop-blur-[2px] bg-slate-700/70 dark:bg-gray-950/80  ${
