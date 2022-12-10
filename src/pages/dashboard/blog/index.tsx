@@ -13,6 +13,7 @@ import { deleteArticleAsync } from '../../../api/articles';
 import { toast } from 'react-toastify';
 import { displayError } from '../../../utlis/errorHandler';
 import useSWR, { useSWRConfig } from 'swr';
+import Tag from '../../../components/common/Tag';
 
 const Articles = () => {
   const [limit, setLimit] = React.useState(2);
@@ -74,7 +75,11 @@ const Articles = () => {
       colClasses: 'min-w-[150px] max-w-[150px]',
       content: (article: any) => (
         <div className='flex items-center'>
-          {article.isPublished ? 'Published' : 'Draft'}
+          {article.isPublished ? (
+            <Tag className='bg-green-600 text-slate-50'>Published</Tag>
+          ) : (
+            <Tag className='bg-yellow-500 text-slate-50'>Draft</Tag>
+          )}
         </div>
       ),
     },

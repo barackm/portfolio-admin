@@ -73,23 +73,22 @@ export const links = [
       },
     ],
   },
+  {
+    id: 5,
+    name: 'Users',
+    link: routes.users,
+    icon: <PeopleAltOutlinedIcon />,
+    description: 'Users',
+    children: [
+      {
+        id: 1,
+        name: 'Users',
+        link: routes.users,
+        icon: <PeopleAltOutlinedIcon />,
+        description: 'Users List',
+      },
+    ],
+  },
 ];
 
-export const secondaryLinks = [
-  // {
-  //   id: 1,
-  //   name: 'Settings',
-  //   link: routes.settings,
-  //   icon: <SettingsOutlinedIcon />,
-  //   description: 'Settings',
-  //   children: [
-  //     {
-  //       id: 1,
-  //       name: 'Settings',
-  //       link: routes.settings,
-  //       icon: <SettingsOutlinedIcon />,
-  //       description: 'Settings',
-  //     },
-  //   ],
-  // },
-];
+export const secondaryLinks = [];

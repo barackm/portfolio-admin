@@ -1,13 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import Button from '../Button';
-import SearchIcon from '@mui/icons-material/Search';
-import TextInput from '../Input/TextInput';
 import { readFromQueryString } from '../../../utlis/queryParams';
 import useSearch from '../../../hooks/useSearch';
 import { updateSearch } from '../../../utlis/constants/browserHistory';
 import useSyncWithSearch from '../../../hooks/useSyncWithSearch';
 import Link from 'next/link';
-import routes from '../../../utlis/routes';
 
 interface DefaultTableHeaderInfoProps {
   title?: string;
@@ -54,13 +51,15 @@ const DefaultTableHeaderInfo = (props: DefaultTableHeaderInfoProps) => {
             <span className='text-3xl font-normal text-slate-800'>{title}</span>
             <p className='text-slate-400 font-light text-[1rem]'>{subTitle}</p>
           </div>
-          <div className=''>
-            <Button className='mr-1 shadow-none' onClick={() => {}}>
-              <Link href={routePathToNew || '/'}>
-                <span className='text-xs'>+ Add new</span>
-              </Link>
-            </Button>
-          </div>
+          {routePathToNew && (
+            <div className=''>
+              <Button className='mr-1 shadow-none' onClick={() => {}}>
+                <Link href={routePathToNew || '/'}>
+                  <span className='text-xs'>+ Add new</span>
+                </Link>
+              </Button>
+            </div>
+          )}
         </div>
         <div className='py-5 flex items-center w-full'>
           <div className='dataTable-dropdown'>
