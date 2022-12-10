@@ -66,10 +66,13 @@ const Artice = () => {
 
       setArticle({
         ...dataReceivedArticle,
-        tags: dataReceivedArticle.tags.map((tag: string) => ({
-          value: tag,
-          label: tag,
-        })),
+        tags: dataReceivedArticle.tags.map(
+          (tag: string) =>
+            tag && {
+              value: tag,
+              label: tag,
+            },
+        ),
       });
 
       setPublishDate(dataReceivedArticle?.scheduledAt);
@@ -147,7 +150,6 @@ const Artice = () => {
       const { data } = await scheduleArticleAsync(article._id, {
         scheduledAt: publishDate,
       });
-      console.log(data);
       setArticle(data);
       mutate(`${apiUrl}/${article._id}`);
       toast.success('Article scheduled successfully');
@@ -160,7 +162,6 @@ const Artice = () => {
 
   const shouldShowForm = article && article._id;
 
-  console.log(article, 'article');
   return (
     <Page>
       <div className='mt-10 py-10 px-4 pt-6 bg-white rounded-xl shadow-soft-3xl'>

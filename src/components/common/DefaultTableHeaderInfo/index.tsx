@@ -6,15 +6,18 @@ import { readFromQueryString } from '../../../utlis/queryParams';
 import useSearch from '../../../hooks/useSearch';
 import { updateSearch } from '../../../utlis/constants/browserHistory';
 import useSyncWithSearch from '../../../hooks/useSyncWithSearch';
+import Link from 'next/link';
+import routes from '../../../utlis/routes';
 
 interface DefaultTableHeaderInfoProps {
   title?: string;
   subTitle?: string;
   pageSizeQueryField: string;
+  routePathToNew?: string;
 }
 
 const DefaultTableHeaderInfo = (props: DefaultTableHeaderInfoProps) => {
-  const { title, subTitle, pageSizeQueryField } = props;
+  const { title, subTitle, pageSizeQueryField, routePathToNew } = props;
   const search = useSearch();
   const pageSize = Number(
     readFromQueryString(search, pageSizeQueryField) ?? '10',
@@ -52,14 +55,10 @@ const DefaultTableHeaderInfo = (props: DefaultTableHeaderInfoProps) => {
             <p className='text-slate-400 font-light text-[1rem]'>{subTitle}</p>
           </div>
           <div className=''>
-            <Button className='mr-1 shadow-none'>
-              <span className='text-xs'>+ Add new</span>
-            </Button>
-            <Button variant='outlined' className=' mr-1 shadow-none'>
-              <span className='text-xs'>Import</span>
-            </Button>
-            <Button variant='outlined' className='shadow-none'>
-              <span className='text-xs'>Export</span>
+            <Button className='mr-1 shadow-none' onClick={() => {}}>
+              <Link href={routePathToNew || '/'}>
+                <span className='text-xs'>+ Add new</span>
+              </Link>
             </Button>
           </div>
         </div>
@@ -69,7 +68,7 @@ const DefaultTableHeaderInfo = (props: DefaultTableHeaderInfoProps) => {
               <select
                 className='dataTable-selector text-sm'
                 name='limit'
-                value={pageSizeSearch || '10'}
+                value={pageSizeSearch.toString() || '10'}
                 onChange={(e) => setPageSize(Number(e.target.value))}
               >
                 <option value='2' className=''>
@@ -85,15 +84,6 @@ const DefaultTableHeaderInfo = (props: DefaultTableHeaderInfoProps) => {
               </select>{' '}
               <span className=' text-sm capitalize ml-1'>entries per page</span>
             </label>
-          </div>
-          <div className='flex-1 flex items-center justify-end '>
-            <div className='w-56'>
-              <TextInput
-                usesFormik={false}
-                placeholder='Search...'
-                startIcon={<SearchIcon />}
-              />
-            </div>
           </div>
         </div>
       </div>

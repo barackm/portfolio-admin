@@ -1,20 +1,15 @@
 import moment from 'moment';
-import { GetServerSideProps, GetStaticProps } from 'next';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import React from 'react';
 import DefaultTableHeaderInfo from '../../../components/common/DefaultTableHeaderInfo';
-import Checkbox from '../../../components/common/Input/Checkbox';
 import Page from '../../../components/common/Page';
 import TableActionBtn from '../../../components/common/TableActionBtn';
-import TableLink from '../../../components/common/TableLink';
-import Tag from '../../../components/common/Tag';
 import Table from '../../../components/Table/Table';
 import Tooltip from '../../../components/common/Tooltip';
 import { useRouter } from 'next/router';
 import routes from '../../../utlis/routes';
-import { deleteArticleAsync, getArticlesAsync } from '../../../api/articles';
+import { deleteArticleAsync } from '../../../api/articles';
 import { toast } from 'react-toastify';
 import { displayError } from '../../../utlis/errorHandler';
 import useSWR, { useSWRConfig } from 'swr';
@@ -125,7 +120,7 @@ const Articles = () => {
       await deleteArticleAsync(id);
       setLoading(false);
       toast.success('Article deleted successfully');
-      mutate('/articles');
+      mutate('/articles?page=1&limit=10');
     } catch (error) {
       displayError(error);
       setLoading(false);
@@ -144,6 +139,7 @@ const Articles = () => {
         limit={limit}
         page={page}
         total={total}
+        loading={fetching}
         count={Math.ceil(total / limit)}
         pageNumberQueryField='page'
         pageSizeQueryField='limit'

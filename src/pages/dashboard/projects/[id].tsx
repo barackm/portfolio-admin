@@ -34,8 +34,9 @@ const Project = () => {
     sourceCodeUrl: '',
     tags: [],
     technologies: [],
-    imageUrl: [],
+    imageUrl: '',
   };
+
   const { data: project = id === 'new' ? defaultProjectData : {}, error } =
     useSWR(id && id !== 'new' ? `/projects/${id}` : null);
 
@@ -53,7 +54,7 @@ const Project = () => {
       .label('Category'),
     tags: Yup.array().label('Tags'),
     technologies: Yup.array().label('Technologies'),
-    imageUrl: Yup.array().label('Image Url'),
+    imageUrl: Yup.array().label('Image'),
   });
 
   const handleSubmit = (values: any) => {
@@ -112,6 +113,8 @@ const Project = () => {
     }
   };
 
+  console.log(project.category, 'project.imageUrl');
+
   return (
     <Page>
       <div>
@@ -127,10 +130,31 @@ const Project = () => {
               description: project.description,
               liveDemoUrl: project.liveDemoUrl,
               sourceCodeUrl: project.sourceCodeUrl,
-              tags: project.tags,
-              technologies: project.technologies,
-              category: project.category,
-              imageUrl: project.imageUrl,
+              tags:
+                project.tags &&
+                project.tags.map((tag: string) => ({
+                  label: tag,
+                  value: tag,
+                })),
+              technologies:
+                project.technologies &&
+                project.technologies.map((tech: string) => ({
+                  label: tech,
+                  value: tech,
+                })),
+              category: project.category && {
+                ...project.category,
+                label: project.category.name,
+                value: project.category._id,
+              },
+              imageUrl: project.imageUrl
+                ? [
+                    {
+                      path: project.imageUrl,
+                      name: project.imageUrl,
+                    },
+                  ]
+                : [],
             }}
             onSubmit={handleSubmit}
             validationSchema={validationSchema}
@@ -172,7 +196,7 @@ const Project = () => {
             <Button
               color='secondary'
               className='ml-2'
-              onClick={() => router.back()}
+              onClick={() => router.push(routes.projects)}
             >
               Cancel
             </Button>

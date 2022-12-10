@@ -15,6 +15,7 @@ import Tooltip from '../../../components/common/Tooltip';
 import { useRouter } from 'next/router';
 import routes from '../../../utlis/routes';
 import useSWR from 'swr';
+
 const Projects = () => {
   const { data: projects, error } = useSWR('/projects');
   const fetching = !projects && !error;
@@ -134,6 +135,7 @@ const Projects = () => {
         onSort={(sortColumn) => setSortColumn(sortColumn)}
         sortColumn={sortColumn}
         sortTable
+        loading={fetching}
         total={projects?.length}
         title='Projects'
         pageNumberQueryField='page'
@@ -143,6 +145,7 @@ const Projects = () => {
             title='Projects'
             pageSizeQueryField='limit'
             subTitle='Manage your projects here with easy.'
+            routePathToNew={routes.newProject}
           />
         }
       />

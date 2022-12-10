@@ -12,7 +12,7 @@ interface FileUploadDropzoneProps {
   name: string;
   error?: string;
   usesFormik?: boolean;
-  value?: string;
+  value?: [];
   onChange?: (e: any) => void;
   isMulti?: boolean;
 }
@@ -45,17 +45,7 @@ const FileUploadDropzone = (props: FileUploadDropzoneProps) => {
   });
 
   const formikValue = values && values[name as keyof typeof values];
-  const formattedFiles = usesFormik
-    ? Array.isArray(formikValue)
-      ? formikValue
-      : formikValue
-      ? [formikValue]
-      : []
-    : Array.isArray(value)
-    ? value
-    : value
-    ? [value]
-    : [];
+  const formattedFiles: any = usesFormik ? formikValue : value;
 
   const handleRemoveFile = (file: any) => {
     const newFiles =
@@ -89,6 +79,8 @@ const FileUploadDropzone = (props: FileUploadDropzoneProps) => {
         });
     }
   };
+
+  console.log(formattedFiles, 'file');
 
   return (
     <div>
@@ -127,49 +119,58 @@ const FileUploadDropzone = (props: FileUploadDropzoneProps) => {
           </div>
         )}
         <ul className='flex gap-4'>
-          {formattedFiles.map((file: any) => (
-            <li
-              key={file.path}
-              className='flex flex-col z-100 bg-slate-200 p-2 rounded-xl'
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-            >
-              <div className='flex flex-col w-[120px] justify-center items-center rounded-xl overflow-hidden relative'>
-                <div className='absolute z-100 w-full flex flex-col items-center'>
-                  <span className='text-gray-DEFAULT-50 p-1 text-xs bg-gray-600 rounded-1'>
-                    {getFileSize(file.size) || 'Unknown size'}
-                  </span>
-                  <div className='w-[95%] h-5 bg-gray-500 mt-2 rounded-[2px] px-1 flex items-center overflow-hidden'>
-                    <Tooltip title={file.name}>
-                      <span className='text-sm font-light flex w-full whitespace-nowrap overflow-hidden overflow-ellipsis '>
-                        {file.name}
-                      </span>
-                    </Tooltip>
+          {formattedFiles.map(
+            (
+              file:
+                | {
+                    path: string;
+                    name: string;
+                  }
+                | any,
+            ) => (
+              <li
+                key={file.path}
+                className='flex flex-col z-100 bg-slate-200 p-2 rounded-xl'
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                <div className='flex flex-col w-[120px] justify-center items-center rounded-xl overflow-hidden relative'>
+                  <div className='absolute z-100 w-full flex flex-col items-center'>
+                    <span className='text-gray-DEFAULT-50 p-1 text-xs bg-gray-600 rounded-1'>
+                      {getFileSize(file.size) || 'Unknown size'}
+                    </span>
+                    <div className='w-[95%] h-5 bg-gray-500 mt-2 rounded-[2px] px-1 flex items-center overflow-hidden'>
+                      <Tooltip title={file.name}>
+                        <span className='text-sm font-light flex w-full whitespace-nowrap overflow-hidden overflow-ellipsis '>
+                          {file.name}
+                        </span>
+                      </Tooltip>
+                    </div>
+                  </div>
+                  <div className='border rounded-xl overflow-hidden h-[120px]'>
+                    <Image
+                      src={
+                        file.path && file.path?.startsWith('http')
+                          ? file.path
+                          : URL.createObjectURL(file)
+                      }
+                      alt={file.name}
+                      width={120}
+                      height={120}
+                    />
                   </div>
                 </div>
-                <div className='border rounded-xl overflow-hidden h-[120px]'>
-                  <Image
-                    src={
-                      file.path && file.path.startsWith('http')
-                        ? file.path
-                        : URL.createObjectURL(file)
-                    }
-                    alt={file.name}
-                    width={120}
-                    height={120}
-                  />
-                </div>
-              </div>
-              <button
-                type='button'
-                className='text-slate-700 hover:text-secondaryColor transition-all ease-soft'
-                onClick={() => handleRemoveFile(file)}
-              >
-                Remove File
-              </button>
-            </li>
-          ))}
+                <button
+                  type='button'
+                  className='text-slate-700 hover:text-secondaryColor transition-all ease-soft'
+                  onClick={() => handleRemoveFile(file)}
+                >
+                  Remove File
+                </button>
+              </li>
+            ),
+          )}
         </ul>
       </div>
       {(inpurError || error) && (
