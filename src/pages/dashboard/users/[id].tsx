@@ -53,6 +53,8 @@ const User = () => {
           label: status,
           value: status,
         },
+        oldPassword: '',
+        newPassword: '',
       });
     }
   }, [userData]);
@@ -63,6 +65,8 @@ const User = () => {
     email: string;
     roleObjects: IRole[];
     status: { label: string; value: string };
+    oldPassword?: string;
+    newPassword?: string;
   };
 
   const handleSubmit = async (values: TUser) => {
@@ -80,6 +84,8 @@ const User = () => {
         : {
             firstName,
             lastName,
+            password: values.newPassword,
+            oldPassword: values.oldPassword,
           };
       isAdminUpdatingUser
         ? await updateUserBulkInfoAsync(id, body)
@@ -101,7 +107,16 @@ const User = () => {
     email: Yup.string().email('Email is invalid').required('Email is required'),
     roleObjects: Yup.array().required('Role is required'),
     status: Yup.object().required('Status is required'),
+    newPassword: Yup.string().min(5).max(50),
+    oldPassword: Yup.string()
+      .min(5)
+      .max(50)
+      .when('newPassword', {
+        is: (newPassword: string) => newPassword?.length > 0,
+        then: Yup.string().required('Old password is required'),
+      }),
   });
+
   const statusOptions = [
     {
       label: 'Active',
@@ -164,8 +179,27 @@ const User = () => {
                 <Select name='status' label='Status' options={statusOptions} />
               )}
               <div className='my-4' />
+              {!isAdminUpdatingUser && (
+                <div>
+                  <h4 className='text-lg'>Change Password</h4>
 
-              <Button usesFormik loading={fetching} type='submit'>
+                  <div className='my-4' />
+                  <TextInput
+                    name='oldPassword'
+                    label='Old Password'
+                    type='password'
+                  />
+                  <div className='my-4' />
+                  <TextInput
+                    name='newPassword'
+                    label='New Password'
+                    type='password'
+                  />
+                  <div className='my-4' />
+                </div>
+              )}
+
+              <Button usesFormik loading={fetching}>
                 Update
               </Button>
               <Button

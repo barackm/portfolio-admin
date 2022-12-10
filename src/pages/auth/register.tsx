@@ -33,7 +33,7 @@ const Register = () => {
       .required('Required'),
     email: Yup.string().email('Invalid Email Address').required('Required'),
     password: Yup.string()
-      .min(6, 'Too short, at least 6 chars')
+      .min(5, 'Too short, at least 6 chars')
       .required('Required'),
   });
 
