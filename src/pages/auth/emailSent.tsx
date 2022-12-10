@@ -17,7 +17,6 @@ const EmailSent = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((state) => state.auth);
-
   useEffect(() => {
     if (token || !userEmail) {
       router.push(routes.home);

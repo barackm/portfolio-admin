@@ -3,7 +3,7 @@ import { GetStaticProps } from 'next';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import React from 'react';
+import React, { useEffect } from 'react';
 import DefaultTableHeaderInfo from '../../../components/common/DefaultTableHeaderInfo';
 import Checkbox from '../../../components/common/Input/Checkbox';
 import Page from '../../../components/common/Page';
@@ -15,6 +15,7 @@ import Tooltip from '../../../components/common/Tooltip';
 import { useRouter } from 'next/router';
 import routes from '../../../utlis/routes';
 import useSWR from 'swr';
+import useAuth from '../../../hooks/useAuth';
 
 const Projects = () => {
   const { data: projects, error } = useSWR('/projects');
@@ -25,6 +26,14 @@ const Projects = () => {
   });
 
   const router = useRouter();
+  const route = useAuth();
+
+  useEffect(() => {
+    if (route) {
+      router.push(route);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [route]);
 
   const columns = [
     {

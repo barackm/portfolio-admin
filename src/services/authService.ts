@@ -27,39 +27,18 @@ export const loginUser = (data: any, router: any) => async (dispatch: any) => {
       successAction: (payload: { user: any; token: string }) => {
         const { token, user } = payload;
         toast.success('Login successful, Welcome back');
-        dispatch(authRequestSuccess(payload));
-        updateToken(token);
 
         if (!user.isVerified) {
           storage.set(USER_EMAIL, user.email);
           toast.info('Please verify your email');
           router.push(routes.emailSent);
-          dispatch(
-            authRequestFailed({
-              message: 'Please verify your email address',
-            }),
-          );
+          updateToken(null);
+          dispatch(authRequestSuccess(null));
           return;
         }
 
-        if (user.status === EUserStatus.pending) {
-          toast.info('Your account is pending');
-          router.push(routes.profile);
-          return;
-        }
-        const isOnlyRegularUser =
-          user.roles.length === 1 && user.roles[0].name === EUserRole.regular;
-        if (isOnlyRegularUser && user.status === EUserStatus.active) {
-          toast.info('Your account is pending, waiting for admin approval');
-          router.push(routes.profile);
-          return;
-        }
-        if (user.status === EUserStatus.inactive) {
-          toast.info('Your account is inactive');
-          router.push(routes.profile);
-          return;
-        }
-
+        dispatch(authRequestSuccess(payload));
+        updateToken(token);
         router.push(routes.home);
       },
     }),

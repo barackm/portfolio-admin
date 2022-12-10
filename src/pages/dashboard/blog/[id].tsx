@@ -21,6 +21,7 @@ import {
 } from '../../../api/articles';
 import { displayError } from '../../../utlis/errorHandler';
 import moment from 'moment';
+import useAuth from '../../../hooks/useAuth';
 const apiUrl = `/articles`;
 
 const SAVE_INTERVAL_MS = 2000;
@@ -43,7 +44,14 @@ const Artice = () => {
   const handleChange = (content: any) => {
     setArticle((prev: any) => ({ ...prev, draft: content }));
   };
+  const route = useAuth();
 
+  useEffect(() => {
+    if (route) {
+      router.push(route);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [route]);
   const handleAutoSave = async () => {
     const data = {
       currentUser,

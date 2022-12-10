@@ -17,12 +17,12 @@ function MyApp({ Component, pageProps }: AppProps) {
         fetcher: (params) => axios(params).then((res) => res.data),
       }}
     >
+      <ToastContainer />
       <Provider store={store}>
         <Head>
           <title>Barack M. | Admin</title>
           <link rel='icon' href='/favicon.ico' />
         </Head>
-        <ToastContainer />
         <AuthCheck>
           <Layout>
             <Component {...pageProps} />

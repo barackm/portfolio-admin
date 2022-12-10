@@ -2,7 +2,7 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined';
 import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
-// import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import routes from '../../utlis/routes';
@@ -91,7 +91,7 @@ export const links = [
         id: 2,
         name: 'My Profile',
         link: routes.profile,
-        icon: <PersonAddAltOutlinedIcon />,
+        icon: <PersonOutlineOutlinedIcon />,
         description: 'My Profile',
       },
     ],

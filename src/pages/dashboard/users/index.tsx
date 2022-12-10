@@ -18,6 +18,7 @@ import { useAppSelector } from '../../../hooks/store';
 import { toast } from 'react-toastify';
 import { deleteUserAsync } from '../../../api/users';
 import { displayError } from '../../../utlis/errorHandler';
+import useAuth from '../../../hooks/useAuth';
 
 const Users = () => {
   const { data: users, error } = useSWR('/users', {
@@ -37,17 +38,21 @@ const Users = () => {
   });
 
   const router = useRouter();
+  const route = useAuth();
 
   useEffect(() => {
     if (!currentUser) return;
+    if (route) {
+      router.push(route);
+      return;
+    }
     const isAdmin = currentUser.roleObjects.find(
       (role: IRole) => role.name === EUserRole.admin,
     );
     if (!isAdmin) {
-      toast.error('You are not authorized to view this page');
-      router.push(routes.dashboard);
+      router.push(routes.profile);
     }
-  }, [currentUser, router]);
+  }, [currentUser, router, route]);
 
   const handleDeleteUser = async () => {
     if (!activeUserIdToDelete) return;

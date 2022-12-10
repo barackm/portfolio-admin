@@ -11,6 +11,7 @@ import LoadingIndicator from '../../../components/common/LoadingIndicator';
 import Page from '../../../components/common/Page';
 import Form from '../../../components/form/Form';
 import { useAppSelector } from '../../../hooks/store';
+import useAuth from '../../../hooks/useAuth';
 import { EUserRole, EUserStatus } from '../../../types/common';
 import { IRole } from '../../../types/role';
 import { displayError } from '../../../utlis/errorHandler';
@@ -30,6 +31,7 @@ const User = () => {
     currentUser.roleObjects?.find(
       (role: IRole) => role.name === EUserRole.admin,
     );
+
   const isAdminUpdatingUser =
     isCurrentUserAdmin && userData?._id !== currentUser._id;
 

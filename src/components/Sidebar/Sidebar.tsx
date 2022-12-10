@@ -15,6 +15,7 @@ import {
   isCurrentRouteActive,
 } from '../../utlis/routing';
 import routes from '../../utlis/routes';
+import { EUserRole, EUserStatus } from '../../types/common';
 
 const Sidebar = () => {
   const [sidebarOnHover, setSidebarOnHover] = React.useState(false);
@@ -22,6 +23,15 @@ const Sidebar = () => {
   const router = useRouter();
   const { currentUser }: any = useAppSelector((state) => state.auth);
   const [activeLink, setActiveLink] = React.useState<any>({ children: [] });
+
+  const { roleObjects, status } = currentUser || {};
+  const roles: any = roleObjects
+    ? roleObjects.map((role: any) => role.name)
+    : [];
+  const isUserActive = status === EUserStatus.active;
+  const isUserAdmin = roles.includes(EUserRole.admin);
+  const isUserContentCreator = roles.includes(EUserRole.contentCreator);
+
   const sidebarRef: {
     current: HTMLDivElement | null;
   } = React.useRef(null);
@@ -71,6 +81,48 @@ const Sidebar = () => {
   const { isSidebarOpen } = useSelector((state: any) => state.entities.ui);
   const { firstName, lastName, email } = currentUser;
 
+  const getLinksToRender = () => {
+    const dashboardLink = links.filter(
+      (link: any) => link.link === routes.dashboard,
+    );
+    const usersLink = links
+      .filter((link: any) => link.link === routes.users)
+      .map((link: any) => {
+        if (!isUserAdmin) {
+          return {
+            ...link,
+            children: link.children.filter(
+              (child: any) => child.link === routes.profile,
+            ),
+          };
+        }
+        return link;
+      });
+    const blogLink = links.filter((link: any) => link.link === routes.blog);
+    const projectsLink = links.filter(
+      (link: any) => link.link === routes.projects,
+    );
+    if (!isUserActive) {
+      return [...usersLink];
+    }
+
+    if (isUserActive && !isUserAdmin && !isUserContentCreator) {
+      return [...usersLink];
+    }
+
+    if (isUserActive && !isUserAdmin && isUserContentCreator) {
+      return [...dashboardLink, ...blogLink, ...usersLink];
+    }
+
+    if (isUserActive && isUserAdmin) {
+      return [...dashboardLink, ...blogLink, ...usersLink, ...projectsLink];
+    }
+
+    return [...dashboardLink, ...blogLink, ...usersLink];
+  };
+
+  const linksToShow = getLinksToRender();
+
   return (
     <aside
       className={`fixed inset-y-0 left-0 flex-wrap items-center justify-between w-full p-0  transition-all duration-300  bg-gray-950 ease-soft-in-out z-990  xl:translate-x-0 xl:bg-transparent -translate-x-full flex flex-row ${
@@ -95,7 +147,7 @@ const Sidebar = () => {
             </Link>
           </div>
           <ul className='flex flex-col '>
-            {links.map((link) => (
+            {linksToShow.map((link) => (
               <li key={link.id}>
                 <Link href={link.link}>
                   <a
@@ -185,36 +237,39 @@ const Sidebar = () => {
               <span className='text-md'>{activeLink.name}</span>
             </div>
             <ul>
-              {activeLink.children.map((link: any) => (
-                <li key={link.id}>
-                  <Link href={link.link} as={link.paramName ? link.link : ''}>
-                    <a
-                      className={`flex flex-row w-full align-middle h-full transition-all duration-200 ease-soft-in-out ${
-                        isCurrentRouteActive(router.asPath, link.link, {
-                          isParent: false,
-                          router,
-                        })
-                          ? 'text-white'
-                          : 'text-slate-400'
-                      } my-1 py-2 px-2 rounded-1 hover:bg-[rgba(255,255,255,0.2)] ${
-                        isCurrentRouteActive(router.asPath, link.link, {
-                          isParent: false,
-                          router,
-                        })
-                          ? 'bg-[rgba(255,255,255,0.2)]'
-                          : ''
-                      }`}
-                    >
-                      <div className='flex align-middle w-full h-full'>
-                        <div className='mr-2 flex justify-center align-middle'>
-                          {link.icon}
+              {activeLink.children.map((link: any) => {
+                if (!isUserAdmin && link.link === routes.users) return '';
+                return (
+                  <li key={link.id}>
+                    <Link href={link.link} as={link.paramName ? link.link : ''}>
+                      <a
+                        className={`flex flex-row w-full align-middle h-full transition-all duration-200 ease-soft-in-out ${
+                          isCurrentRouteActive(router.asPath, link.link, {
+                            isParent: false,
+                            router,
+                          })
+                            ? 'text-white'
+                            : 'text-slate-400'
+                        } my-1 py-2 px-2 rounded-1 hover:bg-[rgba(255,255,255,0.2)] ${
+                          isCurrentRouteActive(router.asPath, link.link, {
+                            isParent: false,
+                            router,
+                          })
+                            ? 'bg-[rgba(255,255,255,0.2)]'
+                            : ''
+                        }`}
+                      >
+                        <div className='flex align-middle w-full h-full'>
+                          <div className='mr-2 flex justify-center align-middle'>
+                            {link.icon}
+                          </div>
+                          {link.name}
                         </div>
-                        {link.name}
-                      </div>
-                    </a>
-                  </Link>
-                </li>
-              ))}
+                      </a>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
           <SeparatorLine />

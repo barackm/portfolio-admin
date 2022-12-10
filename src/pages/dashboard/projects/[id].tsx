@@ -18,6 +18,7 @@ import Textarea from '../../../components/common/Input/Textarea';
 import TextInput from '../../../components/common/Input/TextInput';
 import Page from '../../../components/common/Page';
 import Form from '../../../components/form/Form';
+import useAuth from '../../../hooks/useAuth';
 import { displayError } from '../../../utlis/errorHandler';
 import routes from '../../../utlis/routes';
 
@@ -36,6 +37,15 @@ const Project = () => {
     technologies: [],
     imageUrl: '',
   };
+
+  const route = useAuth();
+
+  useEffect(() => {
+    if (route) {
+      router.push(route);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [route]);
 
   const { data: project = id === 'new' ? defaultProjectData : {}, error } =
     useSWR(id && id !== 'new' ? `/projects/${id}` : null);
