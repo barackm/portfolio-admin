@@ -113,8 +113,6 @@ const Project = () => {
     }
   };
 
-  console.log(project.category, 'project.imageUrl');
-
   return (
     <Page>
       <div>

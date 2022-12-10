@@ -7,7 +7,6 @@ export const fetcher = async (url: string, options?: {}) => {
       data,
     };
   } catch (error: any) {
-    // console.log(error, 'error.payload');
     return {
       error,
     };

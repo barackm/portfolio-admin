@@ -80,8 +80,6 @@ const FileUploadDropzone = (props: FileUploadDropzoneProps) => {
     }
   };
 
-  console.log(formattedFiles, 'file');
-
   return (
     <div>
       {label && (

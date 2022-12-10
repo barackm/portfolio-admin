@@ -65,7 +65,6 @@ const AppPagination = (props: AppPaginationProps) => {
     }
   }, [total, pageSize]);
 
-  console.log(pageSize, Math.ceil(total / Number(pageSize || 10)));
   return (
     <Stack spacing={2}>
       <Pagination

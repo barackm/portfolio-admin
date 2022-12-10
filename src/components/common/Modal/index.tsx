@@ -33,9 +33,7 @@ const Modal = (props: ModalProps) => {
       } bord`}
       id='import'
       ref={mainModalParentRef}
-      onMouseOver={() => {
-        console.log('mouse over');
-      }}
+      onMouseOver={() => {}}
     >
       <div
         className='relative m-2 flex justify-center transition-transform duration-300 sm:m-7 sm:mx-auto h-full ease-soft-out'
