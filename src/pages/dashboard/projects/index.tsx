@@ -14,12 +14,21 @@ import Table from '../../../components/Table/Table';
 import Tooltip from '../../../components/common/Tooltip';
 import { useRouter } from 'next/router';
 import routes from '../../../utlis/routes';
-import useSWR from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 import useAuth from '../../../hooks/useAuth';
+import Modal from '../../../components/common/Modal';
+import { deleteProjectAsync } from '../../../api/projects';
+import { toast } from 'react-toastify';
+import { displayError } from '../../../utlis/errorHandler';
 
 const Projects = () => {
   const { data: projects, error } = useSWR('/projects');
-  const fetching = !projects && !error;
+  const { mutate } = useSWRConfig();
+  const [activeProjectIdToDelete, setActiveProjectIdToDelete] = React.useState<
+    string | null
+  >(null);
+  const loading = !projects && !error;
+  const [fetching, setFetching] = React.useState(false);
   const [sortColumn, setSortColumn] = React.useState({
     path: 'name',
     order: 'asc',
@@ -34,6 +43,21 @@ const Projects = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [route]);
+
+  const handleDeleteProject = async () => {
+    if (!activeProjectIdToDelete) return;
+    setFetching(true);
+    try {
+      await deleteProjectAsync(activeProjectIdToDelete);
+      toast.success('Project deleted successfully');
+      mutate('/projects');
+      setActiveProjectIdToDelete(null);
+    } catch (error) {
+      displayError(error);
+    } finally {
+      setFetching(false);
+    }
+  };
 
   const columns = [
     {
@@ -127,7 +151,9 @@ const Projects = () => {
             </TableActionBtn>
           </Tooltip>
           <Tooltip title='Delete Project'>
-            <TableActionBtn>
+            <TableActionBtn
+              onClick={() => setActiveProjectIdToDelete(project._id)}
+            >
               <DeleteIcon className='text-inherit text-red-400 hover:text-red-500' />
             </TableActionBtn>
           </Tooltip>
@@ -138,13 +164,26 @@ const Projects = () => {
 
   return (
     <Page>
+      <Modal
+        open={!!activeProjectIdToDelete}
+        onClose={() => setActiveProjectIdToDelete(null)}
+        title='Delete Project'
+        onConfirm={handleDeleteProject}
+        loading={loading || fetching}
+      >
+        <div className='flex flex-col items-center justify-center'>
+          <p className='text-center'>
+            Are you sure you want to delete this project?
+          </p>
+        </div>
+      </Modal>
       <Table
         data={projects || []}
         columns={columns}
         onSort={(sortColumn) => setSortColumn(sortColumn)}
         sortColumn={sortColumn}
         sortTable
-        loading={fetching}
+        loading={loading || fetching}
         total={projects?.length}
         title='Projects'
         pageNumberQueryField='page'

@@ -20,3 +20,7 @@ export const updateProjectAsync = async (data: any, projectId: string) => {
 export const createProjectAsync = async (data: any) => {
   return await http.post(url, data);
 };
+
+export const deleteProjectAsync = async (projectId: string) => {
+  return await http.delete(`${url}/${projectId}`);
+};
