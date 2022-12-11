@@ -14,4 +14,6 @@ export interface IUser {
   isVerified?: true;
   resetPasswordExpires: null;
   resetPasswordToken: null;
+  articlesCount?: number;
+  projectsCount?: number;
 }

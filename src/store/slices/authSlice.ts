@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { EUserRole, EUserStatus } from '../../types/common';
 
 const slice = createSlice({
   name: 'auth',
@@ -15,8 +16,23 @@ const slice = createSlice({
     },
     authRequestSuccess: (state: any, action: any) => {
       const { user, token } = action.payload || {};
+      const roles: any = user?.roleObjects
+        ? user.roleObjects.map((role: any) => role.name)
+        : [];
+
+      const isUserActive = user?.status === EUserStatus.active;
+      const isUserAdmin = roles.includes(EUserRole.admin);
+      const isUserContentCreator = roles.includes(EUserRole.contentCreator);
+
       state.loading = false;
-      state.currentUser = user;
+      state.currentUser = user
+        ? {
+            ...user,
+            isUserActive,
+            isUserAdmin,
+            isUserContentCreator,
+          }
+        : null;
       state.token = token;
     },
     authRequestFailed: (state: any, action: any) => {

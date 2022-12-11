@@ -24,13 +24,8 @@ const Sidebar = () => {
   const { currentUser }: any = useAppSelector((state) => state.auth);
   const [activeLink, setActiveLink] = React.useState<any>({ children: [] });
 
-  const { roleObjects, status } = currentUser || {};
-  const roles: any = roleObjects
-    ? roleObjects.map((role: any) => role.name)
-    : [];
-  const isUserActive = status === EUserStatus.active;
-  const isUserAdmin = roles.includes(EUserRole.admin);
-  const isUserContentCreator = roles.includes(EUserRole.contentCreator);
+  const { roleObjects, isUserActive, isUserAdmin, isUserContentCreator } =
+    currentUser || {};
 
   const sidebarRef: {
     current: HTMLDivElement | null;

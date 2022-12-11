@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import React from 'react';
 import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
 import CloseIcon from '@mui/icons-material/Close';
@@ -11,18 +10,27 @@ import Link from 'next/link';
 import Button from '../../../../components/common/Button';
 import routes from '../../../../utlis/routes';
 import { updateUserAvatarAsync } from '../../../../api/users';
-import { authRequestSuccess } from '../../../../store/slices/authSlice';
 import storage from '../../../../services/storageService';
 import { toast } from 'react-toastify';
 import { displayError } from '../../../../utlis/errorHandler';
+import { authRequestSuccess } from '../../../../store/slices/authSlice';
 
 const Profile: React.FC = () => {
   const { currentUser }: any = useAppSelector((state) => state.auth);
-  const { avatarUrl, firstName, lastName, email } = currentUser || {};
+  const {
+    avatarUrl,
+    firstName,
+    lastName,
+    email,
+    articlesCount,
+    projectsCount,
+  } = currentUser || {};
   const [avatarImage, setAvatarImage] = React.useState<any>(null);
   const [fetching, setFetching] = React.useState<boolean>(false);
   const dispatch = useAppDispatch();
+  const { isUserContentCreator, isUserAdmin } = currentUser || {};
 
+  console.log(projectsCount, articlesCount);
   const handleUpdateAvatar = async () => {
     setFetching(true);
     try {
@@ -41,6 +49,15 @@ const Profile: React.FC = () => {
     }
   };
 
+  const formatCount = (count: number) => {
+    if (count > 999 && count < 1000000) {
+      return (count / 1000).toFixed(1) + 'K';
+    } else if (count > 1000000) {
+      return (count / 1000000).toFixed(1) + 'M';
+    } else if (count < 900) {
+      return count;
+    }
+  };
   return (
     <Page>
       <div className='w-full g-white border-0 shadow-soft-xl rounded-2xl bg-clip-border  overflow-hidden'>
@@ -111,17 +128,29 @@ const Profile: React.FC = () => {
           <div className='flex items-center justify-between px-4 pl-40'>
             <ul className='flex gap-2'>
               <li>
-                <Link href='' className='cursor-pointer'>
+                <Link
+                  href={
+                    !isUserAdmin && !isUserContentCreator ? '' : routes.blog
+                  }
+                  className='cursor-pointer'
+                >
                   <a className='flex flex-col font-bold cursor-pointer justify-center items-center bg-primaryColor-300 text-slate-100 p-3 py-4 rounded-1'>
-                    <p className='leading-0 font-bold text-lg'>20</p>
+                    <p className='leading-0 font-bold text-lg'>
+                      {formatCount(articlesCount)}
+                    </p>
                     <span className='leading-0 text-xs font-medium'>POSTS</span>
                   </a>
                 </Link>
               </li>
               <li>
-                <Link href='' className='cursor-pointer'>
+                <Link
+                  href={isUserAdmin ? routes.projects : ''}
+                  className='cursor-pointer'
+                >
                   <a className='flex flex-col font-bold cursor-pointer justify-center items-center bg-primaryColor-300 text-slate-100 p-3 py-4 rounded-1'>
-                    <p className='leading-0 font-bold text-lg'>20</p>
+                    <p className='leading-0 font-bold text-lg'>
+                      {formatCount(projectsCount)}
+                    </p>
                     <span className='leading-0 text-xs font-medium'>
                       PROJECTS
                     </span>
