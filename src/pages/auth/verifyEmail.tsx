@@ -35,8 +35,7 @@ const VerifyEmail = () => {
     }
     try {
       const { data } = await verifyEmailAsync({ verificationToken: token });
-      const { user, token: receivedToken } = data;
-      console.log(user, receivedToken, '---------->>>>>');
+      const { token: receivedToken } = data;
       dispatch(authRequestSuccess(data));
       updateToken(receivedToken);
       router.push(routes.home);
@@ -44,7 +43,6 @@ const VerifyEmail = () => {
     } catch (error) {
       displayError(error);
       router.push(routes.login);
-      console.log(error, 'failed');
     }
   };
   return (

@@ -63,14 +63,10 @@ const AuthCheck = (props: AuthCheckProps) => {
     const socket = io(DOMAIN as string);
 
     socket.on('connect', () => {
-      console.log('connected');
       dispatch(socketConnected(socket));
     });
-    socket.on('disconnect', () => {
-      console.log('disconnected');
-    });
     socket.on('connect_error', (error) => {
-      console.log('connect_error+++', error);
+      console.log('connect_error', error);
     });
 
     return () => {
