@@ -5,7 +5,23 @@ interface TextInputProps {
   widthAuto?: boolean;
   name?: string;
   id?: string;
-  type?: 'text' | 'email' | 'password' | 'number' | 'search' | 'tel' | 'url';
+  type?:
+    | 'text'
+    | 'email'
+    | 'password'
+    | 'number'
+    | 'search'
+    | 'tel'
+    | 'url'
+    | 'date'
+    | 'time'
+    | 'datetime-local'
+    | 'month'
+    | 'week'
+    | 'color'
+    | 'file';
+  accepts?: string;
+  multiple?: boolean;
   placeholder?: string;
   value?: string;
   label?: string;
@@ -16,6 +32,8 @@ interface TextInputProps {
   showErrorText?: boolean;
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
+  isTextArea?: boolean;
+  autoComplete?: boolean;
 }
 
 const TextInput = (props: TextInputProps) => {
@@ -30,10 +48,14 @@ const TextInput = (props: TextInputProps) => {
     disabled,
     error,
     showErrorText,
+    autoComplete,
     usesFormik,
     onChange = () => {},
     startIcon,
     endIcon,
+    isTextArea = false,
+    accepts,
+    multiple,
   } = props;
   const { values, handleChange, setFieldTouched, errors, touched } =
     useFormikContext() || {};
@@ -66,7 +88,7 @@ const TextInput = (props: TextInputProps) => {
       {label && (
         <label
           htmlFor={name}
-          className='block text-md mb-1 font-medium text-gray-700'
+          className='block text-md mb-1 font-[400] text-gray-700'
         >
           {label}
         </label>
@@ -97,18 +119,19 @@ const TextInput = (props: TextInputProps) => {
           }}
           disabled={disabled}
           placeholder={placeholder}
+          autoComplete={autoComplete ? 'on' : 'off'}
           onBlur={() => {
             if (usesFormik && setFieldTouched) {
               setFieldTouched(name as keyof typeof values);
             }
           }}
           className={getTextInputClasses()}
-        />
-        {endIcon && (
-          <span className='text-sm ease-soft leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all right-0'>
-            {endIcon}
-          </span>
-        )}
+          accept={accepts}
+          multiple={multiple}
+        />{' '}
+        <span className='text-sm ease-soft leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all right-0'>
+          {endIcon}
+        </span>
       </div>
       {(inpurError || error) && (
         <p className='text-sm text-red-600 mb-0' id='email-error'>

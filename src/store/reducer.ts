@@ -1,10 +1,12 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import entites from './entities';
+import entities from './entities';
 import auth from './slices/auth';
+import socket from './slices/socket';
 
 const rootReducer = combineReducers({
-  entites,
+  entities,
   auth,
+  socket,
 });
 
 export default rootReducer;

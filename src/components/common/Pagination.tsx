@@ -1,22 +1,77 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import useSearch from '../../hooks/useSearch';
+import useSyncWithSearch from '../../hooks/useSyncWithSearch';
+import { readFromQueryString } from '../../utlis/queryParams';
+import { updateSearch } from '../../utlis/constants/browserHistory';
 
 interface AppPaginationProps {
-  count: number;
-  variant?: 'text' | 'outlined' | 'contained';
+  variant: 'text' | 'outlined';
   shape: 'rounded' | 'circular';
-  onChange: (event: React.ChangeEvent<unknown>, value: number) => void;
+  pageNumberQueryField: string;
+  total: number;
+  pageSizeQueryField: string;
 }
+
 const AppPagination = (props: AppPaginationProps) => {
-  const { count, variant = 'outlined', shape, onChange } = props;
+  const {
+    variant,
+    shape,
+    pageNumberQueryField = 'page',
+    total,
+    pageSizeQueryField = 'limit',
+  } = props;
+
+  const search = useSearch();
+  const searchRef = useRef(search);
+
+  const [pageNumberSearch, setPageNumberSearch] = useSyncWithSearch(
+    pageNumberQueryField,
+    readFromQueryString(search, pageNumberQueryField) ?? '1',
+    !search,
+  );
+
+  const [pageSize, setPageSizeSearch] = useSyncWithSearch(
+    pageNumberQueryField,
+    readFromQueryString(search, pageSizeQueryField) ?? '10',
+    !search,
+  );
+
+  const pageNumber = Number(pageNumberSearch);
+  const setPageNumber = (pageNumberNumber: number) =>
+    // @ts-ignore
+    setPageNumberSearch(String(pageNumberNumber));
+
+  setTimeout(() => {
+    if (
+      !readFromQueryString(searchRef.current, pageNumberQueryField) &&
+      !readFromQueryString(searchRef.current, pageSizeQueryField)
+    ) {
+      updateSearch({
+        [pageNumberQueryField]: '1',
+      });
+    }
+  }, 300);
+
+  useEffect(() => {
+    searchRef.current = search;
+  }, [search]);
+
+  useEffect(() => {
+    if (total && total <= Number(pageSize)) {
+      setPageNumber(1);
+    }
+  }, [total, pageSize]);
+
   return (
     <Stack spacing={2}>
       <Pagination
-        count={count}
-        variant='outlined'
+        count={Math.ceil(total / Number(pageSize || 10))}
+        variant={variant}
         shape={shape}
-        onChange={onChange}
+        onChange={(_event, value) => setPageNumber(value)}
+        page={pageNumber}
       />
     </Stack>
   );
@@ -24,8 +79,8 @@ const AppPagination = (props: AppPaginationProps) => {
 
 AppPagination.defaultProps = {
   count: 10,
-  variant: 'outlined',
-  shape: 'rounded',
+  variant: 'text',
+  shape: 'circular',
   onChange: () => {},
 };
 

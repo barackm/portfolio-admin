@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '../Button';
+import { useAppSelector } from '../../../hooks/store';
 
 interface ModalProps {
   children: React.ReactNode;
@@ -8,13 +9,22 @@ interface ModalProps {
   title?: string | React.ReactNode;
   onClose: () => void;
   className?: string;
+  onConfirm?: () => void;
+  loading?: boolean;
 }
 
 const Modal = (props: ModalProps) => {
-  const { children, open, title, onClose, className = '' } = props;
+  const {
+    children,
+    open,
+    title,
+    onClose,
+    className = '',
+    onConfirm,
+    loading,
+  } = props;
   const mainModalParentRef = React.useRef<HTMLDivElement>(null);
   const modalContentRef = React.useRef<HTMLDivElement>(null);
-
   const handleClickOutside = (event: any) => {};
 
   useEffect(() => {
@@ -33,16 +43,14 @@ const Modal = (props: ModalProps) => {
       } bord`}
       id='import'
       ref={mainModalParentRef}
-      onMouseOver={() => {
-        console.log('mouse over');
-      }}
+      onMouseOver={() => {}}
     >
       <div
         className='relative m-2 flex justify-center transition-transform duration-300 sm:m-7 sm:mx-auto h-full ease-soft-out'
         ref={modalContentRef}
       >
         <div
-          className={`relative min-w-140 max-w-[90%] w-[90%] sm:w-[600px] lg:mt-8 flex h-auto max-h-[80%] flex-col bg-white border border-solid dark:bg-gray-950 bg-clip-padding border-black/20 rounded-xl outline-0 ${className}`}
+          className={`relative min-w-140 max-w-[90%] w-[90%] sm:w-[600px] lg:mt-8 flex max-h-[80%] h-fit flex-col bg-white border border-solid dark:bg-gray-950 bg-clip-padding border-black/20 rounded-xl outline-0 ${className}`}
         >
           <div className='flex items-center justify-between p-4 border-b border-solid shrink-0 border-slate-100 rounded-t-xl sticky top-0 left-0 bg-white'>
             <h5 className='mb-0 leading-normal text-slate-700' id='ModalLabel'>
@@ -52,19 +60,25 @@ const Modal = (props: ModalProps) => {
             <button
               type='button'
               onClick={onClose}
+              title='Close'
               className='w-4 h-4 transition-all ease-linear ml-auto box-content p-2 text-black border-0 rounded-1.5 opacity-50 cursor-pointer flex justify-center items-center hover:opacity-100 focus:outline-none'
             >
               <CloseIcon />
             </button>
           </div>
-          <div className='relative h-full flex-auto p-4 overflow-x-hidden overflow-y-auto'>
+          <div className='relative h-auto flex-auto p-4 overflow-x-hidden overflow-y-auto'>
             {children}
           </div>
           <div className='flex flex-wrap items-center justify-end p-3 border-t border-solid shrink-0 border-slate-100 rounded-b-xl sticky bottom-0 left-0'>
-            <Button>
+            <Button onClick={onConfirm} loading={loading}>
               <span className='text-xs'>Confirm</span>
             </Button>
-            <Button className='ml-2' color='secondary'>
+            <Button
+              className='ml-2'
+              color='secondary'
+              onClick={onClose}
+              disabled={loading}
+            >
               <span className='text-xs'>Cancel</span>
             </Button>
           </div>

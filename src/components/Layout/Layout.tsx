@@ -1,5 +1,12 @@
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { useAppDispatch } from '../../hooks/store';
+import useAuth from '../../hooks/useAuth';
+import storage from '../../services/storageService';
+import { EUserRole, EUserStatus } from '../../types/common';
+import routes from '../../utlis/routes';
 import Header from '../Header';
 import Sidebar from '../Sidebar/Sidebar';
 
@@ -9,9 +16,8 @@ interface LayoutProps {
 
 const Layout = (props: LayoutProps) => {
   const { children } = props;
-  const { isSidebarOpen } = useSelector((state: any) => state.entites.ui);
+  const { isSidebarOpen } = useSelector((state: any) => state.entities.ui);
   const { currentUser, loading } = useSelector((state: any) => state.auth);
-
   return (
     <>
       {currentUser && <Sidebar />}
