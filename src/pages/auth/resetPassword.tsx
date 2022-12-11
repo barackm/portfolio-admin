@@ -29,7 +29,7 @@ const ResetPassword = () => {
 
   const validationSchema = Yup.object().shape({
     password: Yup.string()
-      .min(6, 'Too short, at least 6 chars')
+      .min(5, 'Too short, at least 5 chars')
       .required('Required'),
     confirmPassword: Yup.string()
       .oneOf([Yup.ref('password'), null], 'Passwords must match')
