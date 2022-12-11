@@ -11,7 +11,11 @@ import storage from '../services/storageService';
 
 import { authRequestSuccess } from '../store/slices/auth';
 import { socketConnected } from '../store/slices/socket';
-import { authorization, AUTH_TOKEN } from '../utlis/constants/constants';
+import {
+  authorization,
+  AUTH_TOKEN,
+  DOMAIN,
+} from '../utlis/constants/constants';
 import routes from '../utlis/routes';
 
 interface AuthCheckProps {
@@ -56,7 +60,7 @@ const AuthCheck = (props: AuthCheckProps) => {
   };
 
   useEffect(() => {
-    const socket = io('http://localhost:3900/' as string);
+    const socket = io(DOMAIN as string);
 
     socket.on('connect', () => {
       console.log('connected');

@@ -7,7 +7,6 @@ import {
   authRequestStarted,
   authRequestSuccess,
 } from '../store/slices/auth';
-import { EUserRole, EUserStatus } from '../types/common';
 import { updateToken } from '../utlis/auth';
 import { USER_EMAIL } from '../utlis/constants/constants';
 import routes from '../utlis/routes';

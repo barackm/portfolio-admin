@@ -25,6 +25,9 @@ const Users = () => {
     refreshInterval: 10000,
   });
 
+  const router = useRouter();
+  const route = useAuth();
+
   const { currentUser } = useAppSelector<any>((state) => state.auth);
   const [fetching, setFetching] = React.useState(false);
   const loading = !users && !error;
@@ -36,9 +39,6 @@ const Users = () => {
     path: 'firstName',
     order: 'asc',
   });
-
-  const router = useRouter();
-  const route = useAuth();
 
   useEffect(() => {
     if (!currentUser) return;
@@ -196,8 +196,6 @@ const Users = () => {
     },
   ];
 
-  console.log(users);
-
   return (
     <Page>
       <Modal
@@ -219,7 +217,7 @@ const Users = () => {
         onSort={(sortColumn) => setSortColumn(sortColumn)}
         sortColumn={sortColumn}
         sortTable
-        loading={loading || fetching}
+        loading={fetching || loading}
         total={users?.length}
         title='Users'
         pageNumberQueryField='page'
