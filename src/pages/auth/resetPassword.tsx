@@ -19,11 +19,9 @@ const ResetPassword = () => {
   const { token } = router.query;
 
   useEffect(() => {
-    if (document.readyState === 'complete') {
-      if (currentUser || !token) {
-        router.push(routes.home);
-        return;
-      }
+    if (currentUser || !token) {
+      router.push(routes.home);
+      return;
     }
   }, [currentUser, router, token]);
 

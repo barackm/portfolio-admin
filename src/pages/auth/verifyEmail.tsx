@@ -16,16 +16,15 @@ const VerifyEmail = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (document.readyState === 'complete') {
-      dispatch(authRequestSuccess(null));
-      updateToken(null);
+    dispatch(authRequestSuccess(null));
+    updateToken(null);
 
-      if (token) {
-        verifyEmail();
-      } else {
-        router.push(routes.login);
-      }
+    if (token) {
+      verifyEmail();
+    } else {
+      router.push(routes.login);
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, dispatch]);
 
