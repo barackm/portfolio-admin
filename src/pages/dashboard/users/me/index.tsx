@@ -11,7 +11,7 @@ import Link from 'next/link';
 import Button from '../../../../components/common/Button';
 import routes from '../../../../utlis/routes';
 import { updateUserAvatarAsync } from '../../../../api/users';
-import { authRequestSuccess } from '../../../../store/slices/auth';
+import { authRequestSuccess } from '../../../../store/slices/authSlice';
 import storage from '../../../../services/storageService';
 import { toast } from 'react-toastify';
 import { displayError } from '../../../../utlis/errorHandler';

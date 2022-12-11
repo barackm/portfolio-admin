@@ -7,7 +7,7 @@ import LoadingScreen from '../../components/LoadingScreen';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { verifyEmail } from '../../services/authService';
 import storage from '../../services/storageService';
-import { authRequestSuccess } from '../../store/slices/auth';
+import { authRequestSuccess } from '../../store/slices/authSlice';
 import { displayError } from '../../utlis/errorHandler';
 import routes from '../../utlis/routes';
 
@@ -17,6 +17,7 @@ const VerifyEmail = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    console.log('there we go....');
     if (document.readyState === 'complete') {
       if (token) {
         verifyEmail();
@@ -34,7 +35,7 @@ const VerifyEmail = () => {
     try {
       const { data } = await verifyEmailAsync({ verificationToken: token });
       const { user, token: receivedToken } = data;
-
+      console.log(user, receivedToken);
       dispatch(authRequestSuccess(user));
       storage.setAuthToken(receivedToken);
       router.push(routes.home);
@@ -42,6 +43,7 @@ const VerifyEmail = () => {
     } catch (error) {
       displayError(error);
       router.push(routes.login);
+      console.log(error, 'failed');
     }
   };
   return (

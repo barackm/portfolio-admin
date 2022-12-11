@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '../hooks/store';
 import { getCurrentUser } from '../services/authService';
 import storage from '../services/storageService';
 
-import { authRequestSuccess } from '../store/slices/auth';
+import { authRequestSuccess } from '../store/slices/authSlice';
 import { socketConnected } from '../store/slices/socket';
 import {
   authorization,

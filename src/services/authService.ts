@@ -6,8 +6,8 @@ import {
   authRequestFailed,
   authRequestStarted,
   authRequestSuccess,
-} from '../store/slices/auth';
-import { updateToken } from '../utlis/auth';
+} from '../store/slices/authSlice';
+import { updateToken } from '../utlis/authUtils';
 import { USER_EMAIL } from '../utlis/constants/constants';
 import routes from '../utlis/routes';
 import storage from './storageService';
