@@ -4,10 +4,9 @@ import { toast } from 'react-toastify';
 import { verifyEmailAsync } from '../../api/auth';
 import Page from '../../components/common/Page';
 import LoadingScreen from '../../components/LoadingScreen';
-import { useAppDispatch, useAppSelector } from '../../hooks/store';
-import { verifyEmail } from '../../services/authService';
-import storage from '../../services/storageService';
+import { useAppDispatch } from '../../hooks/store';
 import { authRequestSuccess } from '../../store/slices/authSlice';
+import { updateToken } from '../../utlis/authUtils';
 import { displayError } from '../../utlis/errorHandler';
 import routes from '../../utlis/routes';
 
@@ -17,8 +16,10 @@ const VerifyEmail = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log('there we go....');
     if (document.readyState === 'complete') {
+      dispatch(authRequestSuccess(null));
+      updateToken(null);
+
       if (token) {
         verifyEmail();
       } else {
@@ -35,9 +36,9 @@ const VerifyEmail = () => {
     try {
       const { data } = await verifyEmailAsync({ verificationToken: token });
       const { user, token: receivedToken } = data;
-      console.log(user, receivedToken);
-      dispatch(authRequestSuccess(user));
-      storage.setAuthToken(receivedToken);
+      console.log(user, receivedToken, '---------->>>>>');
+      dispatch(authRequestSuccess(data));
+      updateToken(receivedToken);
       router.push(routes.home);
       toast.success('Email verified successfully');
     } catch (error) {
