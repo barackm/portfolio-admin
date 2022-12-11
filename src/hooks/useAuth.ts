@@ -28,7 +28,6 @@ const useAuth = () => {
     }
   }, [currentUser]);
 
-  console.log('route', route);
   return route;
 };
 
