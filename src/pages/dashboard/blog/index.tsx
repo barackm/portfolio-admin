@@ -14,11 +14,12 @@ import { toast } from 'react-toastify';
 import { displayError } from '../../../utlis/errorHandler';
 import useSWR, { useSWRConfig } from 'swr';
 import Tag from '../../../components/common/Tag';
+import Modal from '../../../components/common/Modal';
 
 const Articles = () => {
-  const [limit, setLimit] = React.useState(2);
+  const [limit, setLimit] = React.useState(900);
   const [page, setPage] = React.useState(1);
-  const { data: articlesData, error } = useSWR('/articles?page=1&limit=10');
+  const { data: articlesData, error } = useSWR('/articles?page=1&limit=900');
   const { articles, total } = articlesData || {};
   const { mutate } = useSWRConfig();
   const fetching = !articles && !error;
@@ -27,7 +28,9 @@ const Articles = () => {
     path: 'title',
     order: 'asc',
   });
-
+  const [activeArticleIdToDelete, setActiveArticleIdToDelete] = React.useState<
+    string | null
+  >(null);
   const router = useRouter();
 
   const columns = [
@@ -110,7 +113,9 @@ const Articles = () => {
             </TableActionBtn>
           </Tooltip>
           <Tooltip title='Delete Article'>
-            <TableActionBtn onClick={() => handleDeleteArticle(article._id)}>
+            <TableActionBtn
+              onClick={() => setActiveArticleIdToDelete(article._id)}
+            >
               <DeleteIcon className='text-inherit text-red-400 hover:text-red-500' />
             </TableActionBtn>
           </Tooltip>
@@ -119,13 +124,15 @@ const Articles = () => {
     },
   ];
 
-  const handleDeleteArticle = async (id: string) => {
+  const handleDeleteArticle = async () => {
+    if (!activeArticleIdToDelete) return;
     setLoading(true);
     try {
-      await deleteArticleAsync(id);
+      await deleteArticleAsync(activeArticleIdToDelete);
       setLoading(false);
       toast.success('Article deleted successfully');
-      mutate('/articles?page=1&limit=10');
+      mutate('/articles?page=1&limit=900');
+      setActiveArticleIdToDelete(null);
     } catch (error) {
       displayError(error);
       setLoading(false);
@@ -134,6 +141,19 @@ const Articles = () => {
 
   return (
     <Page>
+      <Modal
+        open={!!activeArticleIdToDelete}
+        onClose={() => setActiveArticleIdToDelete(null)}
+        title='Delete Article'
+        onConfirm={handleDeleteArticle}
+        loading={loading || fetching}
+      >
+        <div className='flex flex-col items-center justify-center'>
+          <p className='text-center'>
+            Are you sure you want to delete this article?
+          </p>
+        </div>
+      </Modal>
       <Table
         data={articles || []}
         columns={columns}
